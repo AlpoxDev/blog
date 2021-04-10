@@ -36,5 +36,5 @@ export const CategoryValidator = {
       type: Joi.string().valid('main', 'sub'),
     },
   }),
-  onUpdateCategory: celebrate({}),
+  // onUpdateCategory: celebrate({}),
 };
