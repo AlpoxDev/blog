@@ -1,0 +1,12 @@
+node_modules
+src
+docs
+seeders
+
+.eslintignore
+.eslintrc.json
+.gitignore
+.prettierrc.json
+ecosystem.config.js
+
+
