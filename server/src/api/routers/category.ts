@@ -26,13 +26,6 @@ categoryRouter.get(
 categoryRouter.post(
   '/categorys',
   PermissionAuthorizer(UserPermission.edit),
-  CategoryValidator.onCreateCategory,
-  CategoryController.onCreateCategory
-);
-
-categoryRouter.delete(
-  '/categorys/:id',
-  PermissionAuthorizer(UserPermission.edit),
-  CategoryValidator.onDeleteCategory,
-  CategoryController.onDeleteCategory
+  CategoryValidator.onCreateAndUpdateCategorys,
+  CategoryController.onCreateAndUpdateCategorys
 );

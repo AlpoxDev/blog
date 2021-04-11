@@ -20,21 +20,20 @@ export const CategoryValidator = {
       offset: Joi.string(),
     },
   }),
-  onCreateCategory: celebrate({
+  onCreateAndUpdateCategorys: celebrate({
     body: {
-      type: Joi.string().valid('main', 'sub'),
-      name: Joi.string().required(),
-      mainCategoryId: Joi.string(),
-      sequence: Joi.number().default(0),
+      categorys: Joi.array().items(
+        Joi.object({
+          id: Joi.string(),
+          name: Joi.string(),
+          subCategorys: Joi.array().items(
+            Joi.object({
+              id: Joi.string(),
+              name: Joi.string(),
+            })
+          ),
+        })
+      ),
     },
   }),
-  onDeleteCategory: celebrate({
-    params: {
-      id: Joi.string().required(),
-    },
-    body: {
-      type: Joi.string().valid('main', 'sub'),
-    },
-  }),
-  onUpdateCategory: celebrate({}),
 };

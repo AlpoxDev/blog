@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { resourceLimits } from 'node:worker_threads';
+import { networkInterfaces } from 'node:os';
 import { Container } from 'typedi';
 
 import { CategoryService } from '../../services';
@@ -41,42 +41,17 @@ export class CategoryController {
     }
   }
 
-  static async onCreateCategory(
+  static async onCreateAndUpdateCategorys(
     req: Request,
     res: Response,
     next: NextFunction
   ) {
     const { user } = req;
-    const { type, name, mainCategoryId, sequence } = req.body;
+    const { categorys } = req.body;
 
     try {
       const categoryService: CategoryService = Container.get(CategoryService);
-      const response = await categoryService.onCreateCategory({
-        user,
-        type,
-        name,
-        mainCategoryId,
-        sequence,
-      });
-
-      res.status(201).json(response);
-    } catch (error) {
-      next(error);
-    }
-  }
-
-  static async onDeleteCategory(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) {
-    const { user } = req;
-    const { id } = req.params;
-    const { type } = req.body;
-
-    try {
-      const categoryService: CategoryService = Container.get(CategoryService);
-      await categoryService.onDeleteCategory({ user, type, id });
+      await categoryService.onCreateAndUpdateCategorys({ user, categorys });
 
       res.status(204).json();
     } catch (error) {
