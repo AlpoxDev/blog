@@ -36,30 +36,4 @@ export const CategoryValidator = {
       ),
     },
   }),
-  onCreateCategory: celebrate({
-    body: {
-      type: Joi.string().valid('main', 'sub'),
-      name: Joi.string().required(),
-      mainCategoryId: Joi.string(),
-      sequence: Joi.number().default(0),
-    },
-  }),
-  onDeleteCategory: celebrate({
-    params: {
-      id: Joi.string().required(),
-    },
-    body: {
-      type: Joi.string().valid('main', 'sub'),
-    },
-  }),
-  onUpdateCategory: celebrate({
-    params: {
-      id: Joi.string().required(),
-    },
-    body: {
-      type: Joi.string().valid('main', 'sub'),
-      name: Joi.string().required(),
-      mainCategoryId: Joi.string(),
-    },
-  }),
 };

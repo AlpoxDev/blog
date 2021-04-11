@@ -29,17 +29,3 @@ categoryRouter.post(
   CategoryValidator.onCreateAndUpdateCategorys,
   CategoryController.onCreateAndUpdateCategorys
 );
-
-// categoryRouter.delete(
-//   '/categorys/:id',
-//   PermissionAuthorizer(UserPermission.edit),
-//   CategoryValidator.onDeleteCategory,
-//   CategoryController.onDeleteCategory
-// );
-
-// categoryRouter.patch(
-//   '/categorys/:id',
-//   PermissionAuthorizer(UserPermission.edit),
-//   CategoryValidator.onUpdateCategory,
-//   CategoryController.onUpdateCategory
-// );
