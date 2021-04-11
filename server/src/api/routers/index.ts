@@ -2,9 +2,9 @@ import { Router } from 'express';
 import * as routers from './_routers';
 
 const router = Router();
-router.use(routers.authRouter);
-router.use(routers.postRouter);
-router.use(routers.categoryRouter);
-router.use(routers.fileRouter);
+
+Object.values(routers).forEach((item: Router) => {
+  router.use(item);
+});
 
 export default router;
