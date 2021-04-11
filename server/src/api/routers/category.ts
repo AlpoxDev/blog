@@ -26,13 +26,20 @@ categoryRouter.get(
 categoryRouter.post(
   '/categorys',
   PermissionAuthorizer(UserPermission.edit),
-  CategoryValidator.onCreateCategory,
-  CategoryController.onCreateCategory
+  CategoryValidator.onCreateAndUpdateCategorys,
+  CategoryController.onCreateAndUpdateCategorys
 );
 
-categoryRouter.delete(
-  '/categorys/:id',
-  PermissionAuthorizer(UserPermission.edit),
-  CategoryValidator.onDeleteCategory,
-  CategoryController.onDeleteCategory
-);
+// categoryRouter.delete(
+//   '/categorys/:id',
+//   PermissionAuthorizer(UserPermission.edit),
+//   CategoryValidator.onDeleteCategory,
+//   CategoryController.onDeleteCategory
+// );
+
+// categoryRouter.patch(
+//   '/categorys/:id',
+//   PermissionAuthorizer(UserPermission.edit),
+//   CategoryValidator.onUpdateCategory,
+//   CategoryController.onUpdateCategory
+// );

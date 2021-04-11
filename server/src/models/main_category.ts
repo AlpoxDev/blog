@@ -12,7 +12,7 @@ import {
 } from 'sequelize-typescript';
 import { User, SubCategory } from './_models';
 
-@Table({ tableName: 'main_category', timestamps: true })
+@Table({ tableName: 'main_category', timestamps: false })
 export class MainCategory extends Model {
   @Column({
     type: DataType.UUID,
@@ -23,10 +23,10 @@ export class MainCategory extends Model {
 
   @ForeignKey(() => User)
   @Column(DataType.UUID)
-  public userId: string;
+  public userId: string | null;
 
   @BelongsTo(() => User)
-  public user: User;
+  public user: User | null;
 
   @AllowNull(false)
   @Column(DataType.STRING(255))
@@ -39,6 +39,11 @@ export class MainCategory extends Model {
   @HasMany(() => SubCategory)
   public subCategorys: SubCategory[];
 
-  @DeletedAt
-  public deletedAt: Date;
+  static async getUserCategorys(userId: string) {
+    return await MainCategory.findAll({ where: { userId } });
+  }
+
+  public async getSubCategorys() {
+    this.subCategorys = await SubCategory.findAll({ where: { id: this.id } });
+  }
 }

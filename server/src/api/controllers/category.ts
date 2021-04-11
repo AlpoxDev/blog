@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { resourceLimits } from 'node:worker_threads';
+import { networkInterfaces } from 'node:os';
 import { Container } from 'typedi';
 
 import { CategoryService } from '../../services';
@@ -41,6 +41,24 @@ export class CategoryController {
     }
   }
 
+  static async onCreateAndUpdateCategorys(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    const { user } = req;
+    const { categorys } = req.body;
+
+    try {
+      const categoryService: CategoryService = Container.get(CategoryService);
+      await categoryService.onCreateAndUpdateCategorys({ user, categorys });
+
+      res.status(204).json();
+    } catch (error) {
+      next(error);
+    }
+  }
+
   static async onCreateCategory(
     req: Request,
     res: Response,
@@ -77,6 +95,31 @@ export class CategoryController {
     try {
       const categoryService: CategoryService = Container.get(CategoryService);
       await categoryService.onDeleteCategory({ user, type, id });
+
+      res.status(204).json();
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async onUpdateCategory(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    const { user } = req;
+    const { id } = req.params;
+    const { type, name, mainCategoryId } = req.body;
+
+    try {
+      const categoryService: CategoryService = Container.get(CategoryService);
+      await categoryService.onUpdateCategory({
+        user,
+        id,
+        type,
+        name,
+        mainCategoryId,
+      });
 
       res.status(204).json();
     } catch (error) {

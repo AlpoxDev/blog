@@ -12,7 +12,7 @@ import {
 } from 'sequelize-typescript';
 import { User, Post, MainCategory } from './_models';
 
-@Table({ tableName: 'sub_category', timestamps: true })
+@Table({ tableName: 'sub_category', timestamps: false })
 export class SubCategory extends Model {
   @Column({
     type: DataType.UUID,
@@ -30,10 +30,10 @@ export class SubCategory extends Model {
 
   @ForeignKey(() => MainCategory)
   @Column(DataType.UUID)
-  public mainCategoryId: string;
+  public mainCategoryId: string | null;
 
   @BelongsTo(() => MainCategory)
-  public mainCategory: MainCategory;
+  public mainCategory: MainCategory | null;
 
   @AllowNull(false)
   @Column(DataType.STRING(255))
@@ -45,7 +45,4 @@ export class SubCategory extends Model {
   @Default(0)
   @Column(DataType.INTEGER)
   public sequence: number;
-
-  @DeletedAt
-  public deletedAt: Date;
 }
