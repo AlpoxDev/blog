@@ -35,7 +35,7 @@ export class Series extends Model {
 
   @AllowNull(true)
   @Column(DataType.STRING(255))
-  public content: string;
+  public content: string | null;
 
   @HasMany(() => Post)
   public posts: Post[];
@@ -45,4 +45,8 @@ export class Series extends Model {
 
   @UpdatedAt
   public updatedAt: Date;
+
+  public async getPosts() {
+    this.posts = await Post.findAll({ where: { seriesId: this.id } });
+  }
 }

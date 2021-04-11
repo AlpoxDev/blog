@@ -10,6 +10,7 @@ import {
   ForeignKey,
   BelongsTo,
   BelongsToMany,
+  Default,
 } from 'sequelize-typescript';
 import { SubCategory, Series, Tag, User, PostTag } from './_models';
 
@@ -57,6 +58,10 @@ export class Post extends Model {
 
   @BelongsToMany(() => Tag, () => PostTag)
   public tags: Tag[];
+
+  @Default(0)
+  @Column(DataType.INTEGER)
+  public sequence: number;
 
   @CreatedAt
   public createdAt: Date;
