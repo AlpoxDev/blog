@@ -61,6 +61,9 @@ export class UserService {
       const findUser = await User.findByPk(id);
       if (!findUser) throw { status: 404, message: 'NotFound user' };
 
+      if (!profile && !nickname)
+        throw { status: 400, message: '프로필 또는 닉네임이 있어야 합니다.' };
+
       const args: { profile?: string; nickname?: string } = {};
       if (profile) args.profile = profile;
       if (nickname) {
@@ -177,6 +180,17 @@ export class UserService {
         user.permission !== UserPermission.admin
       )
         throw { status: 401, message: '접근 권한이 없습니다.' };
+
+      // 어드민일 경우
+      if (user.permission === UserPermission.admin) {
+        const findUser = await User.findByPk(request.userId);
+        if (!findUser)
+          throw {
+            status: 404,
+            message: '권한을 수정할 사용자를 찾을 수 없습니다.',
+          };
+        await findUser.update({ permission });
+      }
 
       await request.update({ permission });
     } catch (error) {

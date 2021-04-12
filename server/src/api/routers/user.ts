@@ -30,7 +30,7 @@ userRouter.delete(
   UserController.onDeleteUser
 );
 
-userRouter.put(
+userRouter.patch(
   '/users/:id',
   Authorizer,
   UserValidator.onUpdateUser,
