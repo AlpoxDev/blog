@@ -1,4 +1,5 @@
 import { Service } from 'typedi';
+import { Op } from 'sequelize';
 
 import {
   Post,
@@ -7,6 +8,7 @@ import {
   Series,
   SubCategory,
   Tag,
+  PostTag,
 } from '../models';
 import { PostServiceProps } from './post.interface';
 
@@ -36,6 +38,7 @@ export class PostService {
           {
             model: Tag,
             as: 'tags',
+            attributes: ['id', 'name'],
           },
         ],
       });
@@ -66,6 +69,7 @@ export class PostService {
           {
             model: Tag,
             as: 'tags',
+            attributes: ['id', 'name'],
           },
         ],
       });
@@ -77,9 +81,42 @@ export class PostService {
     }
   }
 
-  public async onCreatePost({ user }: PostServiceProps.onCreatePost) {
+  public async onCreatePost({
+    user,
+    title,
+    subtitle,
+    content,
+    category,
+    series,
+    tags,
+  }: PostServiceProps.onCreatePost) {
     try {
-      const post = await Post.create({});
+      const findCategory = await SubCategory.find(category);
+      if (!findCategory)
+        throw { status: 404, message: '서브 카테고리를 찾을 수 없습니다.' };
+
+      let findSeries: Series | null = null;
+      if (series) findSeries = await Series.find(series);
+
+      const post = await Post.create({
+        title,
+        subtitle,
+        content,
+        user,
+        userId: user.id,
+
+        category: findCategory,
+        categoryId: findCategory.id,
+        series: findSeries,
+        seriesId: findSeries?.id || null,
+      });
+
+      const findTags: Tag[] = await Tag.findOrCreateList(user, tags);
+      const relations = findTags.map((tag: Tag) => ({
+        postId: post.id,
+        tagId: tag.id,
+      }));
+      await PostTag.setPostTagRelations(relations);
 
       return { post };
     } catch (error) {
@@ -100,14 +137,47 @@ export class PostService {
     }
   }
 
-  public async onUpdatePost({ user, id }: PostServiceProps.onUpdatePost) {
+  public async onUpdatePost({
+    user,
+    id,
+    title,
+    subtitle,
+    content,
+    category,
+    series,
+    tags,
+  }: PostServiceProps.onUpdatePost) {
     try {
       const post = await Post.findByPk(id);
       if (!post) throw { status: 404, message: 'NotFound post' };
       if (user.id !== post.userId && user.permission !== UserPermission.admin)
         throw { status: 401, message: '접근 권한이 없습니다.' };
 
-      await post.update({});
+      const findCategory = await SubCategory.find(category);
+      if (!findCategory)
+        throw { status: 404, message: '서브 카테고리를 찾을 수 없습니다.' };
+
+      let findSeries: Series | null = null;
+      if (series) findSeries = await Series.find(series);
+
+      await post.update({
+        title,
+        subtitle,
+        content,
+        category: findCategory,
+        categoryId: findCategory.id,
+        series: findSeries,
+        seriesId: findSeries?.id || null,
+      });
+
+      const findTags: Tag[] = await Tag.findOrCreateList(user, tags);
+      const relations = findTags.map((tag: Tag) => ({
+        postId: post.id,
+        tagId: tag.id,
+      }));
+
+      await PostTag.resetPostTagRelations(post.id);
+      await PostTag.setPostTagRelations(relations);
     } catch (error) {
       throw error;
     }

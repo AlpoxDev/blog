@@ -48,11 +48,11 @@ export class Post extends Model {
   @Column(DataType.STRING(255))
   public title: string;
 
-  @AllowNull(false)
+  @AllowNull(true)
   @Column(DataType.STRING(255))
   public subtitle: string;
 
-  @AllowNull(true)
+  @AllowNull(false)
   @Column(DataType.TEXT)
   public content: string;
 

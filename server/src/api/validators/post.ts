@@ -18,7 +18,15 @@ export const PostValidator = {
     },
   }),
   onCreatePost: celebrate({
-    body: {},
+    body: {
+      title: Joi.string().required(),
+      subtitle: Joi.string(),
+      content: Joi.string().required(),
+
+      category: Joi.string().required(),
+      series: Joi.string(),
+      tags: Joi.array().items(Joi.string()).default([]),
+    },
   }),
   onDeletePost: celebrate({
     params: {
@@ -29,6 +37,14 @@ export const PostValidator = {
     params: {
       id: Joi.string().required(),
     },
-    body: {},
+    body: {
+      title: Joi.string().required(),
+      subtitle: Joi.string(),
+      content: Joi.string().required(),
+
+      category: Joi.string().required(),
+      series: Joi.string(),
+      tags: Joi.array().items(Joi.string()).default([]),
+    },
   }),
 };

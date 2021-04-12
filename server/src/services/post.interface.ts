@@ -14,6 +14,13 @@ export namespace PostServiceProps {
 
   export interface onCreatePost {
     user: User;
+    title: string;
+    subtitle?: string;
+    content: string;
+
+    category: string; // SubCategory pk
+    series: string; // Series pk or Series name
+    tags: string[]; // Tag pk or Tag name
   }
 
   export interface onDeletePost {
@@ -21,8 +28,7 @@ export namespace PostServiceProps {
     id: string;
   }
 
-  export interface onUpdatePost {
-    user: User;
+  export interface onUpdatePost extends onCreatePost {
     id: string;
   }
 }
