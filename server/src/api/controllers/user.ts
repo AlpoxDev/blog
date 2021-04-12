@@ -48,10 +48,11 @@ export class UserController {
   static async onUpdateUser(req: Request, res: Response, next: NextFunction) {
     const { user } = req;
     const { id } = req.params;
+    const { profile, nickname } = req.body;
 
     try {
       const userService = Container.get(UserService);
-      await userService.onUpdateUser({ user, id, ...req.body });
+      await userService.onUpdateUser({ user, id, profile, nickname });
 
       res.status(204).json();
     } catch (error) {

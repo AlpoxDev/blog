@@ -48,7 +48,12 @@ export class UserService {
     }
   }
 
-  public async onUpdateUser({ user, id }: UserServiceProps.onUpdateUser) {
+  public async onUpdateUser({
+    user,
+    id,
+    profile,
+    nickname,
+  }: UserServiceProps.onUpdateUser) {
     try {
       if (user.id !== id && user.permission !== UserPermission.admin)
         throw { status: 401, message: '접근 권한이 없습니다.' };
@@ -56,7 +61,20 @@ export class UserService {
       const findUser = await User.findByPk(id);
       if (!findUser) throw { status: 404, message: 'NotFound user' };
 
-      await findUser.update({});
+      const args: { profile?: string; nickname?: string } = {};
+      if (profile) args.profile = profile;
+      if (nickname) {
+        const findNicknameUser = await User.findOne({ where: { nickname } });
+        if (findNicknameUser)
+          throw {
+            status: 400,
+            message: '닉네임을 가진 유저가 이미 존재합니다.',
+          };
+
+        args.nickname = nickname;
+      }
+
+      await findUser.update(args);
     } catch (error) {
       throw error;
     }

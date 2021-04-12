@@ -19,6 +19,8 @@ export namespace UserServiceProps {
   export interface onUpdateUser {
     user: User;
     id: string;
+    profile?: string;
+    nickname?: string;
   }
 
   export interface onGetUserRequests {

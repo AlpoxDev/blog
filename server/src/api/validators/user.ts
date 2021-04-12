@@ -22,7 +22,10 @@ export const UserValidator = {
     params: {
       id: Joi.string().required(),
     },
-    body: {},
+    body: {
+      profile: Joi.string(),
+      nickname: Joi.string(),
+    },
   }),
   onGetUserRequests: celebrate({
     query: {
