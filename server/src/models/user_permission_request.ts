@@ -11,7 +11,7 @@ import {
 import { User, UserPermission } from './_models';
 
 @Table({ tableName: 'user_permission_request', timestamps: false })
-export class UserPermissonRequest extends Model {
+export class UserPermissionRequest extends Model {
   @Column({
     type: DataType.UUID,
     defaultValue: DataType.UUIDV4,
