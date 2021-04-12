@@ -10,7 +10,6 @@ import { SyncOptions } from 'sequelize';
 import * as http from 'http';
 
 // middleware
-import fileUpload from 'express-fileupload';
 import cors from 'cors';
 import { errors } from 'celebrate';
 import requestIP from 'request-ip';
@@ -20,8 +19,6 @@ import routers from '../api/routers';
 
 // config
 import sequelize from '../models';
-import config from '../config';
-import axios from 'axios';
 
 export let server: http.Server | undefined;
 
@@ -35,7 +32,6 @@ export default (app: Application) => {
 
   app.use(json({ limit: '500mb' }));
   app.use(urlencoded({ limit: '500mb', extended: true }));
-  app.use(fileUpload());
 
   app.use(routers);
 
