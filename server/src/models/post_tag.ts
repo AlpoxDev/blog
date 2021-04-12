@@ -4,6 +4,7 @@ import {
   ForeignKey,
   Column,
   DataType,
+  DefaultScope,
 } from 'sequelize-typescript';
 import { Post, Tag } from './_models';
 
@@ -16,4 +17,20 @@ export class PostTag extends Model {
   @ForeignKey(() => Tag)
   @Column(DataType.UUID)
   public tagId: string;
+
+  static async resetPostTagRelations(postId: string) {
+    await this.destroy({
+      where: { postId },
+    });
+  }
+
+  static async setPostTagRelations(
+    relations: Array<{ postId: string; tagId: string }>
+  ) {
+    return await Promise.all(
+      relations.map((relation: { postId: string; tagId: string }) =>
+        this.create(relation)
+      )
+    );
+  }
 }

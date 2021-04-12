@@ -10,8 +10,8 @@ import {
   CreatedAt,
   UpdatedAt,
 } from 'sequelize-typescript';
-import { Post } from './post';
-import { User } from './user';
+import { Op } from 'sequelize';
+import { User, Post } from './_models';
 
 @Table({ tableName: 'series', timestamps: true })
 export class Series extends Model {
@@ -45,6 +45,18 @@ export class Series extends Model {
 
   @UpdatedAt
   public updatedAt: Date;
+
+  static async find(series?: string): Promise<Series | null> {
+    if (!series) return null;
+
+    return (
+      this.findOne({
+        where: {
+          [Op.or]: [{ id: series }, { title: series }],
+        },
+      }) || null
+    );
+  }
 
   public async getPosts() {
     this.posts = await Post.findAll({ where: { seriesId: this.id } });

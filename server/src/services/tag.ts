@@ -1,11 +1,16 @@
-import { Service } from 'typedi';
+import { Service, Container } from 'typedi';
 import { TagServiceProps } from './tag.interface';
 
+import { PostService } from './post';
 import { Tag, Post, PostTag, UserPermission } from '../models';
-import { nextTick } from 'node:process';
 
 @Service()
 export class TagService {
+  public postService: PostService;
+  constructor() {
+    this.postService = Container.get(PostService);
+  }
+
   public async onGetTags({ user, limit, offset }: TagServiceProps.onGetTags) {
     try {
       const { rows: tags, count } = await Tag.findAndCountAll({
@@ -23,6 +28,14 @@ export class TagService {
     try {
       const tag = await Tag.findByPk(id);
       if (!tag) throw { status: 404, message: 'NotFound tag' };
+
+      const { posts, count } = await this.postService.onGetPosts({
+        user,
+        limit,
+        offset,
+      });
+
+      return { tag: { ...tag.toJSON(), posts }, count };
     } catch (error) {
       throw error;
     }

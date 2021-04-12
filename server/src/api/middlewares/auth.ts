@@ -65,7 +65,9 @@ export const IfAuthorizer = async (
     if (!verified) throw { status: 401, message: 'Invalid Bearer Token' };
 
     try {
-      const user = await User.findByPk(verified.id);
+      const user = await User.findByPk(verified.id, {
+        attributes: ['id', 'permission'],
+      });
       if (user) req.user = user;
       else throw { status: 404, message: 'NotFound user in Authorizer' };
     } catch (error) {
@@ -88,6 +90,7 @@ export const PermissionAuthorizer = (permission: UserPermission) => {
 
       const user = await User.findOne({
         where: { id: verifed.id },
+        attributes: ['id', 'permission'],
       });
       if (!user) throw { status: 404, message: 'NotFound user in Authorizer' };
 

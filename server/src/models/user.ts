@@ -8,6 +8,7 @@ import {
   DeletedAt,
   Default,
   HasMany,
+  DefaultScope,
 } from 'sequelize-typescript';
 import { signToken } from '../common';
 import { Post } from './post';
@@ -24,6 +25,9 @@ export enum UserMethod {
   github = 'GITHUB',
 }
 
+@DefaultScope(() => ({
+  attributes: ['id', 'profile', 'nickname'],
+}))
 @Table({ tableName: 'user' })
 export class User extends Model {
   @Column({

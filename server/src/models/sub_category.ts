@@ -8,10 +8,14 @@ import {
   BelongsTo,
   HasMany,
   Default,
-  DeletedAt,
+  DefaultScope,
 } from 'sequelize-typescript';
+import { Op } from 'sequelize';
 import { User, Post, MainCategory } from './_models';
 
+@DefaultScope(() => ({
+  attributes: ['id', 'name', 'sequence'],
+}))
 @Table({ tableName: 'sub_category', timestamps: false })
 export class SubCategory extends Model {
   @Column({
@@ -45,4 +49,14 @@ export class SubCategory extends Model {
   @Default(0)
   @Column(DataType.INTEGER)
   public sequence: number;
+
+  static async find(category: string): Promise<SubCategory | null> {
+    return (
+      this.findOne({
+        where: {
+          [Op.or]: [{ id: category }, { name: category }],
+        },
+      }) || null
+    );
+  }
 }

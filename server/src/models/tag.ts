@@ -7,6 +7,7 @@ import {
   ForeignKey,
   BelongsTo,
   BelongsToMany,
+  DefaultScope,
 } from 'sequelize-typescript';
 import { User, Post, PostTag } from './_models';
 
@@ -17,7 +18,7 @@ export class Tag extends Model {
     defaultValue: DataType.UUIDV4,
     primaryKey: true,
   })
-  public id!: string;
+  public id: string;
 
   @ForeignKey(() => User)
   @Column(DataType.UUID)
@@ -32,4 +33,22 @@ export class Tag extends Model {
 
   @BelongsToMany(() => Post, () => PostTag)
   public posts: Post[];
+
+  static async findOrCreateList(user: User, tags: string[]) {
+    return await Promise.all(
+      tags.map(async (name: string) => {
+        const findTag = await this.findOne({
+          where: { name, userId: user.id },
+        });
+        if (findTag) return findTag;
+
+        const newTag = await this.create({
+          user,
+          userId: user.id,
+          name,
+        });
+        return newTag;
+      })
+    );
+  }
 }

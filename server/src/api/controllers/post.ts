@@ -4,12 +4,11 @@ import { PostService } from '../../services';
 
 export class PostController {
   static async onGetPosts(req: Request, res: Response, next: NextFunction) {
-    const limit = req.limit;
-    const offset = req.offset;
+    const { user, limit, offset } = req;
 
     try {
       const postService: PostService = Container.get(PostService);
-      const response = await postService.onGetPosts({ limit, offset });
+      const response = await postService.onGetPosts({ user, limit, offset });
       res.status(200).json(response);
     } catch (error) {
       next(error);
@@ -17,12 +16,54 @@ export class PostController {
   }
 
   static async onGetPost(req: Request, res: Response, next: NextFunction) {
-    const id = req.params?.id;
+    const { user } = req;
+    const { id } = req.params;
 
     try {
       const postService: PostService = Container.get(PostService);
-      const response = await postService.onGetPost({ id });
+      const response = await postService.onGetPost({ user, id });
       res.status(200).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async onCreatePost(req: Request, res: Response, next: NextFunction) {
+    const { user } = req;
+
+    try {
+      const postService: PostService = Container.get(PostService);
+      const response = await postService.onCreatePost({ user, ...req.body });
+
+      res.status(201).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async onDeletePost(req: Request, res: Response, next: NextFunction) {
+    const { user } = req;
+    const { id } = req.params;
+
+    try {
+      const postService: PostService = Container.get(PostService);
+      await postService.onDeletePost({ user, id });
+
+      res.status(204).json();
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async onUpdatePost(req: Request, res: Response, next: NextFunction) {
+    const { user } = req;
+    const { id } = req.params;
+
+    try {
+      const postService: PostService = Container.get(PostService);
+      await postService.onUpdatePost({ user, id, ...req.body });
+
+      res.status(204).json();
     } catch (error) {
       next(error);
     }
