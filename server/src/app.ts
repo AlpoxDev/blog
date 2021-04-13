@@ -6,17 +6,14 @@ import config from './config';
 import expressLoader from './loaders/express'; // express
 import typediLoader from './loaders/typedi'; // typedi
 
-let app: express.Application | undefined;
+console.log(`Config Loading...`, config);
 
-(() => {
-  app = express();
-  console.log(`Config Loading...`, config);
+const app = express();
 
-  console.log(`Service Loading...`);
-  typediLoader();
+console.log(`Service Loading...`);
+typediLoader();
 
-  console.log(`Express Loading...`);
-  expressLoader(app);
-})();
+console.log(`Express Loading...`);
+expressLoader(app);
 
 export default app;

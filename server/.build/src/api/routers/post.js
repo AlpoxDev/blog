@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.postRouter = void 0;
+const express_1 = require("express");
+const models_1 = require("../../models");
+const controllers_1 = require("../controllers");
+const middlewares_1 = require("../middlewares");
+const validators_1 = require("../validators");
+exports.postRouter = express_1.Router();
+exports.postRouter.get('/posts', middlewares_1.NicknameParser, middlewares_1.Paginate, validators_1.PostValidator.onGetPosts, controllers_1.PostController.onGetPosts);
+exports.postRouter.get('/posts/:id', middlewares_1.NicknameParser, validators_1.PostValidator.onGetPost, controllers_1.PostController.onGetPost);
+exports.postRouter.post('/posts', middlewares_1.PermissionAuthorizer(models_1.UserPermission.edit), validators_1.PostValidator.onCreatePost, controllers_1.PostController.onCreatePost);
+exports.postRouter.delete('/posts/:id', middlewares_1.PermissionAuthorizer(models_1.UserPermission.edit), validators_1.PostValidator.onDeletePost, controllers_1.PostController.onDeletePost);
+exports.postRouter.put('/posts/:id', middlewares_1.PermissionAuthorizer(models_1.UserPermission.edit), validators_1.PostValidator.onUpdatePost, controllers_1.PostController.onUpdatePost);

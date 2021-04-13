@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.tagRouter = void 0;
+const express_1 = require("express");
+const models_1 = require("../../models");
+const controllers_1 = require("../controllers");
+const middlewares_1 = require("../middlewares");
+const validators_1 = require("../validators");
+exports.tagRouter = express_1.Router();
+exports.tagRouter.get('/tags', middlewares_1.NicknameParser, middlewares_1.Paginate, validators_1.TagValidator.onGetTags, controllers_1.TagController.onGetTags);
+exports.tagRouter.get('/tags/:id', middlewares_1.NicknameParser, middlewares_1.Paginate, validators_1.TagValidator.onGetTag, controllers_1.TagController.onGetTag);
+exports.tagRouter.post('/tags', middlewares_1.PermissionAuthorizer(models_1.UserPermission.edit), validators_1.TagValidator.onCreateTag, controllers_1.TagController.onCreateTag);
+exports.tagRouter.delete('/tags/:id', middlewares_1.PermissionAuthorizer(models_1.UserPermission.edit), validators_1.TagValidator.onDeleteTag, controllers_1.TagController.onDeleteTag);
+exports.tagRouter.put('/tags/:id', middlewares_1.PermissionAuthorizer(models_1.UserPermission.edit), validators_1.TagValidator.onUpdateTag, controllers_1.TagController.onUpdateTag);

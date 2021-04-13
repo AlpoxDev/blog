@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.seriesRouter = void 0;
+const express_1 = require("express");
+const models_1 = require("../../models");
+const controllers_1 = require("../controllers");
+const middlewares_1 = require("../middlewares");
+const validators_1 = require("../validators");
+exports.seriesRouter = express_1.Router();
+exports.seriesRouter.get('/series', middlewares_1.NicknameParser, middlewares_1.Paginate, validators_1.SeriesValidator.onGetSeriesList, controllers_1.SeriesController.onGetSeriesList);
+exports.seriesRouter.get('/series/:id', middlewares_1.NicknameParser, validators_1.SeriesValidator.onGetSeries, controllers_1.SeriesController.onGetSeries);
+exports.seriesRouter.post('/series', middlewares_1.PermissionAuthorizer(models_1.UserPermission.edit), validators_1.SeriesValidator.onCreateSeries, controllers_1.SeriesController.onCreateSeries);
+exports.seriesRouter.delete('/series/:id', middlewares_1.PermissionAuthorizer(models_1.UserPermission.edit), validators_1.SeriesValidator.onDeleteSeries, controllers_1.SeriesController.onDeleteSeries);
+exports.seriesRouter.put('/series/:id', middlewares_1.PermissionAuthorizer(models_1.UserPermission.edit), validators_1.SeriesValidator.onUpdateSeries, controllers_1.SeriesController.onUpdateSeries);

@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.categoryRouter = void 0;
+const express_1 = require("express");
+const controllers_1 = require("../controllers");
+const middlewares_1 = require("../middlewares");
+const validators_1 = require("../validators");
+const models_1 = require("../../models");
+exports.categoryRouter = express_1.Router();
+exports.categoryRouter.get('/categorys', middlewares_1.NicknameParser, validators_1.CategoryValidator.onGetCategorys, middlewares_1.Paginate, controllers_1.CategoryController.onGetCategorys);
+exports.categoryRouter.get('/categorys/:id', middlewares_1.NicknameParser, validators_1.CategoryValidator.onGetCategory, middlewares_1.Paginate, controllers_1.CategoryController.onGetCategory);
+exports.categoryRouter.post('/categorys', middlewares_1.PermissionAuthorizer(models_1.UserPermission.edit), validators_1.CategoryValidator.onCreateAndUpdateCategorys, controllers_1.CategoryController.onCreateAndUpdateCategorys);

@@ -5,6 +5,6 @@ import dotenv from 'dotenv';
 if (!process.env.NODE_ENV) process.env.NODE_ENV = 'dev';
 
 const NODE_ENV = process.env.NODE_ENV;
-const ENV_PATH = path.join(__dirname, `../env/.env.${NODE_ENV}`);
+const ENV_PATH = path.join(process.cwd(), `env/.env.${NODE_ENV}`);
 
 dotenv.config({ path: ENV_PATH });
