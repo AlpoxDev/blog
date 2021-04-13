@@ -1,0 +1,15 @@
+{
+  "color": {
+    "primary": "#0e1111",
+    "secondary": "#505050",
+    "point": "#9063CD",
+    "black": "#222",
+    "white": "#fff",
+    "grey": "#C0C0C0",
+    "background": "#d3d3d3"
+  },
+  "fontFamily": {
+    "primary": "Inter",
+    "text": "inherit"
+  }
+}
