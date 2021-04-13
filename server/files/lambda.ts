@@ -11,7 +11,7 @@ type LambdaResponse = {
 };
 
 const MAX_SIZE = 1000000;
-const MIME_TYPES = ['image/png', 'image/jpg', 'image/jpeg', 'text/html'];
+const MIME_TYPES = ['image/png', 'image/jpg', 'image/jpeg'];
 
 const isAllowedSize = (size: number) => size <= MAX_SIZE;
 
