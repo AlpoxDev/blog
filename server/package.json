@@ -8,6 +8,8 @@
     "dev": "serverless offline --stage dev",
     "stage": "serverless offline --stage stage",
     "prod": "serverless offline --stage prod",
+    "deploy:stage": "serverless deploy --stage stage",
+    "deploy:prod": "serverless deploy --stage prod",
     "test": "jest",
     "clear": "rimraf build/*"
   },
