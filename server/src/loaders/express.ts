@@ -20,8 +20,6 @@ import routers from '../api/routers';
 // config
 import sequelize from '../models';
 
-export let server: http.Server | undefined;
-
 export default (app: Application) => {
   app.use(cors());
 
@@ -51,7 +49,11 @@ export default (app: Application) => {
     const clientIP = requestIP.getClientIp(req);
     const { alter, force } = req.query;
 
-    if (clientIP === '::1' || clientIP === '::ffff:127.0.0.1') {
+    if (
+      clientIP === '::1' ||
+      clientIP === '::ffff:127.0.0.1' ||
+      clientIP === '127.0.0.1'
+    ) {
       const args: SyncOptions = {};
       if (alter) args.alter = true;
       if (force) args.force = true;
@@ -67,10 +69,4 @@ export default (app: Application) => {
   app.use((req: Request, res: Response) => {
     res.status(404).contentType('html').send(`<h1>BLOG API</h1>`);
   });
-
-  if (!server) {
-    server = app.listen(process.env.PORT || 80, () => {
-      console.log(`🚀 Server is running on port ${process.env.PORT}`);
-    });
-  }
 };

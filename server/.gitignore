@@ -1,5 +1,5 @@
 node_modules/
-env/
+serverless.yml
 
-webpack/*.js
-build/
+.serverless/
+.build/

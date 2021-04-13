@@ -13,11 +13,8 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "strictPropertyInitialization": false,
-    "typeRoots": ["./node_modules/@types", "./src/@types"],
-    "paths": {
-      "*": ["./src/@types/*", "*"]
-    }
+    "typeRoots": ["./node_modules/@types", "./src/@types"]
   },
-  "include": ["src/**/*", "src/index.ts"],
+  "include": ["src/**/*", "src/index.ts", "files/*.ts"],
   "exclude": ["node_modules"]
 }
