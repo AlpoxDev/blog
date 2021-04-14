@@ -1,0 +1,16 @@
+{
+  "color": {
+    "primary": "#594ABF",
+    "subPrimary": "BCB2FF",
+    "text": "#252525",
+    "secondary": "#949494",
+    "black": "#222",
+    "white": "#fff",
+    "darkGrey": "#B9B9B9",
+    "grey": "#DCDCDC"
+  },
+  "fontFamily": {
+    "inter": "Inter",
+    "spoqa": "'Spoqa Han Sans Neo', 'sans-serif'"
+  }
+}
