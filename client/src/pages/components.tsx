@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Text, Button } from 'components/atom';
+import { Profile } from 'components/atom/Image/Profile';
 
 const isDEV = process.env.NODE_ENV === 'development';
 
@@ -35,6 +36,8 @@ const Page = (): React.ReactElement | null => {
       <Button location={{ right: '.5rem' }} option="point">
         Point
       </Button>
+
+      <Profile location={{ top: '1rem' }} />
     </>
   );
 };

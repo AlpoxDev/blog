@@ -32,63 +32,64 @@ export interface TextStyleProps {
 }
 
 export interface TextProps extends TextStyleProps {
+  className?: string;
   children?: React.ReactNode | React.ReactNodeArray;
   onClick?: () => void;
 }
 
 export const Text = {
-  H1: ({ children, onClick, ...props }: TextProps): JSX.Element => {
+  H1: ({ className, children, onClick, ...props }: TextProps): JSX.Element => {
     return (
-      <TextH1Style tag="h1" onClick={onClick} {...props}>
+      <TextH1Style className={className} tag="h1" onClick={onClick} {...props}>
         {children}
       </TextH1Style>
     );
   },
-  H2: ({ children, onClick, ...props }: TextProps): JSX.Element => {
+  H2: ({ className, children, onClick, ...props }: TextProps): JSX.Element => {
     return (
-      <TextH2Style tag="h2" onClick={onClick} {...props}>
+      <TextH2Style className={className} tag="h2" onClick={onClick} {...props}>
         {children}
       </TextH2Style>
     );
   },
-  H3: ({ children, onClick, ...props }: TextProps): JSX.Element => {
+  H3: ({ className, children, onClick, ...props }: TextProps): JSX.Element => {
     return (
-      <TextH3Style tag="h3" onClick={onClick} {...props}>
+      <TextH3Style className={className} tag="h3" onClick={onClick} {...props}>
         {children}
       </TextH3Style>
     );
   },
-  H4: ({ children, onClick, ...props }: TextProps): JSX.Element => {
+  H4: ({ className, children, onClick, ...props }: TextProps): JSX.Element => {
     return (
-      <TextH4Style tag="h4" onClick={onClick} {...props}>
+      <TextH4Style className={className} tag="h4" onClick={onClick} {...props}>
         {children}
       </TextH4Style>
     );
   },
-  H5: ({ children, onClick, ...props }: TextProps): JSX.Element => {
+  H5: ({ className, children, onClick, ...props }: TextProps): JSX.Element => {
     return (
-      <TextH4Style tag="h5" onClick={onClick} {...props}>
+      <TextH4Style className={className} tag="h5" onClick={onClick} {...props}>
         {children}
       </TextH4Style>
     );
   },
-  Content: ({ children, onClick, ...props }: TextProps): JSX.Element => {
+  Content: ({ className, children, onClick, ...props }: TextProps): JSX.Element => {
     return (
-      <TextPStyle tag="p" onClick={onClick} {...props}>
+      <TextPStyle className={className} tag="p" onClick={onClick} {...props}>
         {children}
       </TextPStyle>
     );
   },
-  Label: ({ children, onClick, ...props }: TextProps): JSX.Element => {
+  Label: ({ className, children, onClick, ...props }: TextProps): JSX.Element => {
     return (
-      <TextLabelStyle tag="label" onClick={onClick} {...props}>
+      <TextLabelStyle className={className} tag="label" onClick={onClick} {...props}>
         {children}
       </TextLabelStyle>
     );
   },
-  Accent: ({ children, onClick, ...props }: TextProps): JSX.Element => {
+  Accent: ({ className, children, onClick, ...props }: TextProps): JSX.Element => {
     return (
-      <TextSpanStyle tag="span" onClick={onClick} {...props}>
+      <TextSpanStyle className={className} tag="span" onClick={onClick} {...props}>
         {children}
       </TextSpanStyle>
     );

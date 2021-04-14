@@ -10,13 +10,20 @@ export interface ButtonStyleProps {
 }
 
 export interface ButtonProps extends ButtonStyleProps {
+  className?: string;
   children: React.ReactNode;
   onClick?: () => void;
 }
 
-export const Button = ({ children, option = 'primary', onClick, ...props }: ButtonProps): React.ReactElement => {
+export const Button = ({
+  className,
+  children,
+  option = 'primary',
+  onClick,
+  ...props
+}: ButtonProps): React.ReactElement => {
   return (
-    <ButtonStyle onClick={onClick} option={option} {...props}>
+    <ButtonStyle className={className} onClick={onClick} option={option} {...props}>
       {children}
     </ButtonStyle>
   );
@@ -53,6 +60,7 @@ const ButtonStyle = styled.button<ButtonStyleProps>`
 					background-color: ${theme.color.grey};
 					border: 1.5px solid ${theme.color.grey};
 					filter: none;
+					cursor: not-allowed;
 				`;
       case 'flat':
         return `
