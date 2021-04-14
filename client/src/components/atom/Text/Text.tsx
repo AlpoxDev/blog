@@ -27,6 +27,8 @@ export interface TextStyleProps {
   fontWeight?: FontWeight;
   fontFamily?: FontFamily;
   lineHeight?: string;
+  underline?: boolean;
+  pointer?: boolean;
 
   location?: Location;
 }
@@ -99,6 +101,7 @@ export const Text = {
 const TextStyleDefault = (tag: any) => styled(tag)<TextStyleProps>`
   margin: 0;
 
+  white-space: pre-line;
   color: ${theme.color.text};
   font-family: ${(props) => theme.fontFamily[props.fontFamily] || theme.fontFamily.spoqa};
 
@@ -157,6 +160,8 @@ const TextStyleDefault = (tag: any) => styled(tag)<TextStyleProps>`
   ${(props) => props.color && `color: ${props.color};`}
   ${(props) => props.fontSize && `font-size: ${props.fontSize};`}
   ${(props) => props.lineHeight && `line-height: ${props.lineHeight};`}
+	${(props) => props.underline && 'text-decoration: underline;'};
+  ${(props) => props.pointer && 'cursor: pointer;'};
 
   // location
   ${(props) => LocationStyle(props?.location)}
