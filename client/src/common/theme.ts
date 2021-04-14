@@ -1,14 +1,5 @@
-export const theme = {
-  color: {
-    black: '#000',
-    primary: '#9063CD',
-    textPrimary: '#222',
-    textSecondary: '#505050',
-  },
-  fontFamily: {
-    primary: 'Inter',
-    text: 'inherit',
-  },
-};
+import Theme from '../../config.json';
+
+export const theme = Theme;
 
 export type ITheme = typeof theme;
