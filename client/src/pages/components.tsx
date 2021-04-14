@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Text } from 'components/atom';
+import { Text, Button } from 'components/atom';
 
 const isDEV = process.env.NODE_ENV === 'development';
 
@@ -24,6 +24,17 @@ const Page = (): React.ReactElement | null => {
       <Text.Content location={{ top: '1rem', padding: { left: '1rem' } }} fontFamily="inter">
         This is <Text.Accent>Alpox</Text.Accent>
       </Text.Content>
+
+      <Button location={{ top: '1rem', left: '1rem', right: '1rem' }}>Primary</Button>
+      <Button location={{ right: '.5rem' }} option="disabled">
+        Disabled
+      </Button>
+      <Button location={{ right: '.5rem' }} option="flat">
+        Flat
+      </Button>
+      <Button location={{ right: '.5rem' }} option="point">
+        Point
+      </Button>
     </>
   );
 };

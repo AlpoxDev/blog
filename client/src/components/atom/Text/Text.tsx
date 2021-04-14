@@ -2,18 +2,11 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { theme } from '../../../common/theme';
+import { Location, LocationStyle } from '../../../common/atomic';
 
 // http://jsfiddle.net/rsy19u6g/13/
 
 type TextTag = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'p' | 'span' | 'label';
-
-type Location = {
-  left?: string;
-  right?: string;
-  top?: string;
-  bottom?: string;
-};
-
 type Color = 'text' | 'secondary' | 'primary' | 'subPrimary' | string;
 type FontFamily = 'spoqa' | 'inter';
 
@@ -35,12 +28,7 @@ export interface TextStyleProps {
   fontFamily?: FontFamily;
   lineHeight?: string;
 
-  location?:
-    | Location
-    | {
-        margin?: Location;
-        padding?: Location;
-      };
+  location?: Location;
 }
 
 export interface TextProps extends TextStyleProps {
@@ -170,32 +158,7 @@ const TextStyleDefault = (tag: any) => styled(tag)<TextStyleProps>`
   ${(props) => props.lineHeight && `line-height: ${props.lineHeight};`}
 
   // location
-  ${(props) => {
-    const { location } = props;
-    if (!location) return '';
-
-    let locations = '';
-    if (location.left) locations += `margin-left: ${location.left};`;
-    if (location.right) locations += `margin-right: ${location.right};`;
-    if (location.top) locations += `margin-top: ${location.top};`;
-    if (location.bottom) locations += `margin-bottom: ${location.bottom};`;
-
-    const { margin, padding } = location;
-    if (margin) {
-      if (margin.left) locations += `margin-left: ${margin.left};`;
-      if (margin.right) locations += `margin-right: ${margin.right};`;
-      if (margin.top) locations += `margin-top: ${margin.top};`;
-      if (margin.bottom) locations += `margin-bottom: ${margin.bottom};`;
-    }
-    if (padding) {
-      if (padding.left) locations += `padding-left: ${padding.left};`;
-      if (padding.right) locations += `padding-right: ${padding.right};`;
-      if (padding.top) locations += `padding-top: ${padding.top};`;
-      if (padding.bottom) locations += `padding-bottom: ${padding.bottom};`;
-    }
-
-    return locations;
-  }}
+  ${(props) => LocationStyle(props?.location)}
 `;
 
 const TextH1Style = TextStyleDefault('h1');

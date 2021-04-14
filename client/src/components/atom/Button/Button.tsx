@@ -2,9 +2,11 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 import { theme } from '../../../common/theme';
+import { Location, LocationStyle } from '../../../common/atomic';
 
 export interface ButtonStyleProps {
   option?: 'primary' | 'disabled' | 'flat' | 'point';
+  location?: Location;
 }
 
 export interface ButtonProps extends ButtonStyleProps {
@@ -43,7 +45,7 @@ const ButtonStyle = styled.button<ButtonStyleProps>`
         return `
 					color: ${theme.color.white};
 					border: 1.5px solid ${theme.color.text};
-					background: ${theme.color.text}
+					background: ${theme.color.text};
 				`;
       case 'disabled':
         return `
@@ -65,4 +67,7 @@ const ButtonStyle = styled.button<ButtonStyleProps>`
 				`;
     }
   }}
+
+  // location
+	${(props) => LocationStyle(props?.location)}
 `;
