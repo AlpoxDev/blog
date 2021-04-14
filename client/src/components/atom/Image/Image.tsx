@@ -1,14 +1,16 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import NextImage from 'next/image';
+// import NextImage from 'next/image';
 
-export interface ImageProps {
+export interface ImageStyleProps {
+  objectFit?: 'cover' | 'contain';
+  width?: number;
+  height?: number;
+}
+export interface ImageProps extends ImageStyleProps {
   className?: string;
   src: string;
   alt?: string;
-  width?: number;
-  height?: number;
-  objectFit?: 'cover' | 'contain';
 }
 
 export const Image = ({
@@ -33,4 +35,8 @@ export const Image = ({
   );
 };
 
-const ImageStyle = styled(NextImage)``;
+const ImageStyle = styled.img<ImageStyleProps>`
+  ${(props) => props.width && `width: ${props.width}px;`};
+  ${(props) => props.height && `height: ${props.height}px;`};
+  ${(props) => props.objectFit && `object-fit: ${props.objectFit};`};
+`;
