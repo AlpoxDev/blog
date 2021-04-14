@@ -6,7 +6,10 @@
     "prod": "yarn build && next start",
     "build": "next build",
     "start": "next start",
-    "deploy": "export AWS_PROFILE=default && yarn clear && serverless",
+    "config:prod": "cp config/production.yml serverless.yml",
+    "config:beta": "cp config/beta.yml serverless.yml",
+    "deploy:prod": "export AWS_PROFILE=default && yarn clear && yarn config:prod && serverless",
+    "deploy:beta": "export AWS_PROFILE=default && yarn clear && yarn config:beta && serverless",
     "clear": "rm -rf .next && rm -rf .serverless && rm -rf .serverless_nextjs",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"

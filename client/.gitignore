@@ -37,3 +37,4 @@ yarn-error.log*
 /.serverless
 /.serverless_nextjs
 serverless.yml
+config/

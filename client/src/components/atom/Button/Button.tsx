@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import { theme } from '../../../common/theme';
 
 export interface ButtonStyleProps {
-  color: 'primary' | 'secondary' | 'flat';
+  option?: 'primary' | 'disabled' | 'flat' | 'point';
 }
 
 export interface ButtonProps extends ButtonStyleProps {
@@ -12,22 +12,23 @@ export interface ButtonProps extends ButtonStyleProps {
   onClick?: () => void;
 }
 
-export const Button = ({ children, onClick, ...props }: ButtonProps): React.ReactElement => {
+export const Button = ({ children, option = 'primary', onClick, ...props }: ButtonProps): React.ReactElement => {
   return (
-    <ButtonStyle onClick={onClick} {...props}>
+    <ButtonStyle onClick={onClick} option={option} {...props}>
       {children}
     </ButtonStyle>
   );
 };
 
 const ButtonStyle = styled.button<ButtonStyleProps>`
-  padding: 10px 20px;
+  padding: 11px 25px 12px;
 
-  font-family: ${theme.fontFamily.primary};
-  font-weight: 600;
+  font-family: ${theme.fontFamily.inter};
+  font-size: 16px;
+  font-weight: 500;
 
-  background-color: ${theme.color.white};
-  box-shadow: 1px 1.5px 2.5px ${theme.color.grey};
+  background-color: #fff;
+  filter: drop-shadow(1px 2px 4px rgba(0, 0, 0, 0.25));
 
   outline: none;
   border: 0;
@@ -35,23 +36,32 @@ const ButtonStyle = styled.button<ButtonStyleProps>`
   cursor: pointer;
 
   ${(props) => {
-    const { color } = props;
-    switch (color) {
+    const { option } = props;
+    switch (option) {
       case 'primary':
       default:
         return `
-					color: ${theme.color.primary};
-					border: 1.5px solid ${theme.color.primary};
+					color: ${theme.color.white};
+					border: 1.5px solid ${theme.color.text};
+					background: ${theme.color.text}
 				`;
-      case 'secondary':
+      case 'disabled':
         return `
-					color: ${theme.color.grey};
+					color: ${theme.color.darkGrey};
+					background-color: ${theme.color.grey};
 					border: 1.5px solid ${theme.color.grey};
+					filter: none;
 				`;
       case 'flat':
         return `
+					color: ${theme.color.text};
+					filter: none;
+				`;
+      case 'point':
+        return `
 					color: ${theme.color.primary};
-					box-shadow: none;
+					border: 1.5px solid ${theme.color.primary};
+					filter: drop-shadow(1px 2px 4px rgba(188, 178, 255, 0.25));
 				`;
     }
   }}
