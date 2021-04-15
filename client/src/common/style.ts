@@ -36,3 +36,9 @@ export const LocationStyle = (location?: Location) => {
 
   return locations;
 };
+
+// 4px 간격
+// 0.25 rem = 4px(in PC), 3.5px(in Mobile)
+export const spacing = (number: number) => {
+  return `${number * 0.25}rem`;
+};

@@ -2,7 +2,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { theme } from '../../../common/theme';
-import { Location, LocationStyle } from '../../../common/atomic';
+import { Location, LocationStyle } from '../../../common';
 
 // http://jsfiddle.net/rsy19u6g/13/
 
@@ -27,6 +27,8 @@ export interface TextStyleProps {
   fontWeight?: FontWeight;
   fontFamily?: FontFamily;
   lineHeight?: string;
+  underline?: boolean;
+  pointer?: boolean;
 
   location?: Location;
 }
@@ -99,6 +101,7 @@ export const Text = {
 const TextStyleDefault = (tag: any) => styled(tag)<TextStyleProps>`
   margin: 0;
 
+  white-space: pre-line;
   color: ${theme.color.text};
   font-family: ${(props) => theme.fontFamily[props.fontFamily] || theme.fontFamily.spoqa};
 
@@ -133,13 +136,13 @@ const TextStyleDefault = (tag: any) => styled(tag)<TextStyleProps>`
       case 'p':
         return `
 					font-size: 1.125em;
-					font-weight: ${FontWeightEnum.Medium};
+					font-weight: ${FontWeightEnum.Regular};
 				`;
       case 'label':
         return `
-					display: inline-block;
+					display: block;
 					font-size: 0.875rem;
-					font-weight: ${FontWeightEnum.Medium};
+					font-weight: ${FontWeightEnum.Regular};
 					color: ${theme.color.darkGrey};
 				`;
       case 'span':
@@ -154,9 +157,12 @@ const TextStyleDefault = (tag: any) => styled(tag)<TextStyleProps>`
   }};
 
   // custom style
-  ${(props) => props.color && `color: ${props.color};`}
+  ${(props) => props.color && `color: ${theme.color[props.color]};`}
   ${(props) => props.fontSize && `font-size: ${props.fontSize};`}
+	${(props) => props.fontWeight && `font-weight: ${props.fontWeight};`}
   ${(props) => props.lineHeight && `line-height: ${props.lineHeight};`}
+	${(props) => props.underline && 'text-decoration: underline;'};
+  ${(props) => props.pointer && 'cursor: pointer;'};
 
   // location
   ${(props) => LocationStyle(props?.location)}

@@ -1,3 +1,5 @@
 export * from './Helmet';
 export * from './Layout';
-export * from './Profile';
+
+export * from './Modal';
+export * from './Input';

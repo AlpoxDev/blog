@@ -1,12 +1,19 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
-import { Text, Button } from 'components/atom';
-import { Profile } from 'components/atom/Image/Profile';
+import { Text, Button, Profile } from 'components/atom';
+import { Modal, Input } from 'components/molecule';
+import { spacing } from 'common';
 
 const isDEV = process.env.NODE_ENV === 'development';
 
 const Page = (): React.ReactElement | null => {
   if (!isDEV) return null;
+
+  const [modal, setModal] = React.useState<boolean>(false);
+
+  const onChangeModal = useCallback(() => {
+    setModal((modal) => !modal);
+  }, []);
 
   return (
     <>
@@ -38,6 +45,23 @@ const Page = (): React.ReactElement | null => {
       </Button>
 
       <Profile location={{ top: '1rem' }} />
+
+      <Button
+        location={{
+          top: spacing(4),
+          left: spacing(2),
+          right: spacing(2),
+        }}
+        onClick={onChangeModal}
+      >
+        Modal
+      </Button>
+
+      <Input label="hi" location={{ top: '1rem', left: '1rem', right: '1rem' }} />
+
+      <Modal view={modal} onClose={onChangeModal} title="기본 모달" info="기본 모달 정보">
+        <Text.Content>내용</Text.Content>
+      </Modal>
     </>
   );
 };

@@ -1,6 +1,7 @@
 {
   "name": "things-client",
   "version": "1.0.0",
+  "license": "MIT",
   "scripts": {
     "dev": "next",
     "prod": "yarn build && next start",
