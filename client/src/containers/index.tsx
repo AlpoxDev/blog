@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import Div100vh from 'react-div-100vh';
 
 import { Text, Profile, RightArrowIcon } from 'components/atom';
+import { spacing } from 'common';
 
 export const LandingContainer = (): React.ReactElement => {
   const [count, setCount] = useState<number>(5);
@@ -31,7 +32,9 @@ export const LandingContainer = (): React.ReactElement => {
     <LandingLayout>
       <Cover>
         <CoverTitleWrapper>
-          <Text.H1 fontFamily="inter">Hi, This is Alpox.</Text.H1>
+          <Text.H1 fontFamily="inter" lineHeight={'3rem'}>
+            Hi, This is Alpox.
+          </Text.H1>
 
           <CoverContentWrapper onClick={onClickBlog}>
             <RightArrow />

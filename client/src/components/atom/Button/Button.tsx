@@ -2,7 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 import { theme } from '../../../common/theme';
-import { Location, LocationStyle } from '../../../common/atomic';
+import { Location, LocationStyle } from '../../../common';
 
 export interface ButtonStyleProps {
   option?: 'primary' | 'disabled' | 'flat' | 'point';

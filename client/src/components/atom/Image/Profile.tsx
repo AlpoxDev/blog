@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { useMedia } from 'react-use';
 
 import { Image } from './Image';
-import { Location, LocationStyle } from '../../../common/atomic';
+import { Location, LocationStyle } from '../../../common';
 
 export interface ProfileStyleProps {
   width?: number;

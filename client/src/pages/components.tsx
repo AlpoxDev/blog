@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Text, Button } from 'components/atom';
-import { Profile } from 'components/atom/Image/Profile';
+import { Text, Button, Profile } from 'components/atom';
+import { Modal, Dialog } from 'components/molecule';
+import { spacing } from 'common';
 
 const isDEV = process.env.NODE_ENV === 'development';
 
@@ -38,6 +39,23 @@ const Page = (): React.ReactElement | null => {
       </Button>
 
       <Profile location={{ top: '1rem' }} />
+
+      <Button
+        location={{
+          top: spacing(4),
+          left: spacing(2),
+          right: spacing(2),
+        }}
+      >
+        Modal
+      </Button>
+      <Button
+        location={{
+          left: spacing(2),
+        }}
+      >
+        Dialog
+      </Button>
     </>
   );
 };
