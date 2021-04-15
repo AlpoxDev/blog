@@ -136,13 +136,13 @@ const TextStyleDefault = (tag: any) => styled(tag)<TextStyleProps>`
       case 'p':
         return `
 					font-size: 1.125em;
-					font-weight: ${FontWeightEnum.Medium};
+					font-weight: ${FontWeightEnum.Regular};
 				`;
       case 'label':
         return `
 					display: inline-block;
 					font-size: 0.875rem;
-					font-weight: ${FontWeightEnum.Medium};
+					font-weight: ${FontWeightEnum.Regular};
 					color: ${theme.color.darkGrey};
 				`;
       case 'span':
@@ -159,6 +159,7 @@ const TextStyleDefault = (tag: any) => styled(tag)<TextStyleProps>`
   // custom style
   ${(props) => props.color && `color: ${props.color};`}
   ${(props) => props.fontSize && `font-size: ${props.fontSize};`}
+	${(props) => props.fontWeight && `font-weight: ${props.fontWeight};`}
   ${(props) => props.lineHeight && `line-height: ${props.lineHeight};`}
 	${(props) => props.underline && 'text-decoration: underline;'};
   ${(props) => props.pointer && 'cursor: pointer;'};

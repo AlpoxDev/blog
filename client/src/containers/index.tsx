@@ -24,7 +24,7 @@ export const LandingContainer = (): React.ReactElement => {
   useEffect(() => {
     if (count > 0) return;
 
-    onClickBlog();
+    // onClickBlog();
   }, [count]);
 
   return (
@@ -41,8 +41,8 @@ export const LandingContainer = (): React.ReactElement => {
           </CoverContentWrapper>
         </CoverTitleWrapper>
 
-        <Text.Content fontFamily="inter" lineHeight={'1.8rem'} location={{ top: '4rem' }}>
-          <Text.Accent underline pointer onClick={onClickBlog}>
+        <Text.Content fontFamily="inter" lineHeight={'1.8rem'} location={{ top: '4rem' }} fontWeight={300}>
+          <Text.Accent underline pointer fontWeight={500} onClick={onClickBlog}>
             {' '}
             A Blog
           </Text.Accent>{' '}
