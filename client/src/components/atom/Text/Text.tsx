@@ -140,7 +140,7 @@ const TextStyleDefault = (tag: any) => styled(tag)<TextStyleProps>`
 				`;
       case 'label':
         return `
-					display: inline-block;
+					display: block;
 					font-size: 0.875rem;
 					font-weight: ${FontWeightEnum.Regular};
 					color: ${theme.color.darkGrey};
@@ -157,7 +157,7 @@ const TextStyleDefault = (tag: any) => styled(tag)<TextStyleProps>`
   }};
 
   // custom style
-  ${(props) => props.color && `color: ${props.color};`}
+  ${(props) => props.color && `color: ${theme.color[props.color]};`}
   ${(props) => props.fontSize && `font-size: ${props.fontSize};`}
 	${(props) => props.fontWeight && `font-weight: ${props.fontWeight};`}
   ${(props) => props.lineHeight && `line-height: ${props.lineHeight};`}

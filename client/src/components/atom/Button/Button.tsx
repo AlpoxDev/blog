@@ -37,7 +37,7 @@ const ButtonStyle = styled.button<ButtonStyleProps>`
   font-weight: 500;
 
   background-color: #fff;
-  filter: drop-shadow(1px 2px 4px rgba(0, 0, 0, 0.25));
+  filter: drop-shadow(1px 2px 4px rgba(0, 0, 0, 0.15));
 
   outline: none;
   border: 0;
