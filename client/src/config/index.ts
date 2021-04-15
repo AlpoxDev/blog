@@ -15,7 +15,8 @@ const devConfig = {
 const prodConfig = {
   ...defaultConfig,
   NODE_ENV: 'prod',
-  BASE_URL: 'https://blog-prod.alpox.dev',
+  // BASE_URL: 'https://blog-prod.alpox.dev',
+  BASE_URL: 'https://blog-stage.alpox.dev',
 };
 
 const config = dev ? devConfig : prodConfig;

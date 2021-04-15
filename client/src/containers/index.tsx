@@ -25,7 +25,7 @@ export const LandingContainer = (): React.ReactElement => {
   useEffect(() => {
     if (count > 0) return;
 
-    // onClickBlog();
+    onClickBlog();
   }, [count]);
 
   return (

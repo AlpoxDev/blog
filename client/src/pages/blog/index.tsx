@@ -1,27 +1,28 @@
 import React, { useEffect } from 'react';
 
 // store
-import { observer } from 'mobx-react-lite';
 import { useStore } from 'stores';
 
-// components
-import { PostList } from 'components/organism';
+// helmet
+import { Helmet } from 'components/molecule';
+import { customHelmet as helmet } from 'common/helmet';
+
+// container
+import { PostListContainer } from 'containers/post/list';
 
 const Page = (): React.ReactElement => {
   const { postStore } = useStore();
-  const { posts } = postStore;
 
   useEffect(() => {
     postStore.onGetPosts({});
   }, []);
 
-  console.log(postStore.toJSON());
-
   return (
     <>
-      <PostList posts={posts.data} />
+      <Helmet helmet={helmet({ title: '블로그 - AlpoxDev' })} />
+      <PostListContainer />
     </>
   );
 };
 
-export default observer(Page);
+export default Page;
