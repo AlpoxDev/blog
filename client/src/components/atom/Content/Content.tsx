@@ -11,7 +11,7 @@ export interface ContentStyleProps {
 export interface ContentProps extends ContentStyleProps {
   id?: string;
   className?: string;
-  children: React.ReactNode;
+  children?: React.ReactNode | React.ReactNodeArray;
   onClick?: () => void;
 }
 

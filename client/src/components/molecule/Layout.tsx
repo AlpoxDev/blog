@@ -9,6 +9,7 @@ import { useFetch } from 'hooks';
 
 // components
 import { Content } from 'components/atom';
+import { Drawer } from 'components/molecule';
 
 export interface LayoutProps {
   children: React.ReactNode;
@@ -18,7 +19,12 @@ export const Layout = observer(
   ({ children }: LayoutProps): React.ReactElement => {
     useFetch();
 
-    return <LayoutWrapper>{children}</LayoutWrapper>;
+    return (
+      <LayoutWrapper>
+        <Drawer />
+        {children}
+      </LayoutWrapper>
+    );
   },
 );
 

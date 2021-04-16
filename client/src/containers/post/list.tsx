@@ -7,10 +7,8 @@ import { useStore } from 'stores';
 
 // components
 import { Text, Content } from 'components/atom';
-import { PostList, SkeletonPostList, PostThumbnail } from 'components/organism';
-
-// common
-import { spacing } from 'common/style';
+import { PostList, SkeletonPostList } from 'components/organism';
+import { spacing } from 'common';
 
 const Container = (): React.ReactElement => {
   const { postStore } = useStore();
@@ -19,7 +17,9 @@ const Container = (): React.ReactElement => {
   return (
     <>
       <PostListTopWrapper option="flex">
-        <Text.H1 fontFamily="inter">Hi, This is Alpox.</Text.H1>
+        <Text.H1 fontFamily="inter" location={{ left: spacing(4), right: spacing(4) }}>
+          Hi, This is Alpox.
+        </Text.H1>
       </PostListTopWrapper>
       {posts.isReady && <PostList posts={[...posts.toJSON().data]} />}
       {!posts.isReady && <SkeletonPostList count={9} />}
@@ -34,10 +34,11 @@ const PostListTopWrapper = styled(Content)`
   margin: 0 auto;
 
   padding: 0 1.5rem;
-  padding-top: 4rem;
+  padding-top: 6rem;
 
   @media (max-width: 1024px) {
+    width: 100%;
     padding: 0 2rem;
-    padding-top: rem;
+    padding-top: 4rem;
   }
 `;

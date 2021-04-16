@@ -20,7 +20,12 @@ export const PostItem = ({ post }: PostItemProps): React.ReactElement => {
 
   return (
     <PostItemStyle location={{ bottom: spacing(8) }} onClick={onClickItem}>
-      <PostImage src={post.thumbnail || '/images/me-emoji.png'} width={'100%'} height={'12.5rem'} objectFit="cover" />
+      <PostImage
+        src={post.thumbnail || 'https://ak.picdn.net/shutterstock/videos/4495316/thumb/5.jpg'}
+        width={'100%'}
+        height={'12.5rem'}
+        objectFit="cover"
+      />
 
       <Text.H1 fontSize={'1.25rem'} location={{ top: spacing(4) }}>
         {post.title}

@@ -12,9 +12,9 @@ export const useFetch = () => {
   const { mainCategorys } = categoryStore;
   const { tags } = tagStore;
 
-  Object.entries(store.toJSON()).map(([key, value]: [string, any]) => {
-    console.log(key, value);
-  });
+  // Object.entries(store.toJSON()).map(([key, value]: [string, any]) => {
+  //   console.log(key, value);
+  // });
 
   useEffect(() => {
     if (mainCategorys.isReady) return;
