@@ -4,6 +4,8 @@ import { useStaticRendering } from 'mobx-react-lite';
 import makeInspectable from 'mobx-devtools-mst';
 
 import { PostStore } from './post';
+import { CategoryStore } from './category';
+import { TagStore } from './tag';
 
 const isServer = typeof window === 'undefined';
 let store: IStore | null = null;
@@ -12,6 +14,8 @@ useStaticRendering(isServer);
 
 export const Store = types.model({
   postStore: types.optional(PostStore, {}),
+  categoryStore: types.optional(CategoryStore, {}),
+  tagStore: types.optional(TagStore, {}),
 });
 
 export type IStore = Instance<typeof Store>;

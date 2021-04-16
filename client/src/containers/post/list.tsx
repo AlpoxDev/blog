@@ -7,7 +7,7 @@ import { useStore } from 'stores';
 
 // components
 import { Text, Content } from 'components/atom';
-import { PostList } from 'components/organism';
+import { PostList, SkeletonPostList, PostThumbnail } from 'components/organism';
 
 // common
 import { spacing } from 'common/style';
@@ -21,8 +21,8 @@ const Container = (): React.ReactElement => {
       <PostListTopWrapper option="flex">
         <Text.H1 fontFamily="inter">Hi, This is Alpox.</Text.H1>
       </PostListTopWrapper>
-
-      <PostList posts={[...posts.toJSON().data]} />
+      {posts.isReady && <PostList posts={[...posts.toJSON().data]} />}
+      {!posts.isReady && <SkeletonPostList count={9} />}
     </>
   );
 };

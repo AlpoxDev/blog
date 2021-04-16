@@ -9,14 +9,15 @@ export interface ContentStyleProps {
 }
 
 export interface ContentProps extends ContentStyleProps {
+  id?: string;
   className?: string;
   children: React.ReactNode;
   onClick?: () => void;
 }
 
-export const Content = ({ children, className, option, location, ...props }: ContentProps): React.ReactElement => {
+export const Content = ({ id, children, className, option, location, ...props }: ContentProps): React.ReactElement => {
   return (
-    <ContentStyle className={className} option={option} location={location} {...props}>
+    <ContentStyle id={id} className={className} option={option} location={location} {...props}>
       {children}
     </ContentStyle>
   );
