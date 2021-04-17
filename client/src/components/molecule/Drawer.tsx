@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 // store
 import { useStore } from 'stores';
 import { observer } from 'mobx-react-lite';
-import { IMainCategory, ISubCategory, ITag } from 'common/models';
+import { IMainCategory, ISubCategory, ITag, subCategory } from 'common/models';
 
 // components
 import { Text, Content } from 'components/atom';
@@ -28,7 +28,9 @@ export const Drawer = observer((): React.ReactElement | null => {
           padding: { top: spacing(8), left: spacing(4), right: spacing(4) },
         }}
       >
-        <Text.H3 fontFamily="inter">Category</Text.H3>
+        <Text.H5 fontFamily="inter" fontSize="0.875rem" fontWeight={600} color="darkGrey">
+          카테고리
+        </Text.H5>
         <CategoryList categorys={[...mainCategorys.data]} />
       </Content>
 
@@ -37,7 +39,9 @@ export const Drawer = observer((): React.ReactElement | null => {
           padding: { top: spacing(8), left: spacing(4), right: spacing(4) },
         }}
       >
-        <Text.H3 fontFamily="inter">Tag</Text.H3>
+        <Text.H5 fontFamily="inter" fontSize="0.875rem" fontWeight={600} color="darkGrey">
+          태그
+        </Text.H5>
         <TagList tags={[...tags.data]} />
       </Content>
     </DrawerStyle>
@@ -51,13 +55,22 @@ interface CategoryListProps {
 const CategoryList = ({ categorys }: CategoryListProps): React.ReactElement => {
   const categoryList = categorys.map((category: IMainCategory) => {
     return (
-      <Text.Content pointer location={{ bottom: spacing(4) }} key={category.id}>
-        {category.name}
-      </Text.Content>
+      <Content key={category.id} location={{ bottom: spacing(8) }}>
+        <Text.Content pointer fontSize="1rem">
+          {category.name}
+        </Text.Content>
+        <Content location={{ top: spacing(4), padding: { left: spacing(4) } }}>
+          {category?.subCategorys.map((subCategory: ISubCategory) => (
+            <Text.Content key={subCategory.id} fontSize="0.9rem" location={{ bottom: spacing(4) }}>
+              {subCategory.name}
+            </Text.Content>
+          ))}
+        </Content>
+      </Content>
     );
   });
 
-  return <Content location={{ left: spacing(2), top: spacing(8) }}>{categoryList}</Content>;
+  return <Content location={{ top: spacing(6) }}>{categoryList}</Content>;
 };
 
 interface TagListProps {
@@ -67,14 +80,14 @@ interface TagListProps {
 const TagList = ({ tags }: TagListProps) => {
   const tagList = tags.map((tag: ITag) => {
     return (
-      <Text.Content pointer key={tag.id} location={{ bottom: spacing(2), right: spacing(3) }}>
+      <Text.Content pointer key={tag.id} fontSize="1rem" location={{ bottom: spacing(2), right: spacing(3) }}>
         {tag.name}
       </Text.Content>
     );
   });
 
   return (
-    <Content option="flex-row" location={{ top: spacing(8), padding: { left: spacing(2) } }}>
+    <Content option="flex-row" location={{ top: spacing(6) }}>
       {tagList}
     </Content>
   );

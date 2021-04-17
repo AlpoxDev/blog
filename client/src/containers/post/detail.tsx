@@ -9,6 +9,7 @@ import { observer } from 'mobx-react-lite';
 // components
 import { Text, Content } from 'components/atom';
 import { spacing } from 'common';
+import { PostContent } from 'components/organism';
 
 const Container = (): React.ReactElement => {
   const router = useRouter();
@@ -29,9 +30,9 @@ const Container = (): React.ReactElement => {
   return (
     <PostDetailWrapper>
       <Text.H1>{post.data?.title}</Text.H1>
-      <Text.H3 location={{ top: spacing(4) }}>{post.data?.subtitle}</Text.H3>
+      <Text.H3 location={{ top: spacing(8) }}>{post.data?.subtitle}</Text.H3>
 
-      <Text.Content location={{ top: spacing(12) }}>{post.data?.content}</Text.Content>
+      <PostContent content={post.data?.content} />
     </PostDetailWrapper>
   );
 };

@@ -34,7 +34,7 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use((config) => {
-  console.log(config);
+  // console.log(config);
   return config;
 });
 
@@ -47,7 +47,7 @@ const onParseQuery = (query?: any): string => {
 const onParseError = (error: AxiosError): Response => {
   if (error.response) {
     const { status, data } = error.response;
-    console.log('onParseError', status, data);
+    // console.log('onParseError', status, data);
 
     return { status, data };
   } else if (error.request) {
@@ -85,10 +85,10 @@ export const onRequest = async (beforeProps: RequestProps): Promise<Response> =>
         break;
     }
 
-    console.log(`onRequest Response ${props.url}`, response.data);
+    // console.log(`onRequest Response ${props.url}`, response.data);
     return response;
   } catch (error) {
-    console.log(`onRequest Error ${props.url}`, error);
+    // console.log(`onRequest Error ${props.url}`, error);
     return onParseError(error);
   }
 };
