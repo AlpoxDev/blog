@@ -3,8 +3,8 @@ import styled from '@emotion/styled';
 import { Location, LocationStyle } from '../../../common';
 export interface ImageStyleProps {
   objectFit?: 'cover' | 'contain';
-  width?: number;
-  height?: number;
+  width?: number | string;
+  height?: number | string;
   location?: Location;
 }
 export interface ImageProps extends ImageStyleProps {
@@ -38,8 +38,9 @@ export const Image = ({
 };
 
 const ImageStyle = styled.img<ImageStyleProps>`
-  ${(props) => props.width && `width: ${props.width}px;`}
-  ${(props) => props.height && `height: ${props.height}px;`}
+  ${(props) => (props.width && typeof props.width === 'string' ? `width: ${props.width};` : `width: ${props.width}px;`)}
+  ${(props) =>
+    props.height && typeof props.height === 'string' ? `height : ${props.height};` : `height: ${props.height}px;`}
   ${(props) => props.objectFit && `object-fit: ${props.objectFit};`}
   ${(props) => props.location && LocationStyle(props.location)}
 `;

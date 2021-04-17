@@ -1,13 +1,31 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import Div100vh from 'react-div-100vh';
+
+// store
+import { observer } from 'mobx-react-lite';
+
+// hooks
+import { useFetch } from 'hooks';
+
+// components
+import { Content } from 'components/atom';
+import { Drawer } from 'components/molecule';
 
 export interface LayoutProps {
   children: React.ReactNode;
 }
 
-export const Layout = ({ children }: LayoutProps) => {
-  return <LayoutWrapper>{children}</LayoutWrapper>;
-};
+export const Layout = observer(
+  ({ children }: LayoutProps): React.ReactElement => {
+    useFetch();
 
-const LayoutWrapper = styled(Div100vh)``;
+    return (
+      <LayoutWrapper>
+        <Drawer />
+        {children}
+      </LayoutWrapper>
+    );
+  },
+);
+
+const LayoutWrapper = styled(Content)``;

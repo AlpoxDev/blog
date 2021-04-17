@@ -57,7 +57,7 @@ const Page = (): React.ReactElement | null => {
         Modal
       </Button>
 
-      <Input label="hi" location={{ top: '1rem', left: '1rem', right: '1rem' }} />
+      <Input value="" onChange={() => {}} label="hi" location={{ top: '1rem', left: '1rem', right: '1rem' }} />
 
       <Modal view={modal} onClose={onChangeModal} title="기본 모달" info="기본 모달 정보">
         <Text.Content>내용</Text.Content>
