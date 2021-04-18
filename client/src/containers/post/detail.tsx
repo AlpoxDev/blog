@@ -9,7 +9,9 @@ import { observer } from 'mobx-react-lite';
 // components
 import { Text, Content } from 'components/atom';
 import { spacing } from 'common';
-import { PostContent } from 'components/organism';
+import { PostContent, PostDisqus } from 'components/organism';
+
+const isDEV = process.env.NODE_ENV === 'development';
 
 const Container = (): React.ReactElement => {
   const router = useRouter();
@@ -33,6 +35,7 @@ const Container = (): React.ReactElement => {
       <Text.H3 location={{ top: spacing(8) }}>{post.data?.subtitle}</Text.H3>
 
       <PostContent content={post.data?.content} />
+      {post.isReady && <PostDisqus url={'https://alpox.dev'} postId={post.data?.id} postTitle={post.data?.title} />}
     </PostDetailWrapper>
   );
 };
