@@ -17,6 +17,7 @@ export const AuthValidator = {
   }),
   onCheckDuplicate: celebrate({
     query: {
+      nickname: Joi.string().required(),
       key: Joi.string().required().valid('email', 'nickname'),
       value: Joi.string().required(),
     },
