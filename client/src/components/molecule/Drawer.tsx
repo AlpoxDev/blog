@@ -19,8 +19,6 @@ export const Drawer = observer((): React.ReactElement | null => {
   const { mainCategorys } = categoryStore;
   const { tags } = tagStore;
 
-  if (router.pathname === '/' || router.pathname === '/me') return null;
-
   const onClickCategory = useCallback(() => {
     router.push('/blog/category');
   }, [router]);
@@ -28,6 +26,8 @@ export const Drawer = observer((): React.ReactElement | null => {
   const onClickTag = useCallback(() => {
     router.push('/blog/tag');
   }, [router]);
+
+	if (router.pathname === '/' || router.pathname === '/me') return null;
 
   return (
     <DrawerStyle>

@@ -11,6 +11,7 @@ export interface InputStyleProps {
 
 export interface InputProps extends InputStyleProps {
   className?: string;
+  type?: string;
   value?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
@@ -21,6 +22,7 @@ export interface InputProps extends InputStyleProps {
 
 export const Input = ({
   className,
+  type,
   value,
   onChange,
   placeholder,
@@ -39,8 +41,6 @@ export const Input = ({
     setIsFocused(false);
   }, []);
 
-  console.log(isFocused);
-
   return (
     <InputWrapper className={className} isFocused={isFocused} location={location} {...props}>
       {!isFocused && (
@@ -50,6 +50,7 @@ export const Input = ({
       )}
       <InputStyle
         isFocused={isFocused}
+        type={type}
         value={value}
         onChange={onChange}
         name={name}

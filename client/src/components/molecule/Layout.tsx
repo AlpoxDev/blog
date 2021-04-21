@@ -10,6 +10,7 @@ import { useFetch } from 'hooks';
 // components
 import { Content } from 'components/atom';
 import { Drawer } from 'components/molecule';
+import { Modals } from 'components/modal';
 
 export interface LayoutProps {
   children: React.ReactNode;
@@ -20,10 +21,13 @@ export const Layout = observer(
     useFetch();
 
     return (
-      <LayoutWrapper>
-        <Drawer />
-        {children}
-      </LayoutWrapper>
+      <>
+        <LayoutWrapper>
+          <Drawer />
+          {children}
+        </LayoutWrapper>
+        <Modals />
+      </>
     );
   },
 );
