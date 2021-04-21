@@ -13,11 +13,6 @@ export const Modals = observer(
     const { uiStore } = useStore();
     const { modals } = uiStore;
 
-    const registerModal = useModal('Login');
-    useEffect(() => {
-      registerModal.onCreateModal();
-    }, []);
-
     const modalList = modals.map((modal: IModal) => {
       const Component = modal.component;
       return <Component key={modal.key} {...modal.props} />;
