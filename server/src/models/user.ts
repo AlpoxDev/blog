@@ -88,22 +88,15 @@ export class User extends Model {
   @UpdatedAt
   public updatedAt: Date;
 
-  public get accessToken() {
-    return signToken({
-      id: this.id,
-      nickname: this.nickname,
-      profile: this.nickname,
-      permission: this.permission,
-    });
-  }
-
-  public getRefreshToken(accessToken: string) {
-    return signToken({
-      id: this.id,
-      accessToken,
-    });
-  }
-
   @HasMany(() => Post)
   public posts: Post[];
+
+  public accessToken(expiresIn = '12h') {
+    return signToken(
+      {
+        id: this.id,
+      },
+      expiresIn
+    );
+  }
 }

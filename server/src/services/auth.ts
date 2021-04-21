@@ -4,10 +4,24 @@ import { Service } from 'typedi';
 import { User, UserMethod } from '../models';
 import { AuthServiceProps } from './auth.interface';
 
-import { createPassword, comparePassword } from '../common';
+import { createPassword, comparePassword, verifyToken } from '../common';
 
 @Service()
 export class AuthService {
+  public async onMe({ cookie }: AuthServiceProps.onMe) {
+    try {
+      const { id } = verifyToken(cookie);
+      const user = await User.findByPk(id, {
+        attributes: ['id', 'email', 'nickname', 'permission', 'isMarketing'],
+      });
+      if (!user) throw { status: 404, message: '사용자를 찾을 수 없습니다.' };
+
+      return { user };
+    } catch (error) {
+      throw error;
+    }
+  }
+
   public async onLogin({ id, password }: AuthServiceProps.onLogin) {
     try {
       const user = await User.findOne({
@@ -23,14 +37,7 @@ export class AuthService {
       if (!isPassword)
         throw { status: 400, message: 'BadRequest: Password Incorrect' };
 
-      const accessToken = user.accessToken;
-      const refreshToken = user.getRefreshToken(accessToken);
-      return {
-        accessToken,
-        refreshToken,
-        id: user.id,
-        permission: user.permission,
-      };
+      return user.accessToken();
     } catch (error) {
       throw error;
     }
@@ -73,15 +80,29 @@ export class AuthService {
         isMarketing,
       });
 
-      const accessToken = user.accessToken;
-      const refreshToken = user.getRefreshToken(accessToken);
+      return user.accessToken();
+    } catch (error) {
+      throw error;
+    }
+  }
 
-      return {
-        accessToken,
-        refreshToken,
-        id: user.id,
-        permission: user.permission,
-      };
+  public async onCheckDuplicate({
+    key,
+    value,
+  }: AuthServiceProps.onCheckDuplicate) {
+    try {
+      const findUser = await User.findOne({
+        where: { [key]: value },
+      });
+      let label = '';
+      if (key === 'email') label = '이메일';
+      if (key === 'nickname') label = '닉네임';
+
+      if (findUser) {
+        throw { status: 400, message: `중복된 ${label}입니다` };
+      } else {
+        return { message: `사용가능한 ${label}입니다` };
+      }
     } catch (error) {
       throw error;
     }

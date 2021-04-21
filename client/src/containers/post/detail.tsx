@@ -31,7 +31,6 @@ const Container = (): React.ReactElement => {
     <PostDetailWrapper>
       <Text.H1>{post.data?.title}</Text.H1>
       <Text.H3 location={{ top: spacing(8) }}>{post.data?.subtitle}</Text.H3>
-
       <PostContent content={post.data?.content} />
     </PostDetailWrapper>
   );

@@ -13,6 +13,8 @@ export interface ButtonProps extends ButtonStyleProps {
   className?: string;
   children: React.ReactNode;
   onClick?: () => void;
+
+  disabled?: boolean;
 }
 
 export const Button = ({
@@ -20,8 +22,11 @@ export const Button = ({
   children,
   option = 'primary',
   onClick,
+  disabled,
   ...props
 }: ButtonProps): React.ReactElement => {
+  if (disabled) option = 'disabled';
+
   return (
     <ButtonStyle className={className} onClick={onClick} option={option} {...props}>
       {children}

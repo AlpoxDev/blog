@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 // store
 import { useStore } from 'stores';
@@ -12,10 +12,17 @@ import { PostListContainer } from 'containers/post/list';
 
 const Page = (): React.ReactElement => {
   const { postStore } = useStore();
+  const { posts } = postStore;
+
+  const onGetPosts = useCallback(() => {
+    if (posts.isReady) return;
+
+    postStore.onGetPosts({});
+  }, [posts.isReady]);
 
   useEffect(() => {
-    postStore.onGetPosts({});
-  }, []);
+    onGetPosts();
+  }, [onGetPosts]);
 
   return (
     <>

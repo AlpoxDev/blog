@@ -31,6 +31,7 @@ const instance = axios.create({
     'Access-Control-Allow-Origin': config.BASE_URL,
     'Content-Type': 'application/json',
   },
+  withCredentials: true,
 });
 
 instance.interceptors.request.use((config) => {
@@ -85,10 +86,10 @@ export const onRequest = async (beforeProps: RequestProps): Promise<Response> =>
         break;
     }
 
-    // console.log(`onRequest Response ${props.url}`, response.data);
+    console.log(`onRequest Response ${props.url}`, response.data);
     return response;
   } catch (error) {
-    // console.log(`onRequest Error ${props.url}`, error);
+    console.log(`onRequest Error ${props.url}`, error);
     return onParseError(error);
   }
 };

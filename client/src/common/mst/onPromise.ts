@@ -42,7 +42,6 @@ export function onPromise<T extends IAnyModelType>(self: Instance<T>) {
     const { status, data }: Response = yield promise();
     if (status >= 200 && status < 300) {
       const doneObject: any = {};
-
       if (data.count) doneObject.count = data.count;
 
       if (Array.isArray(dataKey)) {
@@ -52,7 +51,7 @@ export function onPromise<T extends IAnyModelType>(self: Instance<T>) {
         // key string
         self.onReady(data[dataKey]);
       } else {
-        self.onReady(data);
+        self.onReady();
       }
 
       yield onActions('ready')(actions, data);

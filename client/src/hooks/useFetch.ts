@@ -1,20 +1,17 @@
 import { useEffect } from 'react';
 import { useStore } from 'stores';
 
-export const useFetch = () => {
+export const useFetch = (): void => {
   // root
   const store: any = useStore();
 
   // stores
-  const { categoryStore, tagStore } = store;
+  const { categoryStore, tagStore, authStore } = store;
 
   // store items
+  const { me } = authStore;
   const { mainCategorys } = categoryStore;
   const { tags } = tagStore;
-
-  // Object.entries(store.toJSON()).map(([key, value]: [string, any]) => {
-  //   console.log(key, value);
-  // });
 
   useEffect(() => {
     if (mainCategorys.isReady) return;
@@ -25,4 +22,9 @@ export const useFetch = () => {
     if (tags.isReady) return;
     tagStore.onGetTags({});
   }, [tags.isReady]);
+
+  useEffect(() => {
+    if (me.isReady) return;
+    authStore.onMe();
+  }, [me.isReady]);
 };

@@ -6,8 +6,8 @@ import {
   Response,
   NextFunction,
 } from 'express';
+import cookieParser from 'cookie-parser';
 import { SyncOptions } from 'sequelize';
-import * as http from 'http';
 
 // middleware
 import cors from 'cors';
@@ -19,15 +19,21 @@ import routers from '../api/routers';
 
 // config
 import sequelize from '../models';
+import config from '../config';
 
 export default (app: Application) => {
-  app.use(cors());
+  app.use(
+    cors({
+      credentials: true,
+      origin: [
+        'http://localhost:3000',
+        'https://test.alpox.dev',
+        'https://alpox.dev',
+      ],
+    })
+  );
 
-  app.use((req: Request, res: Response, next: NextFunction) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    next();
-  });
-
+  app.use(cookieParser(config.COOKIE_SECRET));
   app.use(json({ limit: '500mb' }));
   app.use(urlencoded({ limit: '500mb', extended: true }));
 
@@ -35,14 +41,10 @@ export default (app: Application) => {
 
   app.use(errors());
   app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-    const error = {
-      status: err.status || 500,
-      message: err.message || 'Server Internal Error',
-    };
+    const status = err.status || 500;
+    const message = err.message || 'Server Internal Error';
 
-    console.log(`Error!`, err);
-
-    res.status(error.status).json(error);
+    res.status(status).json({ message });
   });
 
   app.get('/sync', (req: Request, res: Response) => {

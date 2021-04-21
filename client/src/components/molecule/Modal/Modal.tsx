@@ -6,12 +6,17 @@ import { Text, Button, Content } from '../../atom';
 import { spacing } from '../../../common';
 
 export interface ModalProps {
+  className?: string;
   children: React.ReactNode;
   view?: boolean;
   onConfirm?: () => void;
   onClose: () => void;
   title?: string;
   info?: string;
+  buttonOptions?: {
+    pending?: boolean;
+    disabled?: boolean;
+  };
 }
 
 const modalStyle: Styles = {
@@ -29,10 +34,19 @@ const modalStyle: Styles = {
   },
 };
 
-export const Modal = ({ children, view, onConfirm, onClose, title, info }: ModalProps): React.ReactElement | null => {
+export const Modal = ({
+  className,
+  children,
+  view,
+  onConfirm,
+  onClose,
+  title,
+  info,
+  buttonOptions,
+}: ModalProps): React.ReactElement | null => {
   if (!view) return null;
   return (
-    <ModalWrapper style={modalStyle} isOpen={view} onRequestClose={onClose}>
+    <ModalWrapper className={className} style={modalStyle} isOpen={view} onRequestClose={onClose} ariaHideApp={false}>
       {title && (
         <ModalTopWrapper>
           <Text.H4>{title}</Text.H4>
@@ -45,7 +59,9 @@ export const Modal = ({ children, view, onConfirm, onClose, title, info }: Modal
         <Button option="flat" location={{ right: spacing(2) }} onClick={onClose}>
           취소
         </Button>
-        <Button onClick={onConfirm}>확인</Button>
+        <Button disabled={buttonOptions?.disabled} onClick={onConfirm}>
+          확인{buttonOptions?.pending && '중...'}
+        </Button>
       </ModalBottomWrapper>
     </ModalWrapper>
   );

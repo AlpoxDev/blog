@@ -1,35 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Head from 'next/head';
 import styled from '@emotion/styled';
 
 // markdown
-import ReactMarkdown from 'react-markdown';
-import { Components } from 'react-markdown/src/ast-to-react';
-
-// highlight
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { dark } from 'react-syntax-highlighter/dist/cjs';
-
-// components
-import { Content } from 'components/atom';
-
-const components: Components = {
-  code({ node, className, ...props }: any) {
-    const match = /language-(\w+)/.exec(className || '');
-    return match ? (
-      <SyntaxHighlighter language={match[1]} PreTag="div" style={dark} {...props} />
-    ) : (
-      <code className={className} {...props} />
-    );
-  },
-};
+import marked from 'marked';
+import highlight from 'highlight.js';
+import 'highlight.js/styles/vs2015.css';
 
 export interface PostContentProps {
   content?: string;
 }
 
+marked.setOptions({
+  langPrefix: 'hljs language-',
+  highlight: function (code) {
+    return highlight.highlightAuto(code, ['jsx', 'code']).value;
+  },
+});
+
 export const PostContent = ({ content }: PostContentProps): React.ReactElement | null => {
   if (!content) return null;
+
+  const __html = React.useMemo(() => marked(content), [content]);
 
   return (
     <>
@@ -41,23 +33,21 @@ export const PostContent = ({ content }: PostContentProps): React.ReactElement |
           crossOrigin="anonymous"
         />
       </Head>
-      <PostContentStyle>
-        <ReactMarkdown className="markdown-body" components={components}>
-          {content}
-        </ReactMarkdown>
-      </PostContentStyle>
+      <PostContentStyle className="markdown-body" dangerouslySetInnerHTML={{ __html }} />
     </>
   );
 };
 
-const PostContentStyle = styled(Content)`
+const PostContentStyle = styled.div`
   margin-top: 4rem;
   padding-bottom: 4rem;
 
-  .markdown-body {
-    ol,
-    ul {
-      list-style-type: disc;
-    }
+  ol,
+  ul {
+    list-style-type: disc;
+  }
+
+  pre {
+    background: #1e1e1e;
   }
 `;
