@@ -1,7 +1,7 @@
 import { Dialect } from 'sequelize';
+import { CookieOptions } from 'express';
 
 const env = process.env;
-const NODE_ENV = env.NODE_ENV || 'dev';
 
 export const sequelizeConfig = {
   host: env.DB_HOST,
@@ -12,35 +12,23 @@ export const sequelizeConfig = {
   password: env.DB_PASSWORD || '',
 };
 
-export const devConfig = {
-  NODE_ENV,
+const config = {
+  NODE_ENV: env.NODE_ENV || 'dev',
   sequelize: sequelizeConfig,
 
-  MAX_LIMIT: 10,
+  JWT_SECRET: env.JWT_SECRET || '',
+  COOKIE_SECRET: env.COOKIE_SECRET || '',
+
+  COOKIE_NAME: 'ALPOX',
+  COOKIE_OPTIONS: {
+    maxAge: 12 * 60 * 60 * 1000,
+    httpOnly: true,
+    signed: true,
+    secure: env.NODE_ENV !== 'dev',
+  } as CookieOptions,
+
   SALT_ROUNDS: parseInt(env.SALT_ROUNDS as string, 10) || 1,
-  JWT_SECRET: env.JWT_SECRET || 'jwt-dev-secret',
-};
-
-export const stageConfig = {
-  NODE_ENV,
-  sequelize: sequelizeConfig,
-
   MAX_LIMIT: 20,
-  SALT_ROUNDS: parseInt(env.SALT_ROUNDS as string, 10) || 1,
-  JWT_SECRET: env.JWT_SECRET || 'jwt-stage-secret',
 };
-
-export const prodConfig = {
-  NODE_ENV,
-  sequelize: sequelizeConfig,
-
-  MAX_LIMIT: 20,
-  SALT_ROUNDS: parseInt(env.SALT_ROUNDS as string, 10) || 1,
-  JWT_SECRET: env.JWT_SECRET || 'jwt-prod-secret',
-};
-
-let config = devConfig;
-if (NODE_ENV === 'stage') config = stageConfig;
-if (NODE_ENV === 'prod') config = prodConfig;
 
 export default config;

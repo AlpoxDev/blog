@@ -15,4 +15,10 @@ export const AuthValidator = {
       isMarketing: Joi.boolean().default(true),
     },
   }),
+  onCheckDuplicate: celebrate({
+    query: {
+      key: Joi.string().required().valid('email', 'nickname'),
+      value: Joi.string().required(),
+    },
+  }),
 };

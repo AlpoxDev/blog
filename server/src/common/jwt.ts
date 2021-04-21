@@ -1,17 +1,11 @@
 import jsonwebtoken from 'jsonwebtoken';
-
-import { UserPermission } from '../models';
 import config from '../config';
 
 export type JWTPayload = {
   id: string;
-  nickname?: string;
-  profile?: string | null;
-  permission?: UserPermission;
-  accessToken?: string;
 };
 
-export const signToken = (payload: JWTPayload, expiresIn = '1d') => {
+export const signToken = (payload: JWTPayload, expiresIn = '12h') => {
   try {
     return jsonwebtoken.sign(payload, config.JWT_SECRET, { expiresIn });
   } catch (error) {
@@ -19,9 +13,7 @@ export const signToken = (payload: JWTPayload, expiresIn = '1d') => {
   }
 };
 
-export const verifyToken = (token: string | null): JWTPayload | null => {
-  if (!token) return null;
-
+export const verifyToken = (token: string): JWTPayload => {
   try {
     return jsonwebtoken.verify(token, config.JWT_SECRET) as JWTPayload;
   } catch (error) {

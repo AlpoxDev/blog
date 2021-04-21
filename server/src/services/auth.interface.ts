@@ -1,4 +1,7 @@
 export namespace AuthServiceProps {
+  export interface onMe {
+    cookie: string;
+  }
   export interface onLogin {
     id: string;
     password: string;
@@ -9,5 +12,10 @@ export namespace AuthServiceProps {
     password: string;
     nickname: string;
     isMarketing: boolean;
+  }
+
+  export interface onCheckDuplicate {
+    key: 'email' | 'nickname';
+    value: string;
   }
 }
