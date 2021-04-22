@@ -18,6 +18,7 @@ export interface InputProps extends InputStyleProps {
   name?: string;
 
   label?: string;
+  error?: string | null;
 }
 
 export const Input = ({
@@ -29,6 +30,7 @@ export const Input = ({
   name,
   label,
   location,
+  error,
   ...props
 }: InputProps): React.ReactElement => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
@@ -42,28 +44,33 @@ export const Input = ({
   }, []);
 
   return (
-    <InputWrapper className={className} isFocused={isFocused} location={location} {...props}>
-      {!isFocused && (
-        <InputTopWrapper option="flex">
-          <Text.Label color="primary">{label}</Text.Label>
-        </InputTopWrapper>
-      )}
-      <InputStyle
-        isFocused={isFocused}
-        type={type}
-        value={value}
-        onChange={onChange}
-        name={name}
-        placeholder={placeholder}
-        onFocus={onFocus}
-        onBlur={onBlur}
-      />
-    </InputWrapper>
+    <>
+      <InputWrapper className={className} isFocused={isFocused} location={location} {...props}>
+        {!isFocused && (
+          <InputTopWrapper option="flex">
+            <Text.Label color="primary">{label}</Text.Label>
+          </InputTopWrapper>
+        )}
+        <InputStyle
+          isFocused={isFocused}
+          type={type}
+          value={value}
+          onChange={onChange}
+          name={name}
+          placeholder={placeholder}
+          onFocus={onFocus}
+          onBlur={onBlur}
+        />
+        {error && <ErrorMessage>{error}</ErrorMessage>}
+      </InputWrapper>
+    </>
   );
 };
 
 const InputWrapper = styled(Content)<InputStyleProps>`
   display: block;
+  position: relative;
+
   height: 4rem;
   padding: 0 0.875rem;
 
@@ -104,4 +111,14 @@ const InputStyle = styled.input<InputStyleProps>`
 		font-size: 1rem;
 		height: 4rem;
 	`}
+`;
+
+const ErrorMessage = styled(Text.Label)`
+  color: red;
+
+  position: absolute;
+  top: 0.625rem;
+  right: 0.875rem;
+
+  font-size: 0.8rem;
 `;

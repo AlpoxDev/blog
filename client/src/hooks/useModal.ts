@@ -13,7 +13,7 @@ export const useModal = (name: string, props?: any): UseModal => {
 
   let component = null;
   Object.entries(modals).forEach(([key, value]: [string, React.ReactNode]) => {
-    if (key === name) component = value;
+    if (key.toLowerCase() === name.toLowerCase()) component = value;
   });
 
   const onDeleteModal = useCallback(() => {

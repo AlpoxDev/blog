@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
+import validator from 'validator';
 
 // store
 import { observer } from 'mobx-react-lite';
@@ -6,7 +7,7 @@ import { useStore } from 'stores';
 
 // component
 import { Modal, Input } from 'components/molecule';
-import { spacing } from 'common';
+import { spacing, isEmail, isPassword, isNickname } from 'common';
 
 // hooks
 import { useModal } from 'hooks';
@@ -16,8 +17,25 @@ export interface RegisterModalProps {
   onClose: () => void;
 }
 
-const isValid = (email: string, password: string, nickname: string): boolean => {
+type ValidMessage = {
+  email?: string;
+  password?: string;
+  nickname?: string;
+};
+
+const isValidMessage = (email: string, password: string, nickname: string): ValidMessage => {
+  const message: ValidMessage = { email: undefined, password: undefined, nickname: undefined };
+
+  if (email.length > 0 && !isEmail(email)) message.email = '* 이메일 형식이 올바르지 않습니다.';
+  if (password.length > 0 && !isPassword(password)) message.password = '* 비밀번호 형식이 올바르지 않습니다.';
+  if (nickname.length > 0 && !isNickname(nickname)) message.nickname = '* 닉네임 형식이 올바르지 않습니다.';
+
+  return message;
+};
+
+const isValid = (errorMessage: ValidMessage, email: string, password: string, nickname: string): boolean => {
   if (email.length === 0 || password.length === 0 || nickname.length === 0) return false;
+  if (errorMessage.email || errorMessage.password || errorMessage.nickname) return false;
   return true;
 };
 
@@ -30,7 +48,12 @@ export const Register = observer(
       password: '',
       nickname: '',
     });
-    const isValidInput = useMemo(() => isValid(input.email, input.password, input.nickname), [input]);
+
+    const errorMessage = useMemo(() => isValidMessage(input.email, input.password, input.nickname), [input]);
+    const valid = useMemo(() => isValid(errorMessage, input.email, input.password, input.nickname), [
+      errorMessage,
+      input,
+    ]);
 
     const [check, setCheck] = useState({
       email: null,
@@ -46,7 +69,7 @@ export const Register = observer(
     const { register, me, emailDuplicate, nicknameDuplicate } = authStore;
 
     const onCheckDuplicate = useCallback(() => {
-      if (!isValidInput) return;
+      if (!valid) return;
       if (emailDuplicate.isPending || nicknameDuplicate.isPending) return;
 
       const emailQuery = { key: 'email', value: input.email };
@@ -54,31 +77,26 @@ export const Register = observer(
 
       const nicknameQuery = { key: 'nickname', value: input.nickname };
       authStore.onCheckNicknameDuplicate({ query: nicknameQuery });
-    }, [input, isValidInput, emailDuplicate.isPending, nicknameDuplicate.isPending]);
+    }, [input, valid, emailDuplicate.isPending, nicknameDuplicate.isPending]);
 
     const onRegister = useCallback(() => {
-      if (!isValidInput) return;
       if (!check.email || !check.nickname) {
         onCheckDuplicate();
         return;
       }
+      if (!valid) return;
 
       const params = { ...input };
       authStore.onRegister({ params });
-    }, [authStore, input, isValidInput, onCheckDuplicate]);
-
-    console.log('Check', check);
+    }, [authStore, input, valid, onCheckDuplicate]);
 
     useEffect(() => {
       if (!register.isReady) return;
       authStore.onMe();
-    }, [register.isReady]);
-
-    useEffect(() => {
-      if (!me.isReady) return;
-      alertModal.onCreateModal({ content: '회원가입 완료!', time: 4 });
+      register.onDefault();
+      alertModal.onCreateModal({ title: '알림', content: '회원가입 완료!', time: 1.5 });
       onClose();
-    }, [me.isReady]);
+    }, [register.isReady]);
 
     useEffect(() => {
       if (emailDuplicate.isReady) setCheck((state) => ({ ...state, email: true }));
@@ -91,15 +109,24 @@ export const Register = observer(
     }, [nicknameDuplicate.status]);
 
     useEffect(() => {
-      if (!check.email && typeof check.email === 'boolean')
+      if (!check.email && typeof check.email === 'boolean') {
         alertModal.onCreateModal({ content: '중복된 이메일입니다.' });
-      if (!check.nickname && typeof check.nickname === 'boolean')
+        emailDuplicate.onDefault();
+      }
+      if (!check.nickname && typeof check.nickname === 'boolean') {
         alertModal.onCreateModal({ content: '중복된 닉네임입니다.' });
+        nicknameDuplicate.onDefault();
+      }
     }, [check]);
 
     useEffect(() => {
       if (emailDuplicate.isReady && nicknameDuplicate.isReady) onRegister();
     }, [emailDuplicate.isReady, nicknameDuplicate.isReady]);
+
+    // 로그인 되어있으면 캔슬
+    useEffect(() => {
+      if (me.isReady) onClose();
+    }, [me.isReady]);
 
     return (
       <Modal
@@ -107,7 +134,7 @@ export const Register = observer(
         title="회원가입"
         buttonOptions={{
           pending: register.isPending || me.isPending,
-          disabled: !isValidInput,
+          disabled: !valid,
         }}
         onClose={onClose}
         onConfirm={onRegister}
@@ -115,6 +142,7 @@ export const Register = observer(
         <Input
           label="이메일"
           name="email"
+          error={errorMessage.email}
           value={input.email}
           placeholder="이메일을 입력해주세요"
           onChange={onChange}
@@ -123,9 +151,11 @@ export const Register = observer(
 
         <Input
           label="패스워드"
+          type="password"
           name="password"
+          error={errorMessage.password}
           value={input.password}
-          placeholder="패스워드를 입력해주세요"
+          placeholder="패스워드를 입력해주세요 (소문자 숫자 필수, 8~20자리)"
           onChange={onChange}
           location={{ bottom: spacing(3) }}
         />
@@ -133,6 +163,7 @@ export const Register = observer(
         <Input
           label="닉네임"
           name="nickname"
+          error={errorMessage.nickname}
           value={input.nickname}
           placeholder="닉네임을 입력해주세요"
           onChange={onChange}

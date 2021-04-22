@@ -4,16 +4,16 @@ import { Text, Button, Profile } from 'components/atom';
 import { Modal, Input } from 'components/molecule';
 import { spacing } from 'common';
 
+import { useModal } from 'hooks';
+
 const isDEV = process.env.NODE_ENV === 'development';
 
 const Page = (): React.ReactElement | null => {
   if (!isDEV) return null;
 
-  const [modal, setModal] = React.useState<boolean>(false);
-
-  const onChangeModal = useCallback(() => {
-    setModal((modal) => !modal);
-  }, []);
+  const loginModal = useModal('login');
+  const registerModal = useModal('register');
+  const logoutModal = useModal('logout');
 
   return (
     <>
@@ -46,22 +46,17 @@ const Page = (): React.ReactElement | null => {
 
       <Profile location={{ top: '1rem' }} />
 
-      <Button
-        location={{
-          top: spacing(4),
-          left: spacing(2),
-          right: spacing(2),
-        }}
-        onClick={onChangeModal}
-      >
-        Modal
-      </Button>
-
       <Input value="" onChange={() => {}} label="hi" location={{ top: '1rem', left: '1rem', right: '1rem' }} />
 
-      <Modal view={modal} onClose={onChangeModal} title="기본 모달" info="기본 모달 정보">
-        <Text.Content>내용</Text.Content>
-      </Modal>
+      <Button location={{ right: spacing(6) }} onClick={loginModal.onCreateModal}>
+        로그인
+      </Button>
+
+      <Button location={{ right: spacing(6) }} onClick={registerModal.onCreateModal}>
+        회원가입
+      </Button>
+
+      <Button onClick={logoutModal.onCreateModal}>로그아웃</Button>
     </>
   );
 };

@@ -15,7 +15,7 @@ export interface LogoutModalProps {
 export const Logout = observer(
   ({ view, onClose }: LogoutModalProps): React.ReactElement => {
     const { authStore } = useStore();
-    const { logout } = authStore;
+    const { logout, me } = authStore;
 
     const onLogout = useCallback(() => {
       authStore.onLogout();
@@ -23,8 +23,14 @@ export const Logout = observer(
 
     useEffect(() => {
       if (!logout.isReady) return;
+      logout.onDefault();
+      me.onDefault();
       onClose();
     }, [logout.isReady]);
+
+    useEffect(() => {
+      if (!me.isReady) onClose();
+    }, [me.isReady]);
 
     return (
       <Modal view={view} title="로그아웃" onClose={onClose} onConfirm={onLogout}>

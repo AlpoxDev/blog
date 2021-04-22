@@ -44,7 +44,8 @@
     "react-kakao-login": "2.1.0",
     "react-modal": "3.12.1",
     "react-use": "17.2.3",
-    "react-window": "1.8.6"
+    "react-window": "1.8.6",
+    "validator": "13.6.0"
   },
   "devDependencies": {
     "@babel/core": "7.12.10",
@@ -62,6 +63,7 @@
     "@types/react": "17.0.0",
     "@types/react-dom": "17.0.0",
     "@types/react-modal": "3.12.0",
+    "@types/validator": "13.1.3",
     "@typescript-eslint/eslint-plugin": "4.14.1",
     "@typescript-eslint/parser": "4.14.1",
     "babel-loader": "^8.2.2",

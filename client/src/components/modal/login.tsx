@@ -9,7 +9,9 @@ import { useStore } from 'stores';
 import { Modal, Input } from 'components/molecule';
 
 // common
-import { spacing } from 'common/style';
+import { spacing, isEmail, isPassword, isNickname } from 'common';
+
+// hooks
 import { useModal } from 'hooks';
 
 export interface LoginModalProps {
@@ -17,8 +19,23 @@ export interface LoginModalProps {
   onClose: () => void;
 }
 
-const isValid = (id: string, password: string) => {
+type ValidMessage = {
+  id?: string;
+  password?: string;
+};
+
+const isValidMessage = (id: string, password: string): ValidMessage => {
+  const message: ValidMessage = { id: undefined, password: undefined };
+
+  if (id.length > 0 && !isEmail(id) && !isNickname(id)) message.id = '* 아이디 형식이 올바르지 않습니다.';
+  if (password.length > 0 && !isPassword(password)) message.password = '* 비밀번호 형식이 올바르지 않습니다.';
+
+  return message;
+};
+
+const isValid = (errorMessage: ValidMessage, id: string, password: string) => {
   if (id.length === 0 || password.length === 0) return false;
+  if (errorMessage.id || errorMessage.password) return false;
   return true;
 };
 
@@ -29,7 +46,8 @@ export const Login = observer(({ view, onClose }: LoginModalProps): React.ReactE
     id: '',
     password: '',
   });
-  const isValidInput = useMemo(() => isValid(input.id, input.password), [input]);
+  const errorMessage = useMemo(() => isValidMessage(input.id, input.password), [input]);
+  const valid = useMemo(() => isValid(errorMessage, input.id, input.password), [errorMessage, input]);
 
   const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -40,25 +58,24 @@ export const Login = observer(({ view, onClose }: LoginModalProps): React.ReactE
   const { login, me } = authStore;
 
   const onLogin = useCallback(() => {
-    if (!isValidInput) return;
+    if (!valid) return;
 
     const params = { ...input };
     authStore.onLogin({ params });
-  }, [input, isValidInput]);
+  }, [input, valid]);
 
   // login 성공
   useEffect(() => {
     if (!login.isReady) return;
     authStore.onMe();
+    login.onDefault();
+    alertModal.onCreateModal({ title: '알림', content: '로그인 성공!', time: 1.5 });
+    onClose();
   }, [login.isReady]);
 
-  // 정보 불러오기 성공
+  // 로그인 되어있으면 캔슬
   useEffect(() => {
-    if (!me.isReady) return;
-
-    login.onDefault();
-    alertModal.onCreateModal({ content: '로그인 성공!', time: 3 });
-    onClose();
+    if (me.isReady) onClose();
   }, [me.isReady]);
 
   if (!view) return null;
@@ -69,7 +86,7 @@ export const Login = observer(({ view, onClose }: LoginModalProps): React.ReactE
       title="로그인"
       buttonOptions={{
         pending: login.isPending || me.isPending,
-        disabled: !isValidInput,
+        disabled: !valid,
       }}
       onConfirm={onLogin}
       onClose={onClose}
@@ -78,11 +95,21 @@ export const Login = observer(({ view, onClose }: LoginModalProps): React.ReactE
         isFocused
         label="아이디"
         name="id"
+        placeholder="닉네임 또는 이메일을 입력해주세요"
+        error={errorMessage.id}
         value={input.id}
         onChange={onChange}
         location={{ bottom: spacing(6) }}
       />
-      <Input label="비밀번호" type="password" name="password" value={input.password} onChange={onChange} />
+      <Input
+        label="비밀번호"
+        type="password"
+        name="password"
+        placeholder="비밀번호를 입력해주세요"
+        error={errorMessage.password}
+        value={input.password}
+        onChange={onChange}
+      />
     </Modal>
   );
 });
