@@ -13,7 +13,7 @@ import {
 import { Op } from 'sequelize';
 import { User, Post } from './_models';
 
-@Table({ tableName: 'series', timestamps: true })
+@Table({ tableName: 'series', timestamps: false })
 export class Series extends Model {
   @Column({
     type: DataType.UUID,
@@ -39,12 +39,6 @@ export class Series extends Model {
 
   @HasMany(() => Post)
   public posts: Post[];
-
-  @CreatedAt
-  public createdAt: Date;
-
-  @UpdatedAt
-  public updatedAt: Date;
 
   static async find(series?: string): Promise<Series | null> {
     if (!series) return null;

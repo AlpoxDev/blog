@@ -44,6 +44,13 @@ export class Post extends Model {
   @BelongsTo(() => SubCategory)
   public category: SubCategory;
 
+  @BelongsToMany(() => Tag, () => PostTag)
+  public tags: Tag[];
+
+  @AllowNull(true)
+  @Column(DataType.STRING(255))
+  public thumbnail: string;
+
   @AllowNull(false)
   @Column(DataType.STRING(255))
   public title: string;
@@ -55,9 +62,6 @@ export class Post extends Model {
   @AllowNull(false)
   @Column(DataType.TEXT)
   public content: string;
-
-  @BelongsToMany(() => Tag, () => PostTag)
-  public tags: Tag[];
 
   @Default(0)
   @Column(DataType.INTEGER)

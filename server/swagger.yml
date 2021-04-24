@@ -1,0 +1,847 @@
+openapi: 3.0.0
+info:
+  title: THINGS API
+  description: things server api [thing-s.kr](https://thing-s.kr)
+  version: 0.2.0
+servers:
+  - url: https://blog-stage.alpox.dev
+  - url: https://blog-prod.alpox.dev
+  - url: http://localhost:8080
+tags:
+  - name: 인증
+  - name: 포스팅
+  - name: 사용자
+  - name: 카테고리
+  - name: 태그
+  - name: 시리즈
+  - name: 댓글
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: ALPOX
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        profile:
+          type: string
+        email:
+          type: string
+        nickname:
+          type: string
+        password:
+          type: string
+        permission:
+          type: string
+          enum:
+            - READ
+            - EDIT
+            - ADMIN
+        method:
+          type: string
+          enum:
+            - DEFAULT
+            - KAKAO
+            - GITHUB
+        createdAt:
+          type: string
+          format: date
+        updatedAt:
+          type: string
+          format: date
+        deletedAt:
+          type: string
+          format: date
+    UserPermissionRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        permission:
+          type: string
+          enum:
+            - READ
+            - EDIT
+            - ADMIN
+        userId:
+          type: string
+          format: uuid
+        user:
+          $ref: '#/components/schemas/User'
+        createdAt:
+          type: string
+          format: date
+    Post:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        thumbnail:
+          type: string
+          format: url
+        title:
+          type: string
+        subtitle:
+          type: string
+        content:
+          type: string
+        sequence:
+          type: number
+        createdAt:
+          type: string
+          format: date
+        updatedAt:
+          type: string
+          format: date
+        deletedAt:
+          type: string
+          format: date
+        userId:
+          type: string
+          format: uuid
+        user:
+          $ref: '#/components/schemas/User'
+        seriesId:
+          type: string
+          format: uuid
+        series:
+          $ref: '#/components/schemas/Series'
+        categoryId:
+          type: string
+          format: uuid
+        category:
+          $ref: '#/components/schemas/SubCategory'
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+    MainCategory:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        sequence:
+          type: number
+        userId:
+          type: string
+          format: uuid
+        user:
+          $ref: '#/components/schemas/User'
+        subCategorys:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubCategory'
+    SubCategory:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        sequence:
+          type: number
+        mainCategoryId:
+          type: string
+          format: uuid
+        mainCategory:
+          $ref: '#/components/schemas/MainCategory'
+        posts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Post'
+    Tag:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        userId:
+          type: string
+          format: uuid
+        user:
+          $ref: '#/components/schemas/User'
+        posts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Post'
+    PostTag:
+      type: object
+      properties:
+        postId:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+    Series:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        content:
+          type: string
+        userId:
+          type: string
+          format: uuid
+        user:
+          $ref: '#/components/schemas/User'
+        posts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Post'
+
+paths:
+  '/auth/me':
+    post:
+      summary: 로그인 정보 가져오기
+      tags:
+        - 인증
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/User'
+  '/auth/login':
+    post:
+      summary: 로그인
+      tags:
+        - 인증
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+  '/auth/register':
+    post:
+      summary: 회원가입
+      tags:
+        - 인증
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                nickname:
+                  type: string
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+  '/auth/logout':
+    post:
+      summary: 로그아웃
+      tags:
+        - 인증
+      responses:
+        '204':
+          description: success
+  '/auth/duplicate':
+    get:
+      summary: 이메일, 닉네임 중복체크
+      tags:
+        - 인증
+      parameters:
+        - name: key
+          in: query
+          required: true
+          schema:
+            type: string
+            enum:
+              - email
+              - nickname
+        - name: value
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    default: 사용가능한 이메일입니다
+        '400':
+          description: failure
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    default: 중복된 이메일입니다
+
+  '/posts':
+    get:
+      summary: 포스팅 목록 불러오기
+      tags:
+        - 포스팅
+      parameters:
+        - name: nickname
+          in: query
+          description: 닉네임
+          required: true
+          schema:
+            type: string
+            default: AlpoxDev
+        - name: page
+          in: query
+          description: 페이지
+          schema:
+            type: number
+            default: 1
+        - name: limit
+          in: query
+          description: 페이지 당 아이템 개수
+          schema:
+            type: number
+            default: 20
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                    default: 0
+                  posts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Post'
+    post:
+      summary: 포스팅 생성하기
+      tags:
+        - 포스팅
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                subtitle:
+                  type: string
+                content:
+                  type: string
+                category:
+                  type: string
+                  format: uuid
+                  default: '7d4d15f3-71dd-429c-81e4-b7cc14a9c556'
+                series:
+                  type: string
+                  format: uuid
+                  default: ''
+                tags:
+                  type: array
+                  default: []
+                  items:
+                    type: string
+      responses:
+        '201':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  post:
+                    $ref: '#/components/schemas/Post'
+  '/posts/{id}':
+    get:
+      summary: 포스팅 자세히 가져오기
+      tags:
+        - 포스팅
+      parameters:
+        - name: id
+          in: path
+          description: postId pk
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  post:
+                    $ref: '#/components/schemas/Post'
+    delete:
+      summary: 포스팅 삭제하기
+      tags:
+        - 포스팅
+      parameters:
+        - name: id
+          in: path
+          description: postId pk
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: success
+    put:
+      summary: 포스팅 생성하기
+      tags:
+        - 포스팅
+      parameters:
+        - name: id
+          in: path
+          description: postId pk
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                subtitle:
+                  type: string
+                content:
+                  type: string
+                category:
+                  type: string
+                  format: uuid
+                  default: '7d4d15f3-71dd-429c-81e4-b7cc14a9c556'
+                series:
+                  type: string
+                  format: uuid
+                  default: ''
+                tags:
+                  type: array
+                  default: []
+                  items:
+                    type: string
+      responses:
+        '201':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  post:
+                    $ref: '#/components/schemas/Post'
+  '/users':
+    get:
+      summary: 사용자 목록 불러오기 (only admin)
+      tags:
+        - 사용자
+      parameters:
+        - name: page
+          in: query
+          description: 페이지
+          schema:
+            type: number
+            default: 1
+        - name: limit
+          in: query
+          description: 페이지 당 아이템 개수
+          schema:
+            type: number
+            default: 20
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  users:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+  '/users/{id}':
+    get:
+      summary: 사용자 자세히 가져오기 (only admin)
+      tags:
+        - 사용자
+      parameters:
+        - name: id
+          in: path
+          description: userId pk
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                    default: 0
+                  user:
+                    $ref: '#/components/schemas/User'
+    delete:
+      summary: 사용자 탈퇴하기
+      tags:
+        - 사용자
+      parameters:
+        - name: id
+          in: path
+          description: userId pk
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: success
+    patch:
+      summary: 사용자 정보 수정하기
+      tags:
+        - 사용자
+      parameters:
+        - name: id
+          in: path
+          description: userId pk
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nickname:
+                  type: string
+                profile:
+                  type: string
+      responses:
+        '204':
+          description: success
+
+  '/categorys':
+    get:
+      summary: 메인 카테고리(서브 포함) 불러오기
+      tags:
+        - 카테고리
+      parameters:
+        - name: nickname
+          in: query
+          description: 닉네임
+          required: true
+          schema:
+            type: string
+            default: AlpoxDev
+        - name: page
+          in: query
+          description: 페이지
+          schema:
+            type: number
+            default: 1
+        - name: limit
+          in: query
+          description: 페이지 당 아이템 개수
+          schema:
+            type: number
+            default: 20
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                    default: 0
+                  categorys:
+                    $ref: '#/components/schemas/SubCategory'
+    put:
+      summary: 메인 카테고리, 서브 카테고리 추가 및 수정
+      tags:
+        - 카테고리
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                categorys:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      name:
+                        type: string
+                      subCategorys:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              format: uuid
+                            name:
+                              type: string
+      responses:
+        '204':
+          description: success
+  '/categorys/{id}':
+    get:
+      summary: 서브 카테고리(포스팅 포함) 불러오기
+      tags:
+        - 카테고리
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: nickname
+          in: query
+          description: 닉네임
+          required: true
+          schema:
+            type: string
+            default: AlpoxDev
+        - name: page
+          in: query
+          description: 페이지
+          schema:
+            type: number
+            default: 1
+        - name: limit
+          in: query
+          description: 페이지 당 아이템 개수
+          schema:
+            type: number
+            default: 20
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                    default: 0
+                  categorys:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SubCategory'
+  '/tags':
+    get:
+      summary: 태그 목록 불러오기
+      tags:
+        - 태그
+      parameters:
+        - name: nickname
+          in: query
+          description: 닉네임
+          required: true
+          schema:
+            type: string
+            default: AlpoxDev
+        - name: page
+          in: query
+          description: 페이지
+          schema:
+            type: number
+            default: 1
+        - name: limit
+          in: query
+          description: 페이지 당 아이템 개수
+          schema:
+            type: number
+            default: 20
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                    default: 0
+                  tags:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Tag'
+    post:
+      summary: 태그 생성하기
+      tags:
+        - 태그
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        '201':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tag:
+                    $ref: '#/components/schemas/Tag'
+  '/tags/{id}':
+    get:
+      summary: 태그 자세히 불러오길
+      tags:
+        - 태그
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: nickname
+          in: query
+          description: 닉네임
+          required: true
+          schema:
+            type: string
+            default: AlpoxDev
+        - name: page
+          in: query
+          description: 페이지
+          schema:
+            type: number
+            default: 1
+        - name: limit
+          in: query
+          description: 페이지 당 아이템 개수
+          schema:
+            type: number
+            default: 20
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tag:
+                    $ref: '#/components/schemas/Tag'
+    delete:
+      summary: 태그 삭제하기
+      tags:
+        - 태그
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: success
+    put:
+      summary: 태그 수정하기
+      tags:
+        - 태그
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        '204':
+          description: success
