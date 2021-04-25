@@ -20,12 +20,14 @@ import {
 
 // hooks
 import { useModal } from 'hooks';
+import { ISubCategory } from 'common/models';
 
 export type PostInput = {
   title: string;
   subtitle: string;
   content: string;
   tags: string[];
+  category: string;
 };
 
 const initPostInput: PostInput = {
@@ -33,6 +35,7 @@ const initPostInput: PostInput = {
   subtitle: '',
   content: '',
   tags: [],
+  category: '',
 };
 
 const Container = (): React.ReactElement => {
@@ -41,6 +44,7 @@ const Container = (): React.ReactElement => {
   const [input, setInput] = useState<PostInput>(initPostInput);
   const [tagInput, setTagInput] = useState<string>('');
   const [initContent, setInitContent] = useState<string>('');
+  const [subCategory, setSubCategory] = useState<ISubCategory>(null);
 
   const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -69,6 +73,11 @@ const Container = (): React.ReactElement => {
     },
     [tagInput],
   );
+
+  const onChangeCategory = useCallback((subCategory: ISubCategory) => {
+    setSubCategory(subCategory);
+    setInput((state: PostInput) => ({ ...state, category: subCategory.id }));
+  }, []);
 
   const { authStore, postStore } = useStore();
   const { createPost } = postStore;
@@ -106,7 +115,13 @@ const Container = (): React.ReactElement => {
     <>
       <Helmet helmet={customHelmet({ title: input.title ? `${input.title} - AlpoxDev` : '글 작성 - AlpoxDev' })} />
 
-      <PostNewHeader input={input} onChange={onChange} onChangeTag={onChangeTag} />
+      <PostNewHeader
+        input={input}
+        onChange={onChange}
+        onChangeTag={onChangeTag}
+        subCategory={subCategory}
+        onChangeCategory={onChangeCategory}
+      />
 
       <PostNewContent>
         <MarkdownEditor name="content" initValue={initContent} value={input.content} onChange={onChangeContent} />

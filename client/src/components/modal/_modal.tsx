@@ -8,3 +8,5 @@ export * from './connectSeries';
 export * from './connectCategory';
 
 export * from './newCategory';
+
+export * from './getCategory';

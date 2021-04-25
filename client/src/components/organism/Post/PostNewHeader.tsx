@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 
 // store
@@ -6,23 +6,35 @@ import { observer } from 'mobx-react-lite';
 import { useStore } from 'stores';
 
 // components
-import { Content } from 'components/atom';
+import { Content, Button } from 'components/atom';
 
 // common
 import { Location, LocationStyle, spacing } from 'common/style';
 
+// hooks
+import { useModal } from 'hooks';
+
 // types
 import { PostInput } from 'containers/post/new';
+import { ISubCategory } from 'common/models';
 
 export interface PostNewHeaderProps {
   input: PostInput;
   onChange(e: React.ChangeEvent): void;
   onChangeTag(option: 'add' | 'remove', tagName?: string): void;
+  subCategory: ISubCategory | null;
+  onChangeCategory(subCategory: ISubCategory): void;
 }
 
 export const PostNewHeader = observer(
-  ({ input, onChange, onChangeTag }: PostNewHeaderProps): React.ReactElement => {
+  ({ input, onChange, onChangeTag, subCategory, onChangeCategory }: PostNewHeaderProps): React.ReactElement => {
     const { uiStore } = useStore();
+
+    const getCategoryModal = useModal('getCategory', { onChangeCategory });
+
+    useEffect(() => {
+      if (subCategory) getCategoryModal.onDeleteModal();
+    }, [subCategory]);
 
     return (
       <PostNewHeaderStyle>
@@ -40,6 +52,8 @@ export const PostNewHeader = observer(
           onChange={onChange}
           location={{ bottom: spacing(2.5) }}
         />
+
+        <Button onClick={getCategoryModal.onCreateModal}>{subCategory ? subCategory.name : '카테고리 선택'}</Button>
       </PostNewHeaderStyle>
     );
   },
