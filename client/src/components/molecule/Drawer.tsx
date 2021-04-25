@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
 
@@ -11,8 +11,12 @@ import { IMainCategory, ISubCategory, ITag } from 'common/models';
 import { Text, Content } from 'components/atom';
 import { spacing } from 'common';
 
+const BAN_LIST: string[] = ['/', '/me', '/blog/new', '/components'];
+
 export const Drawer = observer((): React.ReactElement | null => {
   const router = useRouter();
+  const { pathname } = router;
+  const isBan = useMemo(() => BAN_LIST.includes(pathname), [pathname]);
 
   const { categoryStore, tagStore } = useStore();
 
@@ -27,7 +31,7 @@ export const Drawer = observer((): React.ReactElement | null => {
     router.push('/blog/tag');
   }, [router]);
 
-	if (router.pathname === '/' || router.pathname === '/me') return null;
+  if (isBan) return null;
 
   return (
     <DrawerStyle>

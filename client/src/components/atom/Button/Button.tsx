@@ -35,7 +35,7 @@ export const Button = ({
 };
 
 const ButtonStyle = styled.button<ButtonStyleProps>`
-  padding: 11px 25px 12px;
+  padding: 0.625rem 1.5rem 0.63rem;
 
   font-family: ${theme.fontFamily.inter};
   font-size: 16px;

@@ -31,6 +31,7 @@
     "highlight.js": "10.7.2",
     "html-to-image": "1.6.0",
     "hypermd": "0.3.11",
+    "immer": "9.0.1",
     "jwt-decode": "3.1.2",
     "lodash": "4.17.21",
     "marked": "2.0.3",

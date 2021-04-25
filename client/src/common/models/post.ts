@@ -21,3 +21,4 @@ export type IPost = Instance<typeof Post>;
 
 export const posts = createAsyncStores('posts', Post);
 export const post = createAsyncStore('post', Post);
+export const createPost = createAsyncStore('createPost', Post);

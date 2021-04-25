@@ -69,12 +69,24 @@ export const Modal = ({
 
 const ModalWrapper = styled(ReactModal)`
   width: 50%;
-  height: auto;
-  background-color: white;
+  max-width: 580px;
+  min-width: 480px;
 
+  height: auto;
+  max-height: 95vh;
   padding: 1.5rem 2rem;
+
+  overflow-y: scroll;
+
+  background-color: white;
   border-radius: 4px;
   outline: none;
+
+  @media (max-width: 500px) {
+    width: 100%;
+    min-width: 360px;
+    margin: 0 1.25rem;
+  }
 `;
 
 const ModalTopWrapper = styled(Content)`

@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import queryString from 'query-string';
-import config from 'config';
+import config from '../config';
 
 export enum RequestMethod {
   GET = 'GET',
@@ -48,12 +48,9 @@ const onParseQuery = (query?: any): string => {
 const onParseError = (error: AxiosError): Response => {
   if (error.response) {
     const { status, data } = error.response;
-    // console.log('onParseError', status, data);
 
     return { status, data };
   } else if (error.request) {
-    console.log(error.request);
-
     return { status: 400, data: 'Client Error! Check Client Code' };
   } else {
     return { status: 500, data: error.message };
@@ -86,10 +83,10 @@ export const onRequest = async (beforeProps: RequestProps): Promise<Response> =>
         break;
     }
 
-    console.log(`onRequest Response ${props.url}`, response.data);
+    console.log(`onRequest Response ${method} ${props.url}`, response.data);
     return response;
   } catch (error) {
-    console.log(`onRequest Error ${props.url}`, error);
+    console.log(`onRequest Error ${props.url}`, error?.response);
     return onParseError(error);
   }
 };

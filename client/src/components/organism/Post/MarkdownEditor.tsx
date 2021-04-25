@@ -24,11 +24,16 @@ const MarkdownEditor = ({ name, initValue, value, onChange }: MarkdownEditorProp
 
   const onChangeCodeMirror = useCallback(
     (codemirror: Editor) => {
-      console.log(codemirror.getValue());
       onChange(codemirror.getValue());
     },
     [onChange],
   );
+
+  const onClickWrapper = useCallback(() => {
+    if (!textAreaRef.current) return;
+
+    codeMirrorRef.current.focus();
+  }, []);
 
   useEffect(() => {
     if (!textAreaRef.current) return;
@@ -50,7 +55,7 @@ const MarkdownEditor = ({ name, initValue, value, onChange }: MarkdownEditorProp
   }, [initValue, onChangeCodeMirror]);
 
   return (
-    <MarkdownEditorStyle id="post-editor">
+    <MarkdownEditorStyle id="post-editor" onClick={onClickWrapper}>
       <textarea ref={textAreaRef} style={{ border: 'none', display: 'none' }} />
     </MarkdownEditorStyle>
   );

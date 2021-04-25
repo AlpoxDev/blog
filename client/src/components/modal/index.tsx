@@ -1,7 +1,4 @@
-import React, { useEffect } from 'react';
-
-// hooks
-import { useModal } from 'hooks';
+import React from 'react';
 
 // store
 import { observer } from 'mobx-react-lite';

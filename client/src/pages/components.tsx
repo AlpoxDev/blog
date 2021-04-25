@@ -1,12 +1,18 @@
 import React, { useCallback } from 'react';
 
 import { Text, Button, Profile } from 'components/atom';
-import { Modal, Input } from 'components/molecule';
+import { Input, Dropdown } from 'components/molecule';
 import { spacing } from 'common';
 
 import { useModal } from 'hooks';
 
 const isDEV = process.env.NODE_ENV === 'development';
+
+const dropdownItems = [
+  { id: '1', content: 'item1' },
+  { id: '2', content: 'item2' },
+  { id: '3', content: 'item3' },
+];
 
 const Page = (): React.ReactElement | null => {
   if (!isDEV) return null;
@@ -14,6 +20,13 @@ const Page = (): React.ReactElement | null => {
   const loginModal = useModal('login');
   const registerModal = useModal('register');
   const logoutModal = useModal('logout');
+
+  const newCategoryModal = useModal('newCategory');
+  const newSeriesModal = useModal('newSeries');
+
+  const onSelectItem = useCallback((item: any) => {
+    console.log('onSelectItem', item);
+  }, []);
 
   return (
     <>
@@ -56,7 +69,21 @@ const Page = (): React.ReactElement | null => {
         회원가입
       </Button>
 
-      <Button onClick={logoutModal.onCreateModal}>로그아웃</Button>
+      <Button onClick={logoutModal.onCreateModal} location={{ right: spacing(6) }}>
+        로그아웃
+      </Button>
+
+      <Button location={{ right: spacing(6) }} onClick={newCategoryModal.onCreateModal}>
+        카테고리 생성
+      </Button>
+
+      <Button location={{}} onClick={newSeriesModal.onCreateModal}>
+        시리즈 생성
+      </Button>
+
+      <Dropdown items={dropdownItems} itemKey="content" onSelectItem={onSelectItem}>
+        <Button>☰</Button>
+      </Dropdown>
     </>
   );
 };

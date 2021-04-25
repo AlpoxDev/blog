@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useRouter } from 'next/router';
 
 // store
 import { observer } from 'mobx-react-lite';
