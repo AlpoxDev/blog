@@ -8,13 +8,13 @@ import { useStore } from 'stores';
 import { Content } from 'components/atom';
 import { Modal, Input } from 'components/molecule';
 
-export interface NewSeriesProps {
+export interface ConnectSeriesProps {
   view: boolean;
   onClose(): void;
   postId?: string;
 }
 
-export const NewSeries = ({ view, onClose }: NewSeriesProps): React.ReactElement => {
+export const ConnectSeries = ({ view, onClose }: ConnectSeriesProps): React.ReactElement => {
   const [input, setInput] = useState<string>('');
 
   const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {

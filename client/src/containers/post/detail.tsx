@@ -8,7 +8,7 @@ import { observer } from 'mobx-react-lite';
 
 // components
 import { Text, Button, Content } from 'components/atom';
-import { PostContent } from 'components/organism';
+import { PostContent, PostMenu } from 'components/organism';
 
 import { spacing } from 'common';
 
@@ -52,9 +52,7 @@ const Container = (): React.ReactElement => {
           <Text.H3 location={{ top: spacing(8) }}>{post.data?.subtitle}</Text.H3>
         </Content>
 
-        <Content>
-          <Button onClick={onDeletePost}>삭제</Button>
-        </Content>
+        <PostMenu post={post.data} onDeletePost={onDeletePost} />
       </PostDetailHeader>
 
       <PostContent content={post.data?.content} />
@@ -75,6 +73,8 @@ const PostDetailWrapper = styled(Content)`
   }
 `;
 
-const PostDetailHeader = styled(Content)``;
+const PostDetailHeader = styled(Content)`
+  position: relative;
+`;
 
 const PostDetailHeaderSection = styled(Content)``;

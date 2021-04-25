@@ -24,7 +24,7 @@ export const Dropdown = ({
   const wrapperRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
 
-  const [isOpen, setIsOpen] = useState<boolean>(true);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const onChange = useCallback(() => {
     setIsOpen((state: boolean) => !state);
@@ -42,22 +42,24 @@ export const Dropdown = ({
   );
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     window.addEventListener('mousedown', onClickOutside);
     return () => {
       window.removeEventListener('mousedown', onClickOutside);
     };
-  }, [onClickOutside]);
+  }, [typeof window, onClickOutside]);
 
   const dropdownList = items.map((item: string | any, index: number) => {
     if (typeof item === 'string')
       return (
-        <DropdownItem key={`dropdown-${index}`} pointer onClick={() => onSelectItem(item)}>
+        <DropdownItem key={`dropdown-${index}`} pointer onClick={() => onSelectItem(item)} fontFamily="inter">
           {item}
         </DropdownItem>
       );
     else if (itemKey && item[itemKey])
       return (
-        <DropdownItem key={`dropdown-${index}`} pointer onClick={() => onSelectItem(item)}>
+        <DropdownItem key={`dropdown-${index}`} pointer onClick={() => onSelectItem(item)} fontFamily="inter">
           {item[itemKey]}
         </DropdownItem>
       );
@@ -69,7 +71,7 @@ export const Dropdown = ({
     <DropdownContainer className={className} ref={wrapperRef} onClick={onChange}>
       {children}
       {isOpen && (
-        <DropdownWrapper ref={listRef} position={position}>
+        <DropdownWrapper id="dropdown-wrapper" ref={listRef} position={position}>
           {dropdownList}
         </DropdownWrapper>
       )}
@@ -80,7 +82,6 @@ export const Dropdown = ({
 const DropdownContainer = styled.div`
   display: inline-block;
   position: relative;
-  margin: 2rem;
 `;
 
 const DropdownWrapper = styled.div<{ position: 'left' | 'right' }>`
@@ -90,10 +91,9 @@ const DropdownWrapper = styled.div<{ position: 'left' | 'right' }>`
 
   min-width: 8rem;
   max-width: 31.25rem;
-  padding: 0.4rem 0;
-  z-index: 2;
+  z-index: 3;
 
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  background-color: #fff;
   box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14);
   border-radius: 8px;
 `;
@@ -102,7 +102,14 @@ const DropdownItem = styled(Text.Content)`
   padding: 0.75rem 1rem;
   border-bottom: 1px solid rgba(0, 0, 0, 0.14);
 
+  &:first-child {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+
   &:last-child {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
     border-bottom: 0;
   }
 

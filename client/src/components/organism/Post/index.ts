@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 export * from './PostList';
 export * from './PostItem';
 export * from './PostThumbnail';
+export * from './PostMenu';
 export * from './PostContent';
 
 export * from './SkeletonList';
