@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useCallback } from 'react';
 import styled from '@emotion/styled';
 
 // store
@@ -13,6 +13,16 @@ import { spacing } from 'common';
 const Container = (): React.ReactElement => {
   const { postStore } = useStore();
   const { posts } = postStore;
+
+  const onGetPosts = useCallback(() => {
+    if (posts.isReady) return;
+
+    postStore.onGetPosts({});
+  }, [posts.isReady]);
+
+  useEffect(() => {
+    onGetPosts();
+  }, [onGetPosts]);
 
   return (
     <>

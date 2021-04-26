@@ -1,7 +1,8 @@
-import React, { useCallback, useEffect } from 'react';
+import React from 'react';
 
 // store
-import { useStore } from 'stores';
+import { observer } from 'mobx-react-lite';
+import { initializeStore } from 'stores';
 
 // helmet
 import { Helmet } from 'components/molecule';
@@ -11,25 +12,21 @@ import { customHelmet as helmet } from 'common/helmet';
 import { PostListContainer } from 'containers/post/list';
 
 const Page = (): React.ReactElement => {
-  const { postStore } = useStore();
-  const { posts } = postStore;
-
-  const onGetPosts = useCallback(() => {
-    if (posts.isReady) return;
-
-    postStore.onGetPosts({});
-  }, [posts.isReady]);
-
-  useEffect(() => {
-    onGetPosts();
-  }, [onGetPosts]);
-
   return (
     <>
-      <Helmet helmet={helmet({ title: '블로그 - AlpoxDev' })} />
+      <Helmet helmet={helmet({ title: '블로그 | AlpoxDev' })} />
       <PostListContainer />
     </>
   );
 };
 
-export default Page;
+export default observer(Page);
+
+Page.getInitialProps = async (ctx) => {
+  const store = initializeStore(false);
+
+  const { postStore } = store;
+  await postStore.onGetPosts({});
+
+  return { store };
+};
