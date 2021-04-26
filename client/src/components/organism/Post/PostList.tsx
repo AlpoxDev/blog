@@ -22,8 +22,6 @@ const PostListStyle = styled(Content)`
   margin-top: 4rem;
   padding: 0 1.5rem;
 
-  justify-content: space-between;
-
   @media (max-width: 1024px) {
     padding: 0 2rem;
   }
