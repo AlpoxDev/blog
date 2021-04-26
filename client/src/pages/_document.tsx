@@ -1,6 +1,7 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 
-const TRACKING_ID = 'G-';
+const isPROD = process.env.NODE_ENV === 'production';
+const TRACKING_ID = 'G-QSSPQND4ZB';
 
 class MyDocument extends Document {
   render(): JSX.Element {
@@ -17,24 +18,25 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
             rel="stylesheet"
           />
-
-          {/* NAVER Webmaster tool */}
           <link href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css" rel="stylesheet" type="text/css" />
 
-          {/* Google Analytics  */}
-          <script async src={'https://www.googletagmanager.com/gtag/js?id=' + TRACKING_ID} />
-          <meta name="naver-site-verification" content="02629eb57d12b033663bc54feeac38f33247361b" />
+          {/* NAVER Webmaster tool */}
+          {isPROD && <meta name="naver-site-verification" content="02629eb57d12b033663bc54feeac38f33247361b" />}
 
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `
+          {/* Google Analytics  */}
+          {isPROD && <script async src={'https://www.googletagmanager.com/gtag/js?id=' + TRACKING_ID} />}
+          {isPROD && (
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
 								window.dataLayer = window.dataLayer || [];
 								function gtag(){dataLayer.push(arguments);}
 								gtag('js', new Date());
 								gtag('config', '[Tracking ID]');
 							`,
-            }}
-          />
+              }}
+            />
+          )}
         </Head>
         <body>
           <Main />
