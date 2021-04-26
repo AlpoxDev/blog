@@ -7,7 +7,7 @@ import { DefaultHelmet, Layout } from 'components/molecule';
 import { theme } from 'common/theme';
 import { getSnapshot } from 'mobx-state-tree';
 
-export default function App({ Component, initState }): React.ReactElement {
+export default function App({ Component, pageProps, initState }): React.ReactElement {
   useStore(initState);
 
   return (
@@ -20,7 +20,7 @@ export default function App({ Component, initState }): React.ReactElement {
 
       <ThemeProvider theme={theme}>
         <Layout>
-          <Component />
+          <Component {...pageProps} />
         </Layout>
       </ThemeProvider>
     </>
@@ -30,21 +30,26 @@ export default function App({ Component, initState }): React.ReactElement {
 App.getInitialProps = async (props) => {
   const { Component, ctx } = props;
 
+  // 서버인가요?
   const isServer = typeof window === 'undefined';
-  let store = initializeStore(isServer, null);
 
+  // store (첫 store), pageProps(페이지에 전달할 props)
+  let store = initializeStore(isServer, null);
   let pageProps: any = {};
 
+  // 서버사이드고 getInitialProps가 있을경우 context를 넘겨준다.
   if (Component.getInitialProps && isServer) {
     pageProps = await Component.getInitialProps(ctx);
     if (pageProps.store) store = pageProps.store;
   }
 
+  // 서버일 경우 처음 데이터 -> category, tagStore를 가져온다
   if (isServer) {
     const { categoryStore, tagStore } = store;
     await Promise.all([categoryStore.onGetCategorys({}), tagStore.onGetTags({})]);
   }
 
+  // snapShot과 pageProps를 전달한다
   return {
     initState: getSnapshot(store),
     pageProps,
