@@ -17,10 +17,13 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
             rel="stylesheet"
           />
+
+          {/* NAVER Webmaster tool */}
           <link href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css" rel="stylesheet" type="text/css" />
 
           {/* Google Analytics  */}
           <script async src={'https://www.googletagmanager.com/gtag/js?id=' + TRACKING_ID} />
+          <meta name="naver-site-verification" content="02629eb57d12b033663bc54feeac38f33247361b" />
 
           <script
             dangerouslySetInnerHTML={{
