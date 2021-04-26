@@ -8,13 +8,13 @@ import { Helmet } from 'components/molecule';
 import { customHelmet as helmet } from 'common/helmet';
 
 // container
-import { CategoryListContainer } from 'containers/category/list';
+import { TagListContainer } from 'containers/tag/list';
 
 const Page = (): React.ReactElement => {
   return (
     <>
-      <Helmet helmet={helmet({ title: '카테고리 목록 - AlpoxDev' })} />
-      <CategoryListContainer />
+      <Helmet helmet={helmet({ title: '태그 목록 | AlpoxDev' })} />
+      <TagListContainer />
     </>
   );
 };

@@ -14,31 +14,34 @@ const Container = (): React.ReactElement => {
   const router = useRouter();
   const id = router.query?.id;
 
-  const { categoryStore } = useStore();
-  const { subCategory } = categoryStore;
+  const { tagStore } = useStore();
+  const { tag } = tagStore;
 
-  const onGetCategory = useCallback(() => {
-    categoryStore.onGetCategory({ id });
+  const onGetTag = useCallback(() => {
+    tagStore.onGetTag({ id });
   }, [id]);
 
   useEffect(() => {
-    onGetCategory();
-  }, [onGetCategory]);
+    onGetTag();
+  }, [onGetTag]);
+
+  console.log(tag.toJSON());
 
   return (
     <>
-      <CategoryDetailWrapper>
-        <Text.H1>{subCategory.data?.name} 카테고리</Text.H1>
-      </CategoryDetailWrapper>
-      {subCategory.isReady && <PostList posts={[...subCategory.data?.posts]} />}
-      {!subCategory.isReady && <SkeletonPostList count={9} />}
+      <TagDetailWrapper>
+        <Text.H1>{tag.data?.name} 태그</Text.H1>
+      </TagDetailWrapper>
+
+      {tag.isReady && <PostList posts={[...tag.data?.posts]} />}
+      {!tag.isReady && <SkeletonPostList count={9} />}
     </>
   );
 };
 
-export const CategoryDetailContainer = observer(Container);
+export const TagDetailContainer = observer(Container);
 
-const CategoryDetailWrapper = styled(Content)`
+const TagDetailWrapper = styled(Content)`
   max-width: 43.75rem;
   margin: 0 auto;
   padding: 3rem 1.25rem 0;

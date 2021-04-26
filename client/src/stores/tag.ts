@@ -14,7 +14,7 @@ export const TagStore = types
         dataKey: 'tags',
       }),
     onGetTag: (props) =>
-      self.tags.onGetOne(() => TagRepository.onGetTag(props), {
+      self.tag.onGetOne(() => TagRepository.onGetTag(props), {
         dataKey: 'tag',
       }),
   }));
