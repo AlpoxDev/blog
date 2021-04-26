@@ -7,6 +7,8 @@ import { DefaultHelmet, Layout } from 'components/molecule';
 import { theme } from 'common/theme';
 import { getSnapshot } from 'mobx-state-tree';
 
+const BAN_LIST = ['/', '/sitemap.xml'];
+
 export default function App({ Component, pageProps, initState }): React.ReactElement {
   useStore(initState);
 
@@ -28,7 +30,10 @@ export default function App({ Component, pageProps, initState }): React.ReactEle
 }
 
 App.getInitialProps = async (props) => {
-  const { Component, ctx } = props;
+  const { Component, ctx, router } = props;
+
+  const pathname = router.route;
+  if (BAN_LIST.includes(pathname)) return {};
 
   // 서버인가요?
   const isServer = typeof window === 'undefined';
