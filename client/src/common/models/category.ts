@@ -12,8 +12,8 @@ export const SubCategory = types.model({
   name: types.maybe(types.string),
 });
 
-export type IMainCategory = Instance<typeof MainCategory>;
-export type ISubCategory = Instance<typeof SubCategory>;
+export type IMainCategory = Instance<typeof MainCategory> & { toJSON: any };
+export type ISubCategory = Instance<typeof SubCategory> & { toJSON: any };
 
 export const mainCategorys = createAsyncStores('mainCategorys', MainCategory);
 export const subCategory = createAsyncStore('subCategory', SubCategory);

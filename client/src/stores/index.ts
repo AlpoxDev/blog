@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { types, Instance } from 'mobx-state-tree';
+import { types, Instance, applySnapshot } from 'mobx-state-tree';
 import { useStaticRendering } from 'mobx-react-lite';
 
 import { AuthStore } from './auth';
@@ -28,16 +28,27 @@ export interface MSTProps {
   store: IStore;
 }
 
-export const initializeStore = (initialState?: any): IStore => {
+export const initializeStore = (isServer = true, snapShot = null): IStore => {
   if (isServer) {
-    return Store.create(initialState);
-  } else if (store !== null) {
-    return store;
-  } else {
-    return (store = Store.create(initialState));
+    store = Store.create({});
   }
+  if (store === null) {
+    store = Store.create({});
+  }
+  if (snapShot) {
+    applySnapshot(store, snapShot);
+  }
+
+  return store;
 };
 
-export const useStore = (initialState?: any) => {
-  return useMemo(() => initializeStore(initialState), [initialState]);
+export const useStore = (snapShot = null): IStore => {
+  return useMemo(() => initializeStore(false, snapShot), [snapShot]);
+};
+
+export const deleteUndefined = (obj: Record<string, any> | undefined): Record<string, any> => {
+  if (process.env.NODE_ENV === 'production') return obj;
+  if (obj) return JSON.parse(JSON.stringify(obj));
+
+  return null;
 };

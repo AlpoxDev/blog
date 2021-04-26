@@ -7,7 +7,7 @@ import { Content, Text } from '../../atom';
 export interface DropdownProps {
   className?: string;
   children?: React.ReactNode;
-  items: string[] | any[];
+  items: any[];
   itemKey?: string;
   onSelectItem(item: any): void;
   position?: 'left' | 'right';
@@ -50,7 +50,7 @@ export const Dropdown = ({
     };
   }, [typeof window, onClickOutside]);
 
-  const dropdownList = items.map((item: string | any, index: number) => {
+  const dropdownList = items.map((item: any, index: number) => {
     if (typeof item === 'string')
       return (
         <DropdownItem key={`dropdown-${index}`} pointer onClick={() => onSelectItem(item)} fontFamily="inter">
@@ -95,7 +95,7 @@ const DropdownWrapper = styled.div<{ position: 'left' | 'right' }>`
 
   background-color: #fff;
   box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14);
-  border-radius: 8px;
+  border-radius: 4px;
 `;
 
 const DropdownItem = styled(Text.Content)`
@@ -103,13 +103,13 @@ const DropdownItem = styled(Text.Content)`
   border-bottom: 1px solid rgba(0, 0, 0, 0.14);
 
   &:first-child {
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
   }
 
   &:last-child {
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
     border-bottom: 0;
   }
 

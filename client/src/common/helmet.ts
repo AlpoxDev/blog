@@ -14,7 +14,7 @@ export interface HelmetProps {
 export const defaultHelmet: HelmetType = {
   title: 'Hi, This is Alpox.',
   description: 'Tech Blog',
-  image: '',
+  image: 'https://alpox.dev/images/profile.jpg',
   url: 'https://alpox.dev',
 };
 

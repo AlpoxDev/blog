@@ -31,6 +31,7 @@ const modalStyle: Styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    zIndex: 9,
   },
 };
 
