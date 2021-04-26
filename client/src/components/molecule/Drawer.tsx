@@ -23,6 +23,10 @@ export const Drawer = observer((): React.ReactElement | null => {
   const { mainCategorys } = categoryStore;
   const { tags } = tagStore;
 
+  const onGoHome = useCallback(() => {
+    router.push('/blog');
+  }, [router]);
+
   const onClickCategory = useCallback(() => {
     router.push('/blog/category');
   }, [router]);
@@ -40,6 +44,9 @@ export const Drawer = observer((): React.ReactElement | null => {
           padding: { top: spacing(8), left: spacing(4), right: spacing(4) },
         }}
       >
+        <Text.H3 pointer onClick={onGoHome} fontFamily="inter" fontWeight={300} location={{ bottom: spacing(12) }}>
+          Alpox
+        </Text.H3>
         <Text.H5
           pointer
           fontFamily="inter"
@@ -112,9 +119,24 @@ interface TagListProps {
 }
 
 const TagList = ({ tags }: TagListProps) => {
+  const router = useRouter();
+
+  const onClick = useCallback(
+    (id: string) => {
+      router.push(`/blog/tag/${id}`);
+    },
+    [router],
+  );
+
   const tagList = tags.map((tag: ITag) => {
     return (
-      <Text.Content pointer key={tag.id} fontSize="1rem" location={{ bottom: spacing(2), right: spacing(3) }}>
+      <Text.Content
+        pointer
+        key={tag.id}
+        fontSize="1rem"
+        location={{ bottom: spacing(2), right: spacing(3) }}
+        onClick={() => onClick(tag.id)}
+      >
         {tag.name}
       </Text.Content>
     );

@@ -1,5 +1,6 @@
 import { Instance, types } from 'mobx-state-tree';
 import { createAsyncStore, createAsyncStores } from 'common/mst';
+import { Post } from 'common/models';
 
 export const MainCategory = types.model({
   id: types.maybe(types.string),
@@ -10,6 +11,7 @@ export const MainCategory = types.model({
 export const SubCategory = types.model({
   id: types.maybe(types.string),
   name: types.maybe(types.string),
+  posts: types.array(types.late(() => Post)),
 });
 
 export type IMainCategory = Instance<typeof MainCategory> & { toJSON: any };

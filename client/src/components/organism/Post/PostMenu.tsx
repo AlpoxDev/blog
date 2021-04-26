@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
+import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 
 // store
@@ -20,9 +21,12 @@ export interface PostMenuProps {
   onDeletePost(): void;
 }
 
-export const ITEMS: string[] = ['시리즈 연결', '카테고리 연결', '삭제'];
+export const ITEMS: string[] = ['시리즈 연결', '카테고리 연결', '수정', '삭제'];
 
 export const PostMenu = observer(({ post, onDeletePost }: PostMenuProps): React.ReactElement | null => {
+  const router = useRouter();
+  const id = router.query?.id;
+
   const connectCategoryModal = useModal('connectCategory');
   const connectSeriesModal = useModal('connectSeries');
 
@@ -35,12 +39,15 @@ export const PostMenu = observer(({ post, onDeletePost }: PostMenuProps): React.
         case '시리즈 연결':
           connectSeriesModal.onCreateModal({ post });
           break;
+        case '수정':
+          router.replace(`/blog/${id}/update`);
+          break;
         case '삭제':
           onDeletePost();
           break;
       }
     },
-    [post, connectCategoryModal, connectSeriesModal],
+    [router, post, connectCategoryModal, connectSeriesModal],
   );
 
   const { authStore } = useStore();

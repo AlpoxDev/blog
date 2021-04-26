@@ -9,16 +9,16 @@ import { Helmet } from 'components/molecule';
 import { customHelmet as helmet } from 'common/helmet';
 
 // container
-import { CategoryDetailContainer } from 'containers/category/detail';
+import { TagDetailContainer } from 'containers/tag/detail';
 
 const Page = (): React.ReactElement => {
-  const { categoryStore } = useStore();
-  const { subCategory } = categoryStore;
+  const { tagStore } = useStore();
+  const { tag } = tagStore;
 
   return (
     <>
-      <Helmet helmet={helmet({ title: `${subCategory.data?.name} 카테고리 | AlpoxDev` })} />
-      <CategoryDetailContainer />
+      <Helmet helmet={helmet({ title: `${tag.data?.name} 태그 | AlpoxDev` })} />
+      <TagDetailContainer />
     </>
   );
 };
@@ -29,9 +29,9 @@ Page.getInitialProps = async ({ query }) => {
   const id = query.id;
 
   const store = initializeStore(true);
-  const { categoryStore } = store;
+  const { tagStore } = store;
 
-  await categoryStore.onGetCategory({ id });
+  await tagStore.onGetTag({ id });
 
   return { store };
 };
