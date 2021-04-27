@@ -10,6 +10,8 @@ export namespace SeriesServiceProps {
   export interface onGetSeries {
     user: User;
     id: string;
+    limit: number;
+    offset: number;
   }
 
   export interface onCreateSeries {

@@ -47,4 +47,28 @@ export const PostValidator = {
       tags: Joi.array().items(Joi.string()).default([]),
     },
   }),
+  onConnectCategory: celebrate({
+    params: {
+      id: Joi.string().required(),
+    },
+    body: {
+      category: Joi.string().required(),
+    },
+  }),
+  onConnectSeries: celebrate({
+    params: {
+      id: Joi.string().required(),
+    },
+    body: {
+      series: Joi.string().required(),
+    },
+  }),
+  onConnectTags: celebrate({
+    params: {
+      id: Joi.string().required(),
+    },
+    body: {
+      tags: Joi.array().items(Joi.string()).required(),
+    },
+  }),
 };

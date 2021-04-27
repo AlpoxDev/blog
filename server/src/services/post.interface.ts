@@ -31,4 +31,22 @@ export namespace PostServiceProps {
   export interface onUpdatePost extends onCreatePost {
     id: string;
   }
+
+  export interface onConnectCategory {
+    user: User;
+    postId: string;
+    category: string;
+  }
+
+  export interface onConnectSeries {
+    user: User;
+    postId: string;
+    series: string;
+  }
+
+  export interface onConnectTags {
+    user: User;
+    postId: string;
+    tags: string[];
+  }
 }

@@ -26,12 +26,17 @@ export class SeriesController {
   }
 
   static async onGetSeries(req: Request, res: Response, next: NextFunction) {
-    const { user } = req;
+    const { user, limit, offset } = req;
     const { id } = user;
 
     try {
       const seriesService = Container.get(SeriesService);
-      const response = await seriesService.onGetSeries({ user, id });
+      const response = await seriesService.onGetSeries({
+        user,
+        id,
+        limit,
+        offset,
+      });
 
       res.status(200).json(response);
     } catch (error) {

@@ -23,7 +23,12 @@ export class SeriesService {
     }
   }
 
-  public async onGetSeries({ user, id }: SeriesServiceProps.onGetSeries) {
+  public async onGetSeries({
+    user,
+    id,
+    limit,
+    offset,
+  }: SeriesServiceProps.onGetSeries) {
     try {
       const series = await Series.findOne({
         where: {
@@ -33,7 +38,13 @@ export class SeriesService {
       });
       if (!series) throw { status: 404, message: 'NotFound series' };
 
-      return { series };
+      const { rows: posts, count } = await Post.findAndCountAll({
+        where: { seriesId: series.id },
+        limit,
+        offset,
+      });
+
+      return { count, series: { ...series.toJSON(), posts } };
     } catch (error) {
       throw error;
     }

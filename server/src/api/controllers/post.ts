@@ -68,4 +68,54 @@ export class PostController {
       next(error);
     }
   }
+
+  static async onConnectCategory(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    const { user } = req;
+    const { id } = req.params;
+
+    try {
+      const postService: PostService = Container.get(PostService);
+      await postService.onConnectCategory({ user, postId: id, ...req.body });
+
+      res.status(204).send();
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async onConnectSeries(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    const { user } = req;
+    const { id } = req.params;
+
+    try {
+      const postService: PostService = Container.get(PostService);
+      await postService.onConnectSeries({ user, postId: id, ...req.body });
+
+      res.status(204).send();
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async onConnectTags(req: Request, res: Response, next: NextFunction) {
+    const { user } = req;
+    const { id } = req.params;
+
+    try {
+      const postService: PostService = Container.get(PostService);
+      await postService.onConnectTags({ user, postId: id, ...req.body });
+
+      res.status(204).send();
+    } catch (error) {
+      next(error);
+    }
+  }
 }
