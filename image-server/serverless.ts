@@ -46,7 +46,7 @@ const config: AWS = {
       events: [
         {
           http: {
-            path: "/file",
+            path: "/upload",
             method: "POST",
             cors: true,
           },

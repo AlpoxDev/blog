@@ -7,6 +7,7 @@ import {
 import AWS from "aws-sdk";
 import Busboy from "busboy";
 import { nanoid } from "nanoid";
+import { resize } from "./resize";
 
 const MAX_SIZE = 4000000;
 
@@ -111,22 +112,27 @@ export const upload: APIGatewayProxyHandler = async (
   event: APIGatewayEvent,
   context: Context
 ): Promise<APIGatewayProxyResult> => {
-  let { body, queryStringParameters } = event;
+  let { queryStringParameters } = event;
 
   let prefix = "guest";
   if (queryStringParameters?.prefix) prefix = queryStringParameters.prefix;
 
   try {
     const formData = await fileParser(event, MAX_SIZE);
+    if (formData.files.length === 0) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({
+          message: "BadRequest",
+        }),
+      };
+    }
+
     const file = formData.files[0];
     const fileKey = `${prefix}/${nanoid()}_${file.filename}`;
+    const fileData = await resize(file.data, file.mimeType, 800);
 
-    await uploadToS3(
-      BUCKET,
-      fileKey,
-      file.data as Buffer,
-      file.mimeType as string
-    );
+    await uploadToS3(BUCKET, fileKey, fileData, file.mimeType as string);
 
     return {
       statusCode: 201,
@@ -136,6 +142,8 @@ export const upload: APIGatewayProxyHandler = async (
       }),
     };
   } catch (error) {
+    console.log(error);
+
     return {
       statusCode: 500,
       body: JSON.stringify(error),
