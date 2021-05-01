@@ -5,7 +5,8 @@
   "author": "alpoxdev",
   "license": "MIT",
   "scripts": {
-    "dev": "serverless offline --stage prod"
+    "dev": "serverless offline --stage prod",
+    "deploy": "serverless deploy"
   },
   "devDependencies": {
     "@serverless/typescript": "2.38.0",

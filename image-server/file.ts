@@ -119,25 +119,20 @@ export const upload: APIGatewayProxyHandler = async (
   try {
     const formData = await fileParser(event, MAX_SIZE);
     const file = formData.files[0];
-
     const fileKey = `${prefix}/${nanoid()}_${file.filename}`;
-    console.log(BUCKET);
 
-    const response = await uploadToS3(
+    await uploadToS3(
       BUCKET,
       fileKey,
       file.data as Buffer,
       file.mimeType as string
     );
 
-    console.log(`S3 Upload`, response);
-
     return {
       statusCode: 201,
       body: JSON.stringify({
-        response,
-        fileKey,
-        filename: file.filename,
+        key: fileKey,
+        location: `https://image.alpox.dev/${fileKey}`,
       }),
     };
   } catch (error) {
