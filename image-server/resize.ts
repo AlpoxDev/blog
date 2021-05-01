@@ -10,11 +10,16 @@ export const resize = async (
   if (!input) return input;
   if (!mimeType || !MIME_TYPES.includes(mimeType)) return input;
 
-  return await sharp(input)
-    .resize({
-      width: MAX_SIZE,
-      height: MAX_SIZE,
-      fit: "contain",
-    })
-    .toBuffer();
+  try {
+    return await sharp(input)
+      .resize({
+        width: MAX_SIZE,
+        height: MAX_SIZE,
+        fit: "contain",
+      })
+      .toBuffer();
+  } catch (error) {
+    console.log(`resize error`, error);
+    return input;
+  }
 };

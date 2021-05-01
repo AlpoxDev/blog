@@ -142,7 +142,7 @@ export const upload: APIGatewayProxyHandler = async (
       }),
     };
   } catch (error) {
-    console.log(error);
+    console.log(`upload error`, error);
 
     return {
       statusCode: 500,
