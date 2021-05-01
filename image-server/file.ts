@@ -138,7 +138,7 @@ export const upload: APIGatewayProxyHandler = async (
       statusCode: 201,
       body: JSON.stringify({
         key: fileKey,
-        location: `https://image.alpox.dev/${fileKey}`,
+        location: `https://files.alpox.dev/${fileKey}`,
       }),
     };
   } catch (error) {

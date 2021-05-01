@@ -1,13 +1,14 @@
 import type { AWS } from "@serverless/typescript";
 
 const config: AWS = {
-  service: "alpox-utils-server",
+  service: "alpox-file-server",
+  disabledDeprecations: ["*"],
   provider: {
     name: "aws",
+    stage: "prod",
     runtime: "nodejs12.x",
     region: "ap-northeast-2",
-    stage: "prod",
-    deploymentBucket: { name: "alpox-utils-server" },
+    deploymentBucket: { name: "alpox-file-server" },
     environment: {
       FILE_BUCKET: "alpox-blog-files",
     },
@@ -38,7 +39,7 @@ const config: AWS = {
       events: [
         {
           http: {
-            path: "/upload",
+            path: "/",
             method: "POST",
             cors: true,
           },

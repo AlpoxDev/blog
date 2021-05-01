@@ -11,13 +11,31 @@ export const resize = async (
   if (!mimeType || !MIME_TYPES.includes(mimeType)) return input;
 
   try {
-    return await sharp(input)
-      .resize({
-        width: MAX_SIZE,
-        height: MAX_SIZE,
-        fit: "contain",
-      })
-      .toBuffer();
+    const { width, height } = await sharp(input).metadata();
+    if (!width || !height) {
+      return await sharp(input)
+        .resize({
+          width: MAX_SIZE,
+          fit: "contain",
+        })
+        .toBuffer();
+    } else if (width >= height) {
+      return await sharp(input)
+        .resize({
+          width: MAX_SIZE,
+          fit: "contain",
+        })
+        .toBuffer();
+    } else if (width < height) {
+      return await sharp(input)
+        .resize({
+          height: MAX_SIZE,
+          fit: "contain",
+        })
+        .toBuffer();
+    }
+
+    return input;
   } catch (error) {
     console.log(`resize error`, error);
     return input;
