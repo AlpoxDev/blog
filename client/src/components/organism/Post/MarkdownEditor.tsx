@@ -1,4 +1,5 @@
 import React, { useCallback, useRef, useEffect } from 'react';
+import Head from 'next/head';
 import styled from '@emotion/styled';
 
 // markdown
@@ -55,7 +56,7 @@ const MarkdownEditor = ({ name, initValue, value, onChange }: MarkdownEditorProp
   }, [initValue, onChangeCodeMirror]);
 
   return (
-    <MarkdownEditorStyle id="post-editor" onClick={onClickWrapper}>
+    <MarkdownEditorStyle id="markdown-body" onClick={onClickWrapper}>
       <textarea ref={textAreaRef} style={{ border: 'none', display: 'none' }} />
     </MarkdownEditorStyle>
   );
@@ -66,33 +67,36 @@ export default MarkdownEditor;
 const MarkdownEditorStyle = styled(Content)`
   width: 50%;
   min-height: 100vh;
+  padding: 0 1rem;
 
   .CodeMirror {
     height: auto;
-    font-size: 1rem;
+    font-size: 100%;
+    font-family: 'Spoqa Han Sans Neo', 'sans-serif';
     color: #252525;
 
     .cm-header {
+      color: #252525;
     }
 
     .cm-header-1 {
-      font-size: 3rem;
+      font-size: 2em;
     }
 
     .cm-header-2 {
-      font-size: 2.5rem;
+      font-size: 1.5em;
     }
 
     .cm-header-3 {
-      font-size: 2.2rem;
+      font-size: 1.25rem;
     }
 
     .cm-header-4 {
-      font-size: 1.8rem;
+      font-size: 1em;
     }
 
     .cm-header-5 {
-      font-size: 1.4rem;
+      font-size: 0.875em;
     }
   }
 `;

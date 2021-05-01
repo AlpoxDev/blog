@@ -12,6 +12,8 @@ export const PostNewContent = ({ children }: PostNewContentProps): React.ReactEl
 };
 
 const PostNewContentStyle = styled(Content)`
+  padding-top: 2rem;
+
   #post-editor {
     flex: 1;
     overflow-x: hidden;

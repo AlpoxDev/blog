@@ -1,10 +1,11 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 
 import { Text, Button, Profile } from 'components/atom';
 import { Input, Dropdown } from 'components/molecule';
 import { spacing } from 'common';
 
 import { useModal } from 'hooks';
+import * as imageService from 'repository';
 
 const isDEV = process.env.NODE_ENV === 'development';
 
@@ -17,6 +18,9 @@ const dropdownItems = [
 const Page = (): React.ReactElement | null => {
   if (!isDEV) return null;
 
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [image, setImage] = useState<string | null>(null);
+
   const loginModal = useModal('login');
   const registerModal = useModal('register');
   const logoutModal = useModal('logout');
@@ -28,8 +32,24 @@ const Page = (): React.ReactElement | null => {
     console.log('onSelectItem', item);
   }, []);
 
+  const onClickImage = useCallback(() => {
+    if (inputRef.current) {
+      inputRef.current.click();
+    }
+  }, []);
+
+  const onUploadImage = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { files } = e.target;
+    const file = files[0];
+
+    const response = await imageService.onUploadImage(file);
+    if (response) setImage(response);
+  }, []);
+
   return (
     <>
+      <input ref={inputRef} type="file" style={{ display: 'none' }} onChange={onUploadImage} />
+
       <Text.H1 location={{ padding: { top: '2rem' } }}>H1</Text.H1>
       <Text.H2 location={{ top: '.5rem' }}>H2</Text.H2>
       <Text.H3 location={{ top: '.5rem' }}>H3</Text.H3>
@@ -84,6 +104,12 @@ const Page = (): React.ReactElement | null => {
       <Dropdown items={dropdownItems} itemKey="content" onSelectItem={onSelectItem}>
         <Button>☰</Button>
       </Dropdown>
+
+      <Button onClick={onClickImage} location={{ left: spacing(6) }}>
+        파일
+      </Button>
+
+      {image && <img src={image} style={{ width: '200px', height: '200px', objectFit: 'cover' }} />}
     </>
   );
 };

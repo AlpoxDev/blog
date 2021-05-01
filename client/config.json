@@ -1,5 +1,6 @@
 {
   "nickname": "AlpoxDev",
+  "UPLOAD_SERVER_URL": "https://blog-upload.alpox.dev",
   "color": {
     "primary": "#594ABF",
     "subPrimary": "BCB2FF",

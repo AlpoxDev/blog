@@ -5,7 +5,7 @@ import { User, SubCategory, Tag } from 'common/models';
 
 export const Post = types.model({
   id: types.string,
-  thumbnail: types.maybe(types.string),
+  thumbnail: types.maybe(types.maybeNull(types.string)),
   title: types.maybe(types.string),
   subtitle: types.maybe(types.string),
   content: types.maybe(types.string),

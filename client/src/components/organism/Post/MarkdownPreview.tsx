@@ -37,7 +37,6 @@ export const MarkdownPreview = ({ content }: MarkdownPreview): React.ReactElemen
 };
 
 const PostContentStyle = styled.div`
-  margin-top: 4rem;
   padding: 0 1rem;
   padding-bottom: 4rem;
 
