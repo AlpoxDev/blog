@@ -121,6 +121,10 @@ export const upload: APIGatewayProxyHandler = async (
     const formData = await fileParser(event, MAX_SIZE);
     if (formData.files.length === 0) {
       return {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": true,
+        },
         statusCode: 400,
         body: JSON.stringify({
           message: "BadRequest",
@@ -135,6 +139,10 @@ export const upload: APIGatewayProxyHandler = async (
     await uploadToS3(BUCKET, fileKey, fileData, file.mimeType as string);
 
     return {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": true,
+      },
       statusCode: 201,
       body: JSON.stringify({
         key: fileKey,
@@ -145,6 +153,10 @@ export const upload: APIGatewayProxyHandler = async (
     console.log(`upload error`, error);
 
     return {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": true,
+      },
       statusCode: 500,
       body: JSON.stringify(error),
     };

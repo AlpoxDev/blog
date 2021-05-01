@@ -1,6 +1,6 @@
 import sharp from "sharp";
 
-const MIME_TYPES = ["image/jpg", "image/jpeg", "image/png", "image/svg+xml"];
+const MIME_TYPES = ["image/jpg", "image/jpeg", "image/png"];
 
 export const resize = async (
   input: Buffer,
