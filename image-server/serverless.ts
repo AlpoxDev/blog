@@ -1,6 +1,6 @@
-import type { Serverless } from "serverless/aws";
+import type { AWS } from "@serverless/typescript";
 
-const config: Serverless = {
+const config: AWS = {
   service: "alpox-utils-server",
   disabledDeprecations: ["*"],
   provider: {
@@ -8,10 +8,26 @@ const config: Serverless = {
     runtime: "nodejs12.x",
     region: "ap-northeast-2",
     stage: "prod",
-    lambdaHashingVersion: 20201221,
     deploymentBucket: { name: "alpox-blog-util-server" },
+    environment: {
+      FILE_BUCKET: "alpox-blog-files",
+    },
     iam: {
-      role: "",
+      role: {
+        statements: [
+          {
+            Effect: "Allow",
+            Action: [
+              "s3:PutObject",
+              "s3:PutObjectAcl",
+              "s3:GetObject",
+              "s3:GetObjectAcl",
+              "s3:DeleteObject",
+            ],
+            Resource: "arn:aws:s3:::alpox-blog-files/*",
+          },
+        ],
+      },
     },
   },
   custom: {
@@ -20,6 +36,7 @@ const config: Serverless = {
       noPrependStageInUrl: true,
     },
   },
+  plugins: ["serverless-plugin-typescript", "serverless-offline"],
   functions: {
     image: {
       handler: "handler.upload",
@@ -32,7 +49,6 @@ const config: Serverless = {
             path: "/file",
             method: "POST",
             cors: true,
-            async: true,
           },
         },
       ],

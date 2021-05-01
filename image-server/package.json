@@ -8,8 +8,11 @@
     "dev": "serverless offline --stage prod"
   },
   "devDependencies": {
+    "@serverless/typescript": "2.38.0",
     "@types/aws-lambda": "8.10.76",
     "@types/aws-sdk": "2.7.0",
+    "@types/busboy": "0.2.3",
+    "@types/nanoid": "2.1.0",
     "aws-sdk": "2.897.0",
     "serverless-offline": "7.0.0",
     "serverless-plugin-typescript": "1.1.9",
@@ -18,6 +21,8 @@
   "dependencies": {
     "@types/query-string": "6.3.0",
     "@types/serverless": "1.78.26",
+    "busboy": "0.3.1",
+    "nanoid": "3.1.22",
     "query-string": "7.0.0"
   }
 }
