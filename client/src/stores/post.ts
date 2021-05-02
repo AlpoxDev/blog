@@ -10,6 +10,8 @@ export const PostStore = types
     createPost,
     deletePost: empty,
     updatePost: empty,
+    connectCategory: empty,
+    connectSeries: empty,
   })
   .actions((self) => ({
     onGetPosts: (props) =>
@@ -26,4 +28,6 @@ export const PostStore = types
       }),
     onDeletePost: (props) => self.deletePost.onDelete(() => PostRepository.onDeletePost(props)),
     onUpdatePost: (props) => self.updatePost.onUpdate(() => PostRepository.onUpdatePost(props)),
+    onConnectCategory: (props) => self.connectCategory.onUpdate(() => PostRepository.onConnectCategory(props)),
+    onConnectSeries: (props) => self.connectSeries.onUpdate(() => PostRepository.onConnectSeries(props)),
   }));

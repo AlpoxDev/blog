@@ -43,3 +43,24 @@ postRouter.put(
   PostValidator.onUpdatePost,
   PostController.onUpdatePost
 );
+
+postRouter.post(
+  '/posts/:id/category',
+  PermissionAuthorizer(UserPermission.edit),
+  PostValidator.onConnectCategory,
+  PostController.onConnectCategory
+);
+
+postRouter.post(
+  '/posts/:id/series',
+  PermissionAuthorizer(UserPermission.edit),
+  PostValidator.onConnectSeries,
+  PostController.onConnectSeries
+);
+
+postRouter.post(
+  '/posts/:id/tags',
+  PermissionAuthorizer(UserPermission.edit),
+  PostValidator.onConnectTags,
+  PostController.onConnectTags
+);

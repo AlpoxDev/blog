@@ -20,7 +20,7 @@ import {
 
 // hooks
 import { useModal } from 'hooks';
-import { ISubCategory } from 'common/models';
+import { ISeries, ISubCategory } from 'common/models';
 
 export type PostInput = {
   title: string;
@@ -28,6 +28,7 @@ export type PostInput = {
   content: string;
   tags: string[];
   category: string;
+  series: string;
 };
 
 const initPostInput: PostInput = {
@@ -36,6 +37,7 @@ const initPostInput: PostInput = {
   content: '',
   tags: [],
   category: '',
+  series: '',
 };
 
 const Container = (): React.ReactElement => {
@@ -45,6 +47,9 @@ const Container = (): React.ReactElement => {
   const [tagInput, setTagInput] = useState<string>('');
   const [initContent, setInitContent] = useState<string>('');
   const [subCategory, setSubCategory] = useState<ISubCategory>(null);
+  const [series, setSeries] = useState<ISeries>(null);
+
+  console.log(input, series);
 
   const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -77,6 +82,11 @@ const Container = (): React.ReactElement => {
   const onChangeCategory = useCallback((subCategory: ISubCategory) => {
     setSubCategory(subCategory);
     setInput((state: PostInput) => ({ ...state, category: subCategory.id }));
+  }, []);
+
+  const onChangeSeries = useCallback((series: ISeries) => {
+    setSeries(series);
+    setInput((state: PostInput) => ({ ...state, series: series.title }));
   }, []);
 
   const { authStore, postStore } = useStore();
@@ -120,7 +130,9 @@ const Container = (): React.ReactElement => {
         onChange={onChange}
         onChangeTag={onChangeTag}
         subCategory={subCategory}
+        series={series}
         onChangeCategory={onChangeCategory}
+        onChangeSeries={onChangeSeries}
       />
 
       <PostNewContent>

@@ -15,6 +15,9 @@ export const SeriesValidator = {
     },
     query: {
       nickname: Joi.string().required(),
+      limit: Joi.string().default('20'),
+      page: Joi.string().default('1'),
+      offset: Joi.string(),
     },
   }),
   onCreateSeries: celebrate({

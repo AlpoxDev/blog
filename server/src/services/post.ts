@@ -96,7 +96,12 @@ export class PostService {
         throw { status: 404, message: '서브 카테고리를 찾을 수 없습니다.' };
 
       let findSeries: Series | null = null;
-      if (series) findSeries = await Series.find(series);
+      if (series) {
+        findSeries = await Series.findOne({ where: { title: series } });
+        if (!findSeries) {
+          findSeries = await Series.create({ title: series });
+        }
+      }
 
       const post = await Post.create({
         title,
@@ -169,6 +174,84 @@ export class PostService {
         series: findSeries,
         seriesId: findSeries?.id || null,
       });
+
+      const findTags: Tag[] = await Tag.findOrCreateList(user, tags);
+      const relations = findTags.map((tag: Tag) => ({
+        postId: post.id,
+        tagId: tag.id,
+      }));
+
+      await PostTag.resetPostTagRelations(post.id);
+      await PostTag.setPostTagRelations(relations);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public async onConnectCategory({
+    user,
+    postId,
+    category,
+  }: PostServiceProps.onConnectCategory) {
+    try {
+      const post = await Post.findByPk(postId);
+      if (!post) throw { status: 404, message: '포스트를 찾을 수 없습니다.' };
+
+      const findCategory = await SubCategory.findOne({
+        where: { id: category, userId: user.id },
+      });
+      if (!findCategory)
+        throw { status: 404, message: '카테고리를 찾을 수 없습니다' };
+
+      await post.update({
+        categoryId: findCategory.id,
+        category: findCategory,
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public async onConnectSeries({
+    user,
+    postId,
+    series,
+  }: PostServiceProps.onConnectSeries) {
+    try {
+      const post = await Post.findByPk(postId);
+      if (!post) throw { status: 404, message: '포스트를 찾을 수 없습니다.' };
+
+      const findSeries = await Series.findOne({
+        where: {
+          userId: user.id,
+          title: series,
+        },
+      });
+      if (findSeries) {
+        await post.update({
+          seriesId: findSeries.id,
+          series: findSeries,
+        });
+      } else {
+        const newSeries = await Series.create({ title: series });
+        await post.update({
+          seriesId: newSeries.id,
+          series: newSeries,
+        });
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public async onConnectTags({
+    user,
+    postId,
+    tags,
+  }: PostServiceProps.onConnectTags) {
+    try {
+      const post = await Post.findByPk(postId);
+      if (!post) throw { status: 404, message: '포스트를 찾을 수 없습니다.' };
 
       const findTags: Tag[] = await Tag.findOrCreateList(user, tags);
       const relations = findTags.map((tag: Tag) => ({

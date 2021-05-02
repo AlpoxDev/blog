@@ -26,4 +26,14 @@ export class PostRepository {
     const url = `/posts/${id}`;
     return await onRequest({ method: RequestMethod.PUT, url, params });
   }
+
+  static async onConnectCategory({ id, params }: RepositoryProps.POST): Promise<Response> {
+    const url = `/posts/${id}/category`;
+    return await onRequest({ method: RequestMethod.POST, url, params });
+  }
+
+  static async onConnectSeries({ id, params }: RepositoryProps.POST): Promise<Response> {
+    const url = `/posts/${id}/series`;
+    return await onRequest({ method: RequestMethod.POST, url, params });
+  }
 }

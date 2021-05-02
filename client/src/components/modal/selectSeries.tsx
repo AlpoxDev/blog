@@ -4,21 +4,21 @@ import styled from '@emotion/styled';
 // store
 import { observer } from 'mobx-react-lite';
 import { useStore } from 'stores';
+import { ISeries } from 'common/models';
 
 // components
 import { Dropdown } from 'components/molecule/Dropdown';
 import { Modal, Input } from 'components/molecule';
-import { ISeries } from 'common/models';
 
-export interface ConnectSeriesProps {
+export interface SelectSeriesProps {
   view: boolean;
   onClose(): void;
-  postId: string;
-  series: ISeries | null;
+  series: string;
+  onChangeSeries(series: ISeries): void;
 }
 
-export const ConnectSeries = observer(
-  ({ view, onClose, postId, series }: ConnectSeriesProps): React.ReactElement => {
+export const SelectSeries = observer(
+  ({ view, onClose, series, onChangeSeries }: SelectSeriesProps): React.ReactElement => {
     const [input, setInput] = useState<string>('');
 
     const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,42 +27,32 @@ export const ConnectSeries = observer(
     }, []);
 
     const onSelectSeries = useCallback((series: ISeries) => {
+      onChangeSeries(series);
       setInput(series.title);
     }, []);
 
-    useEffect(() => {
-      if (series) setInput(series.title);
-    }, [series]);
-
-    const { postStore, seriesStore } = useStore();
+    const { seriesStore } = useStore();
     const { seriesList } = seriesStore;
-    const { connectSeries } = postStore;
-
-    const onConfirm = useCallback(() => {
-      const params = { series: input };
-      postStore.onConnectSeries({ id: postId, params });
-    }, [postId, input, postStore]);
 
     useEffect(() => {
-      if (!connectSeries.isReady) return;
+      if (seriesList.isReady) return;
+      seriesStore.onGetSeriesList({});
+    }, [seriesList.isReady]);
 
-      onClose();
-
-      return () => {
-        connectSeries.onDefault();
-        postStore.onGetPost({ id: postId });
-      };
-    }, [connectSeries.isReady]);
+    useEffect(() => {
+      if (series) setInput(series);
+    }, [series]);
 
     return (
       <Modal
         view={view}
         onClose={onClose}
-        onConfirm={onConfirm}
+        onConfirm={onClose}
+        buttonOptions={{ disabled: input.length === 0 }}
         title="시리즈 생성/수정"
         info="기존에 있는 시리즈일 경우 자동으로 연결이 됩니다."
       >
-        <SeriesDropdown items={seriesList.data} itemKey="title" onSelectItem={onSelectSeries}>
+        <SeriesDropdown position="left" items={[...seriesList.data]} itemKey="title" onSelectItem={onSelectSeries}>
           <Input label="시리즈 이름" value={input} onChange={onChange} />
         </SeriesDropdown>
       </Modal>
@@ -72,4 +62,8 @@ export const ConnectSeries = observer(
 
 const SeriesDropdown = styled(Dropdown)`
   display: block;
+
+  .dropdown-item {
+    width: 100%;
+  }
 `;

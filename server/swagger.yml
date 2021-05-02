@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
-  title: THINGS API
-  description: things server api [thing-s.kr](https://thing-s.kr)
+  title: ÅLPOX API
+  description: alpox blog api [alpox.dev](https://alpox.dev)
   version: 0.2.0
 servers:
   - url: https://blog-stage.alpox.dev
@@ -842,6 +842,204 @@ paths:
               properties:
                 name:
                   type: string
+      responses:
+        '204':
+          description: success
+  '/series':
+    get:
+      summary: 시리즈 목록 가져오기
+      tags:
+        - 시리즈
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                    default: 0
+                  seriesList:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Series'
+    post:
+      summary: 시리즈 생성하기
+      tags:
+        - 시리즈
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                content:
+                  type: string
+                posts:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+      responses:
+        '201':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  series:
+                    $ref: '#/components/schemas/Series'
+  '/series/{id}':
+    get:
+      summary: 시리즈 자세히 가져오기
+      tags:
+        - 시리즈
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  series:
+                    $ref: '#/components/schemas/Series'
+    delete:
+      summary: 시리즈 삭제하기
+      tags:
+        - 시리즈
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: success
+    put:
+      summary: 시리즈 수정하기
+      tags:
+        - 시리즈
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                content:
+                  type: string
+                posts:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+      responses:
+        '204':
+          description: success
+  '/posts/{id}/category':
+    post:
+      summary: 포스팅 카테고리 연결하기
+      description: body-category 는 서브 카테고리 아이디
+      tags:
+        - 포스팅
+        - 카테고리
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                category:
+                  type: string
+                  format: uuid
+      responses:
+        '204':
+          description: success
+  '/posts/{id}/series':
+    post:
+      summary: 포스팅 시리즈 연결하기
+      description: body-series 는 시리즈의 제목
+      tags:
+        - 포스팅
+        - 시리즈
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                series:
+                  type: string
+                  default: seriesTitle
+      responses:
+        '204':
+          description: success
+  '/posts/{id}/tags':
+    post:
+      summary: 포스팅 태그 연결하기
+      description: body-tags 는 태그의 이름들
+      tags:
+        - 포스팅
+        - 태그
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tags:
+                  type: array
+                  items:
+                    type: string
       responses:
         '204':
           description: success

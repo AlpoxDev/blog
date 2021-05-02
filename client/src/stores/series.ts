@@ -1,7 +1,7 @@
 import { types } from 'mobx-state-tree';
 
 import { empty, seriesList, series } from 'common/models';
-import {} from 'repository';
+import { SeriesRepository } from 'repository';
 
 export const SeriesStore = types
   .model('SeriesStore', {
@@ -11,4 +11,8 @@ export const SeriesStore = types
     deleteSeries: empty,
     updateSeries: empty,
   })
-  .actions((self) => ({}));
+  .actions((self) => ({
+    onGetSeriesList: (props) =>
+      self.seriesList.onGetAll(() => SeriesRepository.onGetSeriesList(props), { dataKey: 'seriesList' }),
+    onGetSeries: (props) => self.series.onGetOne(() => SeriesRepository.onGetSeries(props), { dataKey: 'series' }),
+  }));

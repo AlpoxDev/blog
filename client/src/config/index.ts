@@ -4,6 +4,7 @@ const dev = process.env.NODE_ENV === 'development';
 
 const defaultConfig = {
   nickname: configJSON.nickname,
+  UPLOAD_SERVER_URL: configJSON.UPLOAD_SERVER_URL,
 };
 
 const devConfig = {
