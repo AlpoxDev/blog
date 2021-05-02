@@ -53,13 +53,25 @@ export const Dropdown = ({
   const dropdownList = items.map((item: any, index: number) => {
     if (typeof item === 'string')
       return (
-        <DropdownItem key={`dropdown-${index}`} pointer onClick={() => onSelectItem(item)} fontFamily="inter">
+        <DropdownItem
+          pointer
+          key={`dropdown-${index}`}
+          className="dropdown-item"
+          onClick={() => onSelectItem(item)}
+          fontFamily="inter"
+        >
           {item}
         </DropdownItem>
       );
     else if (itemKey && item[itemKey])
       return (
-        <DropdownItem key={`dropdown-${index}`} pointer onClick={() => onSelectItem(item)} fontFamily="inter">
+        <DropdownItem
+          pointer
+          key={`dropdown-${index}`}
+          className="dropdown-item"
+          onClick={() => onSelectItem(item)}
+          fontFamily="inter"
+        >
           {item[itemKey]}
         </DropdownItem>
       );
@@ -71,7 +83,7 @@ export const Dropdown = ({
     <DropdownContainer className={className} ref={wrapperRef} onClick={onChange}>
       {children}
       {isOpen && (
-        <DropdownWrapper id="dropdown-wrapper" ref={listRef} position={position}>
+        <DropdownWrapper className="dropdown-wrapper" ref={listRef} position={position}>
           {dropdownList}
         </DropdownWrapper>
       )}

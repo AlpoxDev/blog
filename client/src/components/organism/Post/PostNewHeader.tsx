@@ -16,21 +16,32 @@ import { useModal } from 'hooks';
 
 // types
 import { PostInput } from 'containers/post/new';
-import { ISubCategory } from 'common/models';
+import { ISeries, ISubCategory } from 'common/models';
 
 export interface PostNewHeaderProps {
   input: PostInput;
   onChange(e: React.ChangeEvent): void;
   onChangeTag(option: 'add' | 'remove', tagName?: string): void;
   subCategory: ISubCategory | null;
+  series: ISeries | null;
   onChangeCategory(subCategory: ISubCategory): void;
+  onChangeSeries(series: ISeries): void;
 }
 
 export const PostNewHeader = observer(
-  ({ input, onChange, onChangeTag, subCategory, onChangeCategory }: PostNewHeaderProps): React.ReactElement => {
+  ({
+    input,
+    onChange,
+    onChangeTag,
+    subCategory,
+    series,
+    onChangeCategory,
+    onChangeSeries,
+  }: PostNewHeaderProps): React.ReactElement => {
     const { uiStore } = useStore();
 
     const getCategoryModal = useModal('getCategory', { onChangeCategory });
+    const selectSeriesModal = useModal('selectSeries', { onChangeSeries, series: series?.title || '' });
 
     useEffect(() => {
       if (subCategory) getCategoryModal.onDeleteModal();
@@ -53,7 +64,11 @@ export const PostNewHeader = observer(
           location={{ bottom: spacing(2.5) }}
         />
 
-        <Button onClick={getCategoryModal.onCreateModal}>{subCategory ? subCategory.name : '카테고리 선택'}</Button>
+        <Button onClick={getCategoryModal.onCreateModal} location={{ right: spacing(4) }}>
+          {subCategory ? subCategory.name : '카테고리 선택'}
+        </Button>
+
+        <Button onClick={selectSeriesModal.onCreateModal}>{series ? series.title : '시리즈 선택'}</Button>
       </PostNewHeaderStyle>
     );
   },

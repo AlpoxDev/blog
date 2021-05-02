@@ -21,7 +21,7 @@ export interface PostMenuProps {
   onDeletePost(): void;
 }
 
-export const ITEMS: string[] = ['시리즈 연결', '카테고리 연결', '수정', '삭제'];
+export const ITEMS: string[] = ['카테고리 연결', '시리즈 연결', '수정', '삭제'];
 
 export const PostMenu = observer(({ post, onDeletePost }: PostMenuProps): React.ReactElement | null => {
   const router = useRouter();
@@ -37,7 +37,7 @@ export const PostMenu = observer(({ post, onDeletePost }: PostMenuProps): React.
           connectCategoryModal.onCreateModal({ post });
           break;
         case '시리즈 연결':
-          connectSeriesModal.onCreateModal({ post });
+          connectSeriesModal.onCreateModal({ postId: post.id, series: post?.series || null });
           break;
         case '수정':
           router.replace(`/blog/${id}/update`);
@@ -82,7 +82,7 @@ const PostMenuStyle = styled(Content)`
 `;
 
 const PostMenuDropdown = styled(Dropdown)`
-  #dropdown-wrapper {
+  .dropdown-wrapper {
     width: 9.5rem;
     p {
       width: 100%;

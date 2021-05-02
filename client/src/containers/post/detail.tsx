@@ -7,10 +7,8 @@ import { useStore } from 'stores';
 import { observer } from 'mobx-react-lite';
 
 // components
-import { Text, Button, Content } from 'components/atom';
-import { PostContent, PostMenu } from 'components/organism';
-
-import { spacing } from 'common';
+import { Content } from 'components/atom';
+import { PostContent, PostHeader } from 'components/organism';
 
 const Container = (): React.ReactElement => {
   const router = useRouter();
@@ -46,15 +44,7 @@ const Container = (): React.ReactElement => {
 
   return (
     <PostDetailWrapper>
-      <PostDetailHeader location={{ bottom: spacing(6) }}>
-        <Content>
-          <Text.H1>{post.data?.title}</Text.H1>
-          <Text.H3 location={{ top: spacing(8) }}>{post.data?.subtitle}</Text.H3>
-        </Content>
-
-        <PostMenu post={post.data} onDeletePost={onDeletePost} />
-      </PostDetailHeader>
-
+      <PostHeader post={post.data || null} onDeletePost={onDeletePost} />
       <PostContent content={post.data?.content} />
     </PostDetailWrapper>
   );
@@ -72,9 +62,3 @@ const PostDetailWrapper = styled(Content)`
     padding: 2rem 1rem 0;
   }
 `;
-
-const PostDetailHeader = styled(Content)`
-  position: relative;
-`;
-
-const PostDetailHeaderSection = styled(Content)``;

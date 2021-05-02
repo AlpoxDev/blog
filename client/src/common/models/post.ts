@@ -2,6 +2,7 @@ import { types, Instance } from 'mobx-state-tree';
 import { createAsyncStore, createAsyncStores } from 'common/mst';
 
 import { User, SubCategory, Tag } from 'common/models';
+import { Series } from './series';
 
 export const Post = types.model({
   id: types.string,
@@ -12,6 +13,7 @@ export const Post = types.model({
 
   user: types.maybe(types.late(() => User)),
   category: types.maybe(types.late(() => SubCategory)),
+  series: types.maybe(types.late(() => Series)),
   tags: types.optional(types.array(types.late(() => Tag)), []),
 
   createdAt: types.maybe(types.string),
