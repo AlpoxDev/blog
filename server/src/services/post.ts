@@ -97,9 +97,15 @@ export class PostService {
 
       let findSeries: Series | null = null;
       if (series) {
-        findSeries = await Series.findOne({ where: { title: series } });
+        findSeries = await Series.findOne({
+          where: { title: series, userId: user.id },
+        });
         if (!findSeries) {
-          findSeries = await Series.create({ title: series });
+          findSeries = await Series.create({
+            title: series,
+            userId: user.id,
+            user,
+          });
         }
       }
 
@@ -163,7 +169,18 @@ export class PostService {
         throw { status: 404, message: '서브 카테고리를 찾을 수 없습니다.' };
 
       let findSeries: Series | null = null;
-      if (series) findSeries = await Series.find(series);
+      if (series) {
+        findSeries = await Series.findOne({
+          where: { title: series, userId: user.id },
+        });
+        if (!findSeries) {
+          findSeries = await Series.create({
+            title: series,
+            userId: user.id,
+            user,
+          });
+        }
+      }
 
       await post.update({
         title,
@@ -233,7 +250,11 @@ export class PostService {
           series: findSeries,
         });
       } else {
-        const newSeries = await Series.create({ title: series });
+        const newSeries = await Series.create({
+          title: series,
+          userId: user.id,
+          user,
+        });
         await post.update({
           seriesId: newSeries.id,
           series: newSeries,
