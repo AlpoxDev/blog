@@ -13,7 +13,7 @@ export const Post = types.model({
 
   user: types.maybe(types.late(() => User)),
   category: types.maybe(types.late(() => SubCategory)),
-  series: types.maybe(types.late(() => Series)),
+  series: types.maybeNull(types.maybe(types.late(() => Series))),
   tags: types.optional(types.array(types.late(() => Tag)), []),
 
   createdAt: types.maybe(types.string),

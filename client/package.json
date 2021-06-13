@@ -12,6 +12,7 @@
     "deploy:prod": "export AWS_PROFILE=default && yarn clear && yarn config:prod && serverless",
     "deploy:beta": "export AWS_PROFILE=default && yarn clear && yarn config:beta && serverless",
     "deploy:resume": "aws s3 cp resume.html s3://alpox-resume/index.html",
+    "deploy:youtube": "aws s3 cp youtube.html s3://alpox-youtube/index.html",
     "clear": "rm -rf .next && rm -rf .serverless && rm -rf .serverless_nextjs",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"

@@ -3,8 +3,8 @@ import { createAsyncStore, createAsyncStores } from 'common/mst';
 
 export const User = types.model({
   id: types.maybe(types.string),
-  email: types.maybe(types.string),
-  profile: types.maybe(types.maybeNull(types.string)),
+  email: types.maybeNull(types.maybe(types.string)),
+  profile: types.maybeNull(types.maybe(types.string)),
   nickname: types.maybe(types.string),
   permission: types.maybe(types.string),
   isMarketing: types.maybe(types.boolean),

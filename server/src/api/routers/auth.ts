@@ -17,3 +17,8 @@ authRouter.get(
   AuthValidator.onCheckDuplicate,
   AuthController.onCheckDuplicate
 );
+authRouter.post(
+  '/auth/github',
+  AuthValidator.onGithub,
+  AuthController.onGithub
+);

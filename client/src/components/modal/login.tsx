@@ -1,10 +1,13 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import styled from '@emotion/styled';
+import { useRouter } from 'next/router';
 
 // store
 import { observer } from 'mobx-react-lite';
 import { useStore } from 'stores';
 
 // components
+import { Button } from 'components/atom';
 import { Modal, Input } from 'components/molecule';
 
 // common
@@ -39,6 +42,8 @@ const isValid = (errorMessage: ValidMessage, id: string, password: string) => {
 };
 
 export const Login = observer(({ view, onClose }: LoginModalProps): React.ReactElement | null => {
+  const router = useRouter();
+
   const alertModal = useModal('Dialog');
 
   const [input, setInput] = useState({
@@ -62,6 +67,13 @@ export const Login = observer(({ view, onClose }: LoginModalProps): React.ReactE
     const params = { ...input };
     authStore.onLogin({ params });
   }, [input, valid]);
+
+  const onGithub = useCallback(() => {
+    if (typeof window === 'undefined') return;
+
+    router.replace('/github');
+    onClose();
+  }, [router]);
 
   // login 성공
   useEffect(() => {
@@ -109,6 +121,13 @@ export const Login = observer(({ view, onClose }: LoginModalProps): React.ReactE
         value={input.password}
         onChange={onChange}
       />
+
+      <GithubButton onClick={onGithub}>Github Login</GithubButton>
     </Modal>
   );
 });
+
+const GithubButton = styled(Button)`
+  width: 100%;
+  margin-top: 2rem;
+`;

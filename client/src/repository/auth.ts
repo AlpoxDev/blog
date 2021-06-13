@@ -17,6 +17,11 @@ export class AuthRepository {
     return await onRequest({ method: RequestMethod.POST, url, params });
   }
 
+  static async onGithub({ params }: RepositoryProps.POST): Promise<Response> {
+    const url = '/auth/github';
+    return await onRequest({ method: RequestMethod.POST, url, params });
+  }
+
   static async onLogout(): Promise<Response> {
     const url = '/auth/logout';
     return await onRequest({ method: RequestMethod.POST, url });

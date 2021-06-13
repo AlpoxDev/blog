@@ -18,10 +18,9 @@ const config = {
 
   JWT_SECRET: env.JWT_SECRET || '',
   COOKIE_SECRET: env.COOKIE_SECRET || '',
-
   COOKIE_NAME: 'ALPOX',
   COOKIE_OPTIONS: {
-    maxAge: 12 * 60 * 60 * 1000,
+    maxAge: 24 * 60 * 60 * 1000,
     httpOnly: true,
     signed: true,
     secure: env.NODE_ENV !== 'dev',
@@ -29,6 +28,9 @@ const config = {
 
   SALT_ROUNDS: parseInt(env.SALT_ROUNDS as string, 10) || 1,
   MAX_LIMIT: 20,
+
+  GITHUB_CLIENT_ID: env.GITHUB_CLIENT_ID || '',
+  GITHUB_CLIENT_SECRET: env.GITHUB_CLIENT_SECRET || '',
 };
 
 export default config;

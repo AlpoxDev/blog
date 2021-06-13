@@ -49,8 +49,6 @@ const Container = (): React.ReactElement => {
   const [subCategory, setSubCategory] = useState<ISubCategory>(null);
   const [series, setSeries] = useState<ISeries>(null);
 
-  console.log(input, series);
-
   const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setInput((state: PostInput) => ({ ...state, [name]: value }));
@@ -98,7 +96,8 @@ const Container = (): React.ReactElement => {
   const onCreatePost = useCallback(() => {
     if (createPost.isPending) return;
 
-    const params = { ...input, category: '7d4d15f3-71dd-429c-81e4-b7cc14a9c556' };
+    const params = input;
+    if (input.series === '') params.series = null;
     postStore.onCreatePost({ params });
   }, [postStore, createPost, input]);
 

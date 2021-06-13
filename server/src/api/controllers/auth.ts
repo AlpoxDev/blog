@@ -82,4 +82,24 @@ export class AuthController {
       next(error);
     }
   }
+
+  static async onGithub(req: Request, res: Response, next: NextFunction) {
+    const { code } = req.body;
+
+    try {
+      const authService: AuthService = Container.get(AuthService);
+      const response = await authService.onGithub({
+        code,
+        client_id: config.GITHUB_CLIENT_ID,
+        client_secret: config.GITHUB_CLIENT_SECRET,
+      });
+
+      res
+        .status(201)
+        .cookie(config.COOKIE_NAME, response, config.COOKIE_OPTIONS)
+        .json({ success: true });
+    } catch (error) {
+      next(error);
+    }
+  }
 }

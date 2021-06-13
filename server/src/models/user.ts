@@ -9,9 +9,11 @@ import {
   Default,
   HasMany,
   DefaultScope,
+  HasOne,
 } from 'sequelize-typescript';
 import { signToken } from '../common';
 import { Post } from './post';
+import { UserSocial } from './user_social';
 
 export enum UserPermission {
   read = 'READ',
@@ -45,7 +47,7 @@ export class User extends Model {
 
   @Column({
     type: DataType.STRING(255),
-    unique: true,
+    allowNull: true,
   })
   public email: string;
 
@@ -87,6 +89,9 @@ export class User extends Model {
 
   @UpdatedAt
   public updatedAt: Date;
+
+  @HasOne(() => UserSocial)
+  public userSocial: UserSocial;
 
   @HasMany(() => Post)
   public posts: Post[];

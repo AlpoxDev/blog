@@ -158,6 +158,8 @@ const DrawerStyle = styled(Content)`
   left: 0;
   z-index: 4;
 
+  overflow-y: scroll;
+
   background-color: white;
   border-right: 1px solid #252525;
 

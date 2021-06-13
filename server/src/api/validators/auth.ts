@@ -22,4 +22,9 @@ export const AuthValidator = {
       value: Joi.string().required(),
     },
   }),
+  onGithub: celebrate({
+    body: {
+      code: Joi.string().required(),
+    },
+  }),
 };

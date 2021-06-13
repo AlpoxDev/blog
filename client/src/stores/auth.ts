@@ -8,6 +8,7 @@ export const AuthStore = types
     me,
     login: empty,
     register: empty,
+    github: empty,
     logout: empty,
     emailDuplicate: message,
     nicknameDuplicate: message,
@@ -16,6 +17,7 @@ export const AuthStore = types
     onMe: () => self.me.onCreate(AuthRepository.onMe, { dataKey: 'user' }),
     onLogin: (props) => self.login.onCreate(() => AuthRepository.onLogin(props)),
     onRegister: (props) => self.register.onCreate(() => AuthRepository.onRegister(props)),
+    onGithub: (props) => self.github.onCreate(() => AuthRepository.onGithub(props)),
     onLogout: () => self.logout.onCreate(AuthRepository.onLogout),
     onCheckEmailDuplicate: (props) =>
       self.emailDuplicate.onGetOne(() => AuthRepository.onCheckDuplicate(props), { message }),

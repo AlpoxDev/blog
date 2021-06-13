@@ -1,4 +1,5 @@
 export * from './user';
+export * from './user_social';
 export * from './user_permission_request';
 
 export * from './post';

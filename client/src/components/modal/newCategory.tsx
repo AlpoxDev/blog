@@ -27,7 +27,7 @@ const parseParams = (input) => {
     if (newMainCategory.name) {
       const newSubCategorys: ISubCategory[] = [];
       newMainCategory.subCategorys.forEach((subCategory: ISubCategory) => {
-        if (subCategory.name) newSubCategorys.push(subCategory);
+        if (subCategory.name) newSubCategorys.push({ id: subCategory.id, name: subCategory.name });
       });
 
       newMainCategory.subCategorys = newSubCategorys as ISubCategory[];

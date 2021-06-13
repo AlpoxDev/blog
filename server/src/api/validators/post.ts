@@ -24,7 +24,7 @@ export const PostValidator = {
       content: Joi.string().required(),
 
       category: Joi.string().required(),
-      series: Joi.string(),
+      series: Joi.string().allow(null),
       tags: Joi.array().items(Joi.string()).default([]),
     },
   }),
