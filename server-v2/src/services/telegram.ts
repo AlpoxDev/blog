@@ -28,7 +28,7 @@ const onBotPassword = async (msg: any) => {
       throw { message: "/listen 사용자 입력이 잘못되었습니다!" };
     }
 
-    const config = await StudioConfig.findOne({ where: { id: "root" } });
+    const config = await StudioConfig.findByPk("telegram");
     if (!config) throw { message: "/listen 서버 에러!" };
 
     if (config.password !== userInput) {
