@@ -85,6 +85,32 @@ export const telegramInit = async () => {
 
   // test
   schedule.scheduleJob({ tz: TIMEZONE, rule: "*/10 * * * * *" }, async () => {
+    // For New Version Of Sequelize:
+    // const where = {
+    // 		[Op.or]: [{
+    // 				from: {
+    // 						[Op.between]: [startDate, endDate]
+    // 				}
+    // 		}, {
+    // 				to: {
+    // 						[Op.between]: [startDate, endDate]
+    // 				}
+    // 		}]
+    // };
+
+    // OR as your code structure:
+    // const where = {
+    // 		$or: [{
+    // 				from: {
+    // 						$between: [startDate, endDate]
+    // 				}
+    // 		}, {
+    // 				to: {
+    // 						$between: [startDate, endDate]
+    // 				}
+    // 		}]
+    // };
+
     try {
       const clients = await StudioTelegram.findAll();
       const clientIds = clients.map(
