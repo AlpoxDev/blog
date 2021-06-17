@@ -22,10 +22,10 @@ export class StudioReservation extends Model {
   public id!: string;
 
   @Column(DataType.DATE)
-  public startedAt!: Date;
+  public start!: Date;
 
   @Column(DataType.DATE)
-  public endedAt!: Date;
+  public end!: Date;
 
   @CreatedAt
   public createdAt!: Date;

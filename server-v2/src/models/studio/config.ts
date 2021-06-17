@@ -19,8 +19,8 @@ export class StudioConfig extends Model {
     type: DataType.STRING,
     primaryKey: true,
   })
-  public id!: string;
+  public key!: string;
 
-  @Column
-  public password!: string;
+  @Column(DataType.TEXT)
+  public value!: string;
 }
