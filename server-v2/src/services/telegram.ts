@@ -1,46 +1,67 @@
 import TeleBot from "telebot";
 import schedule from "node-schedule";
+import { Op } from "sequelize";
 import { nanoid } from "nanoid";
 
 import config from "../config";
-import { StudioConfig } from "../models";
+import {
+  StudioConfig,
+  StudioCoupon,
+  StudioTelegram,
+  StudioReservation,
+} from "../models";
 
 const TELEGRAM_BOT_TOKEN = config.TELEGRAM_KEY;
-export const bot = new TeleBot(TELEGRAM_BOT_TOKEN);
+const TIMEZONE = "Asia/Seoul";
 
-// scheulde
-const Timezone = "Asia/Seoul";
-export let clientIds: string[] = [];
+export const bot = new TeleBot(TELEGRAM_BOT_TOKEN);
 
 const onBotPassword = async (msg: any) => {
   try {
     const userInputs = msg.text.split(" ");
-    const userInput = userInputs[userInputs.length - 1];
+    let [userName, userInput] = [undefined, undefined];
+
+    if (userInputs.length === 3) {
+      userName = userInputs[1];
+      userInput = userInputs[2];
+    } else {
+      throw { message: "/listen 사용자 입력이 잘못되었습니다!" };
+    }
 
     const config = await StudioConfig.findOne({ where: { id: "root" } });
-    if (config && config.password === "init")
-      await config.update({ password: nanoid() });
+    if (!config) throw { message: "/listen 서버 에러!" };
 
-    if (config && config.password !== userInput) {
-      bot.sendMessage(msg.from.id, "패스워드가 올바르지 않습니다.");
-      throw { status: 400, message: "Not Correct Password" };
-    } else if (config && config.password === userInput) {
-      clientIds.push(msg.from.id);
+    if (config.password !== userInput) {
+      throw { message: "/listen 패스워드가 올바르지 않습니다" };
+    } else {
+      await StudioTelegram.create({
+        name: userName,
+        clientId: msg.from.id,
+      });
       bot.sendMessage(
         msg.from.id,
         "어서오세요!\n더이상 알람을 안받고 싶으시면 /stop 명령어를 쳐주세요!"
       );
-    } else {
-      bot.sendMessage(msg.from.id, "서버 에러!");
-      throw { status: 404, message: "NotFound config" };
     }
   } catch (error) {
-    return;
+    bot.sendMessage(msg.from.id, error.message);
   }
 };
 
-const onBotListenStop = (msg: any) => {
-  clientIds = clientIds.filter((clientId: string) => clientId !== msg.from.id);
+const onBotListenStop = async (msg: any) => {
+  try {
+    const findClient = await StudioTelegram.findOne({
+      where: { clientId: msg.from.id },
+    });
+    if (findClient) {
+      await findClient.destroy();
+      bot.sendMessage(msg.from.id, "/stop 완료!");
+    } else {
+      bot.sendMessage(msg.from.id, "/stop 사용자를 찾을 수 없습니다");
+    }
+  } catch (error) {
+    bot.sendMessage(msg.from.id, "/stop 서버 에러!");
+  }
 };
 
 export const telegramInit = async () => {
@@ -52,23 +73,46 @@ export const telegramInit = async () => {
   bot.on("/stop", onBotListenStop);
   bot.start();
 
-  // test
-  schedule.scheduleJob({ tz: Timezone, rule: "0 */30 * * * *" }, () => {
-    if (clientIds.length === 0) return;
+  try {
+    const count = await StudioConfig.count();
+    if (count === 0) {
+      await StudioConfig.create({
+        id: "telegram",
+        password: nanoid(),
+      });
+    }
+  } catch (error) {}
 
-    clientIds.forEach((clientId: string) => {
-      bot.sendMessage(clientId, "오늘 예약현황 : 1명\n총 예약현황 : 10명");
-    });
+  // test
+  schedule.scheduleJob({ tz: TIMEZONE, rule: "*/10 * * * * *" }, async () => {
+    try {
+      const clients = await StudioTelegram.findAll();
+      const clientIds = clients.map(
+        (client: StudioTelegram) => client.clientId
+      );
+
+      if (clientIds.length === 0) return;
+
+      const reservationCount = await StudioReservation.count();
+
+      clientIds.forEach((clientId: string) => {
+        bot.sendMessage(clientId, `봇 테스트\n총 예약건 : ${reservationCount}`);
+      });
+    } catch (error) {
+      console.log(`telegram | test schedule error`);
+    }
   });
 
   // 하루마다 업데이트
-  schedule.scheduleJob({ tz: Timezone, rule: "0 0 0 */1 * *" }, async () => {
+  schedule.scheduleJob({ tz: TIMEZONE, rule: "0 0 0 */1 * *" }, async () => {
     try {
-      const config = await StudioConfig.findOne({ where: { id: "root" } });
+      const config = await StudioConfig.findOne({ where: { id: "telegram" } });
 
       if (config) {
         await config.update({ password: nanoid() });
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(`telegram | password update failure`);
+    }
   });
 };

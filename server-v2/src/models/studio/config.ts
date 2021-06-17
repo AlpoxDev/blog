@@ -13,11 +13,10 @@ import {
   Default,
 } from "sequelize-typescript";
 
-@Table({ tableName: "studio_config", timestamps: false })
+@Table({ tableName: "config", timestamps: false })
 export class StudioConfig extends Model {
   @Column({
-    type: DataType.UUID,
-    defaultValue: DataType.UUIDV4,
+    type: DataType.STRING,
     primaryKey: true,
   })
   public id!: string;

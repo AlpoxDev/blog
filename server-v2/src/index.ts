@@ -5,7 +5,6 @@ import { studioRoutes, configRoutes } from "./api/routes";
 import { telegramInit } from "./services";
 
 console.log(`config loading...`, config);
-
 export default class Server {
   public app: FastifyInstance;
   constructor() {

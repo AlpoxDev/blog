@@ -1,15 +1,17 @@
 export * from "./_models";
 
-import { Sequelize } from "sequelize-typescript";
+import { Sequelize, ModelCtor } from "sequelize-typescript";
 
 import config from "../config";
-import * as modelAttributes from "./_models";
+import * as studioModelAttributes from "./studio/index";
 
-const sequelize = new Sequelize({
+export const studioModels = Object.values(studioModelAttributes)
+  .map((value) => typeof value === "function" && value)
+  .filter(Boolean) as ModelCtor[];
+
+export const studioSequelize = new Sequelize({
   ...config.SEQUELIZE,
-  models: Object.values(modelAttributes)
-    .map((value: any) => typeof value === "function" && value)
-    .filter(Boolean),
+  models: studioModels,
 });
 
-export default sequelize;
+export const blogSequelize = undefined;

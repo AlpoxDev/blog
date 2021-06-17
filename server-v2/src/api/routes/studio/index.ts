@@ -11,10 +11,5 @@ export const studioRoutes: FastifyPluginCallback = (fastify, options, done) => {
     reply.send({ status: "isAlive!" });
   });
 
-  fastify.get("/sync", async (req: Request, reply: Reply) => {
-    try {
-    } catch (error) {}
-  });
-
   done();
 };
