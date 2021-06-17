@@ -3,7 +3,7 @@ import type { Dialect } from "sequelize";
 import type { SequelizeOptions } from "sequelize-typescript";
 
 const NODE_ENV = process.env.NODE_ENV || "prod";
-dotenv.config({ path: __dirname + `/../.env.${NODE_ENV}` });
+dotenv.config({ path: __dirname + `/../env/.env.${NODE_ENV}` });
 
 function parseENV(key: string, type?: "string" | "number" | "boolean") {
   const value = process.env[key];
