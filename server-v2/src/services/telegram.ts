@@ -84,7 +84,7 @@ export const telegramInit = async () => {
   } catch (error) {}
 
   // test
-  schedule.scheduleJob({ tz: TIMEZONE, rule: "*/10 * * * * *" }, async () => {
+  schedule.scheduleJob({ tz: TIMEZONE, rule: "0 */1 * * * *" }, async () => {
     // For New Version Of Sequelize:
     // const where = {
     // 		[Op.or]: [{

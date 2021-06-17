@@ -8,8 +8,8 @@
     "dev": "cross-env NODE_ENV=dev nodemon ./src/index.ts -r tsconfig-paths/register 0.0.0.0 8080",
     "dev:prod": "cross-env NODE_ENV=prod nodemon ./src/index.ts -r tsconfig-paths/register 0.0.0.0 8080",
     "prod": "yarn build && node dist/index.js",
-    "build": "rimraf dist && tsc -p tsconfig.json",
-    "image": "rimraf dist && docker build -t alpox-server --no-cache ."
+    "build": "tsc -p tsconfig.json",
+    "image": "docker build --no-cache --progress=plain -t alpox-server ."
   },
   "dependencies": {
     "dotenv": "10.0.0",
