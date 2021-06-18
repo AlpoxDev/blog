@@ -31,7 +31,7 @@ const onBotPassword = async (msg: any) => {
     const config = await StudioConfig.findByPk("telegram");
     if (!config) throw { message: "/listen 서버 에러!" };
 
-    if (config.password !== userInput) {
+    if (config.value !== userInput) {
       throw { message: "/listen 패스워드가 올바르지 않습니다" };
     } else {
       await StudioTelegram.create({
@@ -77,8 +77,8 @@ export const telegramInit = async () => {
     const count = await StudioConfig.count();
     if (count === 0) {
       await StudioConfig.create({
-        id: "telegram",
-        password: nanoid(),
+        key: "telegram",
+        value: nanoid(),
       });
     }
   } catch (error) {}
@@ -132,10 +132,10 @@ export const telegramInit = async () => {
   // 하루마다 업데이트
   schedule.scheduleJob({ tz: TIMEZONE, rule: "0 0 0 */1 * *" }, async () => {
     try {
-      const config = await StudioConfig.findOne({ where: { id: "telegram" } });
+      const config = await StudioConfig.findByPk("telegram");
 
       if (config) {
-        await config.update({ password: nanoid() });
+        await config.update({ value: nanoid() });
       }
     } catch (error) {
       console.log(`telegram | password update failure`);

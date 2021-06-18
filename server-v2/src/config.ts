@@ -43,7 +43,8 @@ const config = {
   PORT: (parseENV("PORT", "number") as number) || 8080,
   TELEGRAM_KEY: parseENV("TELEGRAM_KEY") as string,
   SEQUELIZE: sequelizeConfig,
-  PASSWORD_KEY: parseENV("PASSWORD_KEY") as string,
+  JWT_KEY: parseENV("JWT_KEY") as string,
+  COOKIE_KEY: parseENV("COOKIE_KEY") as string,
   AES256_KEY: parseENV("AES256_KEY") as string,
 };
 
