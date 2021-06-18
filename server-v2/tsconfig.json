@@ -1,18 +1,15 @@
 {
   "compilerOptions": {
     "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "baseUrl": "src",
+    "outDir": "./dist",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "module": "commonjs",
-    "strict": true,
+    "noImplicitAny": false,
     "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "noImplicitAny": true,
-    "outDir": "./dist",
-    "baseUrl": "src",
-    "paths": {
-      "src/*": ["src/*"]
-    }
+    "resolveJsonModule": true,
+    "skipLibCheck": true
   }
 }

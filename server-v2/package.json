@@ -5,11 +5,12 @@
   "author": "alpoxdev",
   "license": "MIT",
   "scripts": {
-    "dev": "cross-env NODE_ENV=dev nodemon ./src/index.ts -r tsconfig-paths/register 0.0.0.0 8080",
-    "dev:prod": "cross-env NODE_ENV=prod nodemon ./src/index.ts -r tsconfig-paths/register 0.0.0.0 8080",
-    "prod": "yarn build && node dist/index.js",
     "build": "tsc -p tsconfig.json",
-    "image": "docker build --no-cache --progress=plain -t alpox-server ."
+    "start": "TS_NODE=1 NODE_PATH=src cross-env NODE_ENV=prod ts-node --transpile-only src/index.ts | pino-pretty -c -t",
+    "start:dev": "TS_NODE=1 NODE_PATH=src cross-env NODE_ENV=dev ts-node-dev --respawn --transpile-only src/index.ts | pino-pretty",
+    "prod": "yarn build && node dist/index.js",
+    "image": "docker build --no-cache --progress=plain -t alpox-server .",
+    "compile:schema": "json2ts -i src/schema -o src/types"
   },
   "dependencies": {
     "@types/bcrypt": "5.0.0",
@@ -19,6 +20,7 @@
     "fastify": "^3.17.0",
     "fastify-cookie": "5.3.1",
     "fastify-plugin": "3.0.0",
+    "json-schema-to-typescript": "10.1.4",
     "jsonwebtoken": "8.5.1",
     "mariadb": "2.5.3",
     "nanoid": "3.1.23",
@@ -36,9 +38,8 @@
     "@types/telebot": "1.2.2",
     "@types/validator": "13.1.4",
     "cross-env": "7.0.3",
-    "nodemon": "2.0.7",
-    "tsc": "2.0.3",
-    "tsconfig-paths": "3.9.0",
+    "ts-node": "10.0.0",
+    "ts-node-dev": "1.1.6",
     "typescript": "^4.3.2"
   }
 }

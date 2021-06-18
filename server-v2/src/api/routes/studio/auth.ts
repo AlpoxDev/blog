@@ -4,7 +4,7 @@ import {
   FastifyReply as Reply,
 } from "fastify";
 
-import { signToken } from "../../../services";
+import { signToken } from "services";
 
 export const studioAuthRoutes: FastifyPluginCallback = (
   fastify,
@@ -12,7 +12,7 @@ export const studioAuthRoutes: FastifyPluginCallback = (
   done
 ) => {
   // 로그인
-  fastify.get("/login", async (req: Request, reply: Reply) => {
+  fastify.get<{}>("/login", {}, async (req: Request, reply: Reply) => {
     reply.code(200).send({
       jwtTest: signToken({ foo: "bar" }),
     });

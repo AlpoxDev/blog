@@ -1,15 +1,9 @@
 import TeleBot from "telebot";
 import schedule from "node-schedule";
-import { Op } from "sequelize";
 import { nanoid } from "nanoid";
 
-import config from "../config";
-import {
-  StudioConfig,
-  StudioCoupon,
-  StudioTelegram,
-  StudioReservation,
-} from "../models";
+import config from "config";
+import { StudioConfig, StudioTelegram, StudioReservation } from "models";
 
 const TELEGRAM_BOT_TOKEN = config.TELEGRAM_KEY;
 const TIMEZONE = "Asia/Seoul";

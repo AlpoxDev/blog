@@ -5,12 +5,12 @@ import type {
 } from "fastify";
 import cookie, { FastifyCookieOptions } from "fastify-cookie";
 
-import config from "../../../config";
+import config from "config";
 
-import { studioAuthRoutes } from "./auth";
-import { studioReservationRoutes } from "./reservation";
-import { studioSettlementRoutes } from "./settlement";
-import { studioUserRoutes } from "./user";
+import { studioAuthRoutes } from "api/routes/studio/auth";
+import { studioReservationRoutes } from "api/routes/studio/reservation";
+import { studioSettlementRoutes } from "api/routes/studio/settlement";
+import { studioUserRoutes } from "api/routes/studio/user";
 
 export const studioRoutes: FastifyPluginCallback = (fastify, options, done) => {
   fastify.register(cookie, {
