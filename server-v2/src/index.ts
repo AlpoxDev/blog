@@ -1,8 +1,16 @@
-import fastify, { FastifyInstance, RouteShorthandOptions } from "fastify";
+import fastify, { FastifyInstance } from "fastify";
 
-import config from "./config";
-import { studioRoutes, configRoutes } from "./api/routes";
-import { telegramInit } from "./services";
+// init setting
+import config from "config";
+import { telegramInit } from "services";
+
+// routes
+import { studioRoutes, configRoutes, testRoutes } from "api/routes";
+
+// plugins
+import corsPlugin from "fastify-cors";
+import cookiePlugin from "fastify-cookie";
+import { tokenPlugin } from "plugins";
 
 console.log(`config loading...`, config);
 export default class Server {
@@ -14,16 +22,30 @@ export default class Server {
   public setting() {
     this.telegram();
 
-    this.serverSetting();
+    this.pluginSetting();
     this.routerSetting();
     this.errorSetting();
   }
 
-  public serverSetting() {}
+  public pluginSetting() {
+    this.app.register(corsPlugin, {
+      origin: (origin, callback) => {
+        if (!origin) return callback(null, true);
+
+        const host = origin.split("://")[1];
+        const allowedHost = ["localhost:3000"];
+        const allowed = allowedHost.includes(host);
+        callback(null, allowed);
+      },
+    });
+    this.app.register(cookiePlugin);
+    this.app.register(tokenPlugin);
+  }
 
   public routerSetting() {
     this.app.register(configRoutes, { prefix: "/config" });
     this.app.register(studioRoutes, { prefix: "/studio" });
+    this.app.register(testRoutes, { prefix: "/test" });
   }
 
   public errorSetting() {

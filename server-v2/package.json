@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "start": "TS_NODE=1 NODE_PATH=src cross-env NODE_ENV=prod ts-node --transpile-only src/index.ts | pino-pretty -c -t",
-    "start:dev": "TS_NODE=1 NODE_PATH=src cross-env NODE_ENV=dev ts-node-dev --respawn --transpile-only src/index.ts | pino-pretty",
+    "dev": "TS_NODE=1 NODE_PATH=src cross-env NODE_ENV=dev ts-node-dev --respawn --transpile-only src/index.ts | pino-pretty",
     "prod": "yarn build && node dist/index.js",
     "image": "docker build --no-cache --progress=plain -t alpox-server .",
     "compile:schema": "json2ts -i src/schema -o src/types"
@@ -19,6 +19,7 @@
     "dotenv": "10.0.0",
     "fastify": "^3.17.0",
     "fastify-cookie": "5.3.1",
+    "fastify-cors": "6.0.1",
     "fastify-plugin": "3.0.0",
     "json-schema-to-typescript": "10.1.4",
     "jsonwebtoken": "8.5.1",
