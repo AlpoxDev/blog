@@ -5,14 +5,7 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export interface TestIndexBody {
-  /**
-   * 소셜 토큰
-   */
-  accessToken: string;
-  /**
-   * 소셜 타입
-   */
-  socialType?: "KAKAO" | "NAVER";
+export interface ConfigTelegramPassword {
+  name?: "양민열" | "홍정표";
   [k: string]: unknown;
 }

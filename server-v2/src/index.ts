@@ -5,7 +5,7 @@ import config from "config";
 import { telegramInit } from "services";
 
 // routes
-import { studioRoutes, configRoutes, testRoutes } from "api/routes";
+import { studioRoutes } from "api/routes";
 
 // plugins
 import corsPlugin from "fastify-cors";
@@ -43,9 +43,7 @@ export default class Server {
   }
 
   public routerSetting() {
-    this.app.register(configRoutes, { prefix: "/config" });
     this.app.register(studioRoutes, { prefix: "/studio" });
-    this.app.register(testRoutes, { prefix: "/test" });
   }
 
   public errorSetting() {

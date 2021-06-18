@@ -7,6 +7,7 @@ import cookie, { FastifyCookieOptions } from "fastify-cookie";
 
 import config from "config";
 
+import { studioConfig } from "api/routes/studio/config";
 import { studioAuthRoutes } from "api/routes/studio/auth";
 import { studioReservationRoutes } from "api/routes/studio/reservation";
 import { studioSettlementRoutes } from "api/routes/studio/settlement";
@@ -21,6 +22,7 @@ export const studioRoutes: FastifyPluginCallback = (fastify, options, done) => {
     reply.setCookie("foo", "bar", { signed: true }).send({ foo: "bar" });
   });
 
+  fastify.register(studioConfig, { prefix: "/config" });
   fastify.register(studioAuthRoutes, { prefix: "/auth" });
   fastify.register(studioUserRoutes, { prefix: "/users" });
   fastify.register(studioReservationRoutes, { prefix: "/reservations" });
