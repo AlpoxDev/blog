@@ -8,7 +8,7 @@
     "build": "tsc -p tsconfig.json",
     "start": "TS_NODE=1 NODE_PATH=src cross-env NODE_ENV=prod ts-node --transpile-only src/index.ts | pino-pretty -c -t",
     "dev": "TS_NODE=1 NODE_PATH=src cross-env NODE_ENV=dev ts-node-dev --respawn --transpile-only src/index.ts | pino-pretty",
-    "prod": "yarn build && node dist/index.js",
+    "prod": "yarn build && NODE_PATH=./dist node dist/index.js",
     "image": "docker build --no-cache --progress=plain -t alpox-server .",
     "compile:schema": "json2ts -i src/schema -o src/types"
   },
