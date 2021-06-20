@@ -1,21 +1,38 @@
 import { FastifyPluginCallback } from "fastify";
+import { userPlugin } from "plugins/userPlugin";
+
+import { StudioUser } from "models/studio/user";
 
 export const studioUserRoutes: FastifyPluginCallback = (
   fastify,
   options,
   done
 ) => {
+  fastify.register(userPlugin, { fetch: true });
+
+  // 나의 정보 조회
+  fastify.get("/me", {}, async (request, reply) => {
+    const { userData } = request;
+    const user = {
+      id: userData.id,
+      name: userData.name,
+      profile: userData.profile,
+      role: userData.role,
+    };
+
+    reply.code(200).send({ user });
+  });
   // 사용자 목록
-  fastify.get("/users", {}, async (request, reply) => {});
+  fastify.get("/", {}, async (request, reply) => {});
 
   // 사용자 자세히
-  fastify.get("/users/:id", {}, async (request, reply) => {});
+  fastify.get("/:id", {}, async (request, reply) => {});
 
   // 사용자 탈퇴
-  fastify.delete("/users/:id", {}, async (request, reply) => {});
+  fastify.delete("/:id", {}, async (request, reply) => {});
 
   // 사용자 수정
-  fastify.patch("/users/:id", {}, async (request, reply) => {});
+  fastify.patch("/:id", {}, async (request, reply) => {});
 
   done();
 };

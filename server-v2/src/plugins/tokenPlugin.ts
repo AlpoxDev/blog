@@ -1,6 +1,6 @@
 import type { FastifyPluginCallback } from "fastify";
 import fp from "fastify-plugin";
-import { verifyToken } from "services/token";
+import { StudioUser } from "models/studio/user";
 
 declare module "fastify" {
   interface FastifyRequest {
@@ -11,10 +11,13 @@ declare module "fastify" {
 const callback: FastifyPluginCallback = async (fastify, options, done) => {
   fastify.decorateRequest("user", null);
   fastify.addHook("preHandler", async (request, reply) => {
-    const accessToken: string | undefined = request.cookies["ACCESS_TOKEN"];
+    const accessToken: string | undefined = request.cookies["ALPOX_TOKEN"];
+
     try {
-      const verified = verifyToken<{ id: string }>(accessToken);
-      request.user = { id: verified.id };
+      if (accessToken) {
+        const verified = StudioUser.verifyToken(accessToken) as { id: string };
+        request.user = { id: verified.id };
+      }
     } catch (error) {}
   });
 
@@ -24,3 +27,5 @@ const callback: FastifyPluginCallback = async (fastify, options, done) => {
 export const tokenPlugin = fp(callback, {
   name: "tokenPlugin",
 });
+
+export default tokenPlugin;

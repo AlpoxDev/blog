@@ -18,10 +18,6 @@ export const studioRoutes: FastifyPluginCallback = (fastify, options, done) => {
     secret: config.COOKIE_KEY,
   } as FastifyCookieOptions);
 
-  fastify.get("/status", {}, (request: Request, reply: Reply) => {
-    reply.setCookie("foo", "bar", { signed: true }).send({ foo: "bar" });
-  });
-
   fastify.register(studioConfig, { prefix: "/config" });
   fastify.register(studioAuthRoutes, { prefix: "/auth" });
   fastify.register(studioUserRoutes, { prefix: "/users" });

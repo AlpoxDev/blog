@@ -37,6 +37,7 @@ export default class Server {
         const allowed = allowedHost.includes(host);
         callback(null, allowed);
       },
+      credentials: true,
     });
     this.app.register(cookiePlugin);
     this.app.register(tokenPlugin);
@@ -67,8 +68,7 @@ export default class Server {
       await this.app.listen(config.PORT || 8080, "0.0.0.0");
       console.log(`Server 0.0.0.0:${config.PORT} Listening...`);
     } catch (error) {
-      this.app.log.error(error);
-      process.exit(1);
+      console.log(`Server Error`, error);
     }
   }
 

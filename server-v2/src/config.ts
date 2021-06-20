@@ -46,6 +46,12 @@ const config = {
   JWT_KEY: parseENV("JWT_KEY") as string,
   COOKIE_KEY: parseENV("COOKIE_KEY") as string,
   AES256_KEY: parseENV("AES256_KEY") as string,
+  STUDIO_KAKAO_KEY: parseENV("STUDIO_KAKAO_KEY") as string,
+  STUDIO_KAKAO_SECRET_KEY: parseENV("STUDIO_KAKAO_SECRET_KEY") as string,
+  STUDIO_KAKAO_REDIRECT_TOKEN: parseENV(
+    "STUDIO_KAKAO_REDIRECT_TOKEN"
+  ) as string,
+  STUDIO_KAKAO_REDIRECT_URL: parseENV("STUDIO_KAKAO_REDIRECT_URL") as string,
 };
 
 export default config;

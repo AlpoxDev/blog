@@ -37,29 +37,16 @@ export class StudioUser extends Model {
   @Column
   public socialId!: string;
 
-  @Column({
-    type: DataType.STRING(255),
-    get() {
-      return decryptAES256(this.getDataValue("name"));
-    },
-    set(value: string) {
-      this.setDataValue("name", encryptAES256(value));
-    },
-  })
+  @Column(DataType.STRING(255))
   public name!: string;
 
-  @Column({
-    type: DataType.STRING(255),
-    get() {
-      return decryptAES256(this.getDataValue("phone"));
-    },
-    set(value: string) {
-      this.setDataValue("phone", encryptAES256(value));
-    },
-  })
+  @Column(DataType.TEXT)
+  public profile!: string;
+
+  @Column(DataType.STRING(255))
   public phone!: string;
 
-  @Default(StudioUserRole.ADMIN)
+  @Default(StudioUserRole.USER)
   @Column(DataType.ENUM(...Object.values(StudioUserRole)))
   public role!: StudioUserRole;
 
@@ -76,7 +63,7 @@ export class StudioUser extends Model {
     return signToken({ id: this.id });
   }
 
-  public verifyToken(token: string) {
+  public static verifyToken(token: string) {
     return verifyToken(token);
   }
 }
