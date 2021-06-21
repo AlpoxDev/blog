@@ -12,8 +12,6 @@ const callback: FastifyPluginAsync<{ fetch: boolean; tokenType: string }> =
         throw { status: 401, message: "Unauthorized" };
       }
 
-      console.log(`request.user`, request.user);
-
       if (fetch && tokenType === "studio") {
         const userData = await StudioUser.findByPk(request.user.id, {
           attributes: ["id", "socialId", "role", "name", "profile", "phone"],
@@ -21,7 +19,9 @@ const callback: FastifyPluginAsync<{ fetch: boolean; tokenType: string }> =
         if (!userData) throw { status: 401, message: "Authorization Failure!" };
 
         request.userData = userData;
-      } else if (fetch && tokenType === "percent") {
+      }
+
+      if (fetch && tokenType === "percent") {
         const userData = await PercentUser.findByPk(request.user.id, {
           attributes: ["id", "socialId", "role", "name", "profile", "phone"],
         });
