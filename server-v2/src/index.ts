@@ -10,7 +10,7 @@ import { studioRoutes, percentRoutes, testRoutes } from "api/routes";
 // plugins
 import corsPlugin from "fastify-cors";
 import cookiePlugin from "fastify-cookie";
-import { tokenPlugin } from "plugins";
+import { tokenPlugin, paginationPlugin } from "plugins";
 
 console.log(`config loading...`, config);
 export default class Server {
@@ -43,6 +43,7 @@ export default class Server {
       secret: config.COOKIE_KEY,
     });
     this.app.register(tokenPlugin);
+    this.app.register(paginationPlugin);
   }
 
   public routerSetting() {

@@ -1,0 +1,10 @@
+{
+  "title": "Delete User Params",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    }
+  },
+  "required": ["id"]
+}

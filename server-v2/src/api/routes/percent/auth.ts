@@ -2,7 +2,7 @@ import { FastifyPluginCallback } from "fastify";
 import axios from "axios";
 
 // model
-import { PercentUser } from "models/101%/user";
+import { PercentUser } from "models/percent/user";
 
 // schema
 import LoginBodySchema from "schema/percent/auth/login.json";

@@ -1,0 +1,12 @@
+{
+  "title": "Update User Body",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "profile": {
+      "type": "string"
+    }
+  }
+}

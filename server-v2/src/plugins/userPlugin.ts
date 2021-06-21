@@ -1,7 +1,7 @@
 import type { FastifyPluginAsync, FastifyPluginCallback } from "fastify";
 import fp from "fastify-plugin";
 
-import { StudioUser } from "models/studio/user";
+import { StudioUser, PercentUser } from "models";
 
 const callback: FastifyPluginAsync<{ fetch: boolean; tokenType: string }> =
   async (fastify, options) => {
@@ -18,13 +18,21 @@ const callback: FastifyPluginAsync<{ fetch: boolean; tokenType: string }> =
         if (!userData) throw { status: 401, message: "Authorization Failure!" };
 
         request.userData = userData;
+      } else if (fetch && tokenType === "percent") {
+        console.log(request.user.id);
+        const userData = await PercentUser.findByPk(request.user.id, {
+          attributes: ["id", "socialId", "role", "name", "profile", "phone"],
+        });
+        if (!userData) throw { status: 401, message: "Authorization Failure!" };
+
+        request.userData = userData;
       }
     });
   };
 
 declare module "fastify" {
   interface FastifyRequest {
-    userData: StudioUser | null;
+    userData: StudioUser | PercentUser | null;
   }
 }
 

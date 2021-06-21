@@ -4,7 +4,7 @@ import { Sequelize, ModelCtor } from "sequelize-typescript";
 
 import config from "../config";
 import * as studioModelAttributes from "./studio/index";
-import * as percentModelAttributes from "./101%/index";
+import * as percentModelAttributes from "./percent/index";
 
 const studioModels = Object.values(studioModelAttributes)
   .map((value) => typeof value === "function" && value)
