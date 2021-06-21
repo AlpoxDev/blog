@@ -23,13 +23,13 @@ function parseENV(key: string, type?: "string" | "number" | "boolean") {
   }
 }
 
-export const sequelizeConfig: SequelizeOptions = {
-  host: parseENV("DB_HOST") as string,
-  port: (parseENV("DB_PORT", "number") as number) || 3306, // (env.DB_PORT || 3306) as number,
-  database: parseENV("DB_DATABASE") as string,
-  dialect: (parseENV("DB_DIALECT") as Dialect) || "mariadb",
-  username: parseENV("DB_USERNAME") as string,
-  password: parseENV("DB_PASSWORD") as string,
+export const studioSequelizeConfig: SequelizeOptions = {
+  host: parseENV("STUDIO_DB_HOST") as string,
+  port: (parseENV("STUDIO_DB_PORT", "number") as number) || 3306, // (env.DB_PORT || 3306) as number,
+  database: parseENV("STUDIO_DB_DATABASE") as string,
+  dialect: (parseENV("STUDIO_DB_DIALECT") as Dialect) || "mariadb",
+  username: parseENV("STUDIO_DB_USERNAME") as string,
+  password: parseENV("STUDIO_DB_PASSWORD") as string,
   timezone: "+09:00",
   define: {
     charset: "utf8mb4",
@@ -38,20 +38,42 @@ export const sequelizeConfig: SequelizeOptions = {
   },
 };
 
+export const studioConfig = {
+  SEQUELIZE: studioSequelizeConfig,
+  KAKAO_KEY: parseENV("STUDIO_KAKAO_KEY") as string,
+  JWT_KEY: parseENV("STUDIO_JWT_KEY") as string,
+  TELEGRAM_KEY: parseENV("STUDIO_TELEGRAM_KEY") as string,
+};
+
+export const percentSequelizeConfig: SequelizeOptions = {
+  host: parseENV("PERCENT_DB_HOST") as string,
+  port: (parseENV("PERCENT_DB_PORT", "number") as number) || 3306, // (env.DB_PORT || 3306) as number,
+  database: parseENV("PERCENT_DB_DATABASE") as string,
+  dialect: (parseENV("PERCENT_DB_DIALECT") as Dialect) || "mariadb",
+  username: parseENV("PERCENT_DB_USERNAME") as string,
+  password: parseENV("PERCENT_DB_PASSWORD") as string,
+  timezone: "+09:00",
+  define: {
+    charset: "utf8mb4",
+    collate: "utf8mb4_unicode_ci",
+    timestamps: true,
+  },
+};
+
+export const percentConfig = {
+  SEQUELIZE: percentSequelizeConfig,
+  KAKAO_KEY: parseENV("PERCENT_KAKAO_KEY") as string,
+  JWT_KEY: parseENV("PERCENT_JWT_KEY") as string,
+};
+
 const config = {
   NODE_ENV,
   PORT: (parseENV("PORT", "number") as number) || 8080,
-  TELEGRAM_KEY: parseENV("TELEGRAM_KEY") as string,
-  SEQUELIZE: sequelizeConfig,
-  JWT_KEY: parseENV("JWT_KEY") as string,
   COOKIE_KEY: parseENV("COOKIE_KEY") as string,
   AES256_KEY: parseENV("AES256_KEY") as string,
-  STUDIO_KAKAO_KEY: parseENV("STUDIO_KAKAO_KEY") as string,
-  STUDIO_KAKAO_SECRET_KEY: parseENV("STUDIO_KAKAO_SECRET_KEY") as string,
-  STUDIO_KAKAO_REDIRECT_TOKEN: parseENV(
-    "STUDIO_KAKAO_REDIRECT_TOKEN"
-  ) as string,
-  STUDIO_KAKAO_REDIRECT_URL: parseENV("STUDIO_KAKAO_REDIRECT_URL") as string,
+
+  STUDIO: studioConfig,
+  PERCENT: percentConfig,
 };
 
 export default config;

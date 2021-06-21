@@ -5,7 +5,7 @@ import { nanoid } from "nanoid";
 import config from "config";
 import { StudioConfig, StudioTelegram, StudioReservation } from "models";
 
-const TELEGRAM_BOT_TOKEN = config.TELEGRAM_KEY;
+const TELEGRAM_BOT_TOKEN = config.STUDIO.TELEGRAM_KEY;
 const TIMEZONE = "Asia/Seoul";
 
 export const bot = new TeleBot(TELEGRAM_BOT_TOKEN);
@@ -78,7 +78,7 @@ export const telegramInit = async () => {
   } catch (error) {}
 
   // test
-  schedule.scheduleJob({ tz: TIMEZONE, rule: "0 */1 * * * *" }, async () => {
+  schedule.scheduleJob({ tz: TIMEZONE, rule: "0 */10 * * * *" }, async () => {
     // For New Version Of Sequelize:
     // const where = {
     // 		[Op.or]: [{

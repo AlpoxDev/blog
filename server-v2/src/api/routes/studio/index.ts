@@ -1,11 +1,4 @@
-import type {
-  FastifyPluginCallback,
-  FastifyRequest as Request,
-  FastifyReply as Reply,
-} from "fastify";
-import cookie, { FastifyCookieOptions } from "fastify-cookie";
-
-import config from "config";
+import type { FastifyPluginCallback } from "fastify";
 
 import { studioConfig } from "api/routes/studio/config";
 import { studioAuthRoutes } from "api/routes/studio/auth";
@@ -14,10 +7,6 @@ import { studioSettlementRoutes } from "api/routes/studio/settlement";
 import { studioUserRoutes } from "api/routes/studio/user";
 
 export const studioRoutes: FastifyPluginCallback = (fastify, options, done) => {
-  fastify.register(cookie, {
-    secret: config.COOKIE_KEY,
-  } as FastifyCookieOptions);
-
   fastify.register(studioConfig, { prefix: "/config" });
   fastify.register(studioAuthRoutes, { prefix: "/auth" });
   fastify.register(studioUserRoutes, { prefix: "/users" });

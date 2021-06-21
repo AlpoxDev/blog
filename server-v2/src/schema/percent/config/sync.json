@@ -1,0 +1,12 @@
+{
+  "title": "Config Sync Query",
+  "type": "object",
+  "properties": {
+    "sync": {
+      "type": "string"
+    },
+    "force": {
+      "type": "string"
+    }
+  }
+}

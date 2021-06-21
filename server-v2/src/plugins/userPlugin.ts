@@ -3,26 +3,24 @@ import fp from "fastify-plugin";
 
 import { StudioUser } from "models/studio/user";
 
-const callback: FastifyPluginAsync<{ fetch: boolean }> = async (
-  fastify,
-  options
-) => {
-  const { fetch = true } = options;
-  fastify.decorateRequest("userData", null);
-  fastify.addHook("preHandler", async (request, reply) => {
-    if (!request.user) {
-      throw { status: 401, message: "Unauthorized" };
-    }
-    if (fetch) {
-      const userData = await StudioUser.findByPk(request.user.id, {
-        attributes: ["id", "socialId", "role", "name", "profile", "phone"],
-      });
-      if (!userData) throw { status: 401, message: "Authorization Failure!" };
+const callback: FastifyPluginAsync<{ fetch: boolean; tokenType: string }> =
+  async (fastify, options) => {
+    const { fetch = true, tokenType } = options;
+    fastify.decorateRequest("userData", null);
+    fastify.addHook("preHandler", async (request, reply) => {
+      if (!request.user) {
+        throw { status: 401, message: "Unauthorized" };
+      }
+      if (fetch && tokenType === "studio") {
+        const userData = await StudioUser.findByPk(request.user.id, {
+          attributes: ["id", "socialId", "role", "name", "profile", "phone"],
+        });
+        if (!userData) throw { status: 401, message: "Authorization Failure!" };
 
-      request.userData = userData;
-    }
-  });
-};
+        request.userData = userData;
+      }
+    });
+  };
 
 declare module "fastify" {
   interface FastifyRequest {

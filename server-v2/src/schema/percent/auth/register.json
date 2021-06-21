@@ -1,0 +1,19 @@
+{
+  "title": "Register Body",
+  "type": "object",
+  "properties": {
+    "accessToken": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "profile": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    }
+  },
+  "required": ["accessToken", "phone"]
+}

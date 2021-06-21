@@ -16,13 +16,13 @@ import {
 import config from "config";
 import { signToken, verifyToken } from "services";
 
-export enum StudioUserRole {
+export enum PercentUserRole {
   USER = "USER",
   ADMIN = "ADMIN",
 }
 
 @Table({ tableName: "user", timestamps: true })
-export class StudioUser extends Model {
+export class PercentUser extends Model {
   @Column({
     type: DataType.UUID,
     defaultValue: DataType.UUIDV4,
@@ -42,9 +42,9 @@ export class StudioUser extends Model {
   @Column(DataType.STRING(255))
   public phone!: string;
 
-  @Default(StudioUserRole.USER)
-  @Column(DataType.ENUM(...Object.values(StudioUserRole)))
-  public role!: StudioUserRole;
+  @Default(PercentUserRole.USER)
+  @Column(DataType.ENUM(...Object.values(PercentUserRole)))
+  public role!: PercentUserRole;
 
   @CreatedAt
   public createdAt!: Date;
@@ -56,10 +56,10 @@ export class StudioUser extends Model {
   public updatedAt!: Date;
 
   public getAccessToken() {
-    return signToken(config.STUDIO.JWT_KEY, { id: this.id, type: "studio" });
+    return signToken(config.PERCENT.JWT_KEY, { id: this.id, type: "percent" });
   }
 
   public static verifyToken(token: string) {
-    return verifyToken(config.STUDIO.JWT_KEY, token);
+    return verifyToken(config.PERCENT.JWT_KEY, token);
   }
 }

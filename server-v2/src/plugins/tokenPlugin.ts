@@ -11,12 +11,18 @@ declare module "fastify" {
 const callback: FastifyPluginCallback = async (fastify, options, done) => {
   fastify.decorateRequest("user", null);
   fastify.addHook("preHandler", async (request, reply) => {
-    const accessToken: string | undefined = request.cookies["ALPOX_TOKEN"];
+    const cookie: string | undefined =
+      request.cookies["STUDIO_ALPOX"] || request.cookies["PERCENT_ALPOX"];
+    let accessToken: string | undefined;
+    if (cookie) accessToken = request.unsignCookie(cookie)?.value;
 
     try {
       if (accessToken) {
-        const verified = StudioUser.verifyToken(accessToken) as { id: string };
-        request.user = { id: verified.id };
+        const verified = StudioUser.verifyToken(accessToken) as {
+          id: string;
+          type: string;
+        };
+        request.user = { ...verified };
       }
     } catch (error) {}
   });

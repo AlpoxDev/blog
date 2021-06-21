@@ -2,17 +2,17 @@ import { FastifyPluginCallback } from "fastify";
 import axios from "axios";
 
 // model
-import { StudioUser } from "models/studio/user";
+import { PercentUser } from "models/101%/user";
 
 // schema
-import LoginBodySchema from "schema/studio/auth/login.json";
-import RegisterBodySchema from "schema/studio/auth/register.json";
+import LoginBodySchema from "schema/percent/auth/login.json";
+import RegisterBodySchema from "schema/percent/auth/register.json";
 
 // types
-import { LoginBody } from "types/studio/auth/login";
-import { RegisterBody } from "types/studio/auth/register";
+import { LoginBody } from "types/percent/auth/login";
+import { RegisterBody } from "types/percent/auth/register";
 
-export const studioAuthRoutes: FastifyPluginCallback = (
+export const percentAuthRoutes: FastifyPluginCallback = (
   fastify,
   options,
   done
@@ -45,7 +45,7 @@ export const studioAuthRoutes: FastifyPluginCallback = (
         const { nickname: name, profile_image: profile } =
           response.data.properties;
 
-        const findUser = await StudioUser.findOne({
+        const findUser = await PercentUser.findOne({
           where: {
             socialId: kakaoId,
           },
@@ -54,7 +54,7 @@ export const studioAuthRoutes: FastifyPluginCallback = (
 
         reply
           .code(204)
-          .setCookie("STUDIO_ALPOX", findUser.getAccessToken(), {
+          .setCookie("PERCENT_ALPOX", findUser.getAccessToken(), {
             path: "/",
             maxAge: 60 * 60 * 24 * 24,
             httpOnly: true,
@@ -95,14 +95,14 @@ export const studioAuthRoutes: FastifyPluginCallback = (
       const kakaoId = response.data.id;
       const { nickname, profile_image } = response.data.properties;
 
-      const findUser = await StudioUser.findOne({
+      const findUser = await PercentUser.findOne({
         where: {
           socialId: kakaoId,
         },
       });
       if (findUser) throw { status: 404, message: "Already user exist!" };
 
-      const newUser = await StudioUser.create({
+      const newUser = await PercentUser.create({
         socialId: kakaoId,
         name: name || nickname,
         profile: profile || profile_image,
@@ -111,7 +111,7 @@ export const studioAuthRoutes: FastifyPluginCallback = (
 
       reply
         .code(204)
-        .setCookie("STUDIO_ALPOX", newUser.getAccessToken(), {
+        .setCookie("PERCENT_ALPOX", newUser.getAccessToken(), {
           path: "/",
           maxAge: 60 * 60 * 24 * 24,
           httpOnly: true,
@@ -126,7 +126,7 @@ export const studioAuthRoutes: FastifyPluginCallback = (
   fastify.post("/logout", async (request, reply) => {
     const { user } = request;
     if (user && user.id) {
-      reply.code(204).clearCookie("STUDIO_ALPOX").send();
+      reply.code(204).clearCookie("PERCENT_ALPOX").send();
     } else {
       reply.code(400);
       reply.send();
