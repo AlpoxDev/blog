@@ -10,7 +10,7 @@ COPY yarn.lock ./
 
 # node_modules install
 RUN yarn install
-RUN yarn add typescript
+RUN yarn global add typescript
 
 COPY . .
 
