@@ -11,12 +11,12 @@ export const LandingContainer = (): React.ReactElement => {
   const router = useRouter();
 
   const onClickBlog = useCallback(() => {
-    router.push('/blog');
-  }, [router]);
+    window.location.href = 'https://resume.alpox.dev';
+  }, []);
 
   const onClickProfile = useCallback(() => {
-    router.push('/me');
-  }, [router]);
+    window.location.href = 'https://resume.alpox.dev';
+  }, []);
 
   useEffect(() => {
     setInterval(() => setCount((count: number) => count - 1), 1000);
@@ -24,7 +24,6 @@ export const LandingContainer = (): React.ReactElement => {
 
   useEffect(() => {
     if (count > 0) return;
-
     onClickBlog();
   }, [count]);
 
@@ -38,25 +37,21 @@ export const LandingContainer = (): React.ReactElement => {
 
           <CoverContentWrapper onClick={onClickBlog}>
             <RightArrow />
-            <Text.H2 location={{ left: '4px' }} fontFamily="inter">
+            <Text.H2 location={{ left: '4px', top: '-2.5px' }} fontFamily="inter">
               {count}
             </Text.H2>
           </CoverContentWrapper>
         </CoverTitleWrapper>
 
         <Text.Content fontFamily="inter" lineHeight={'1.8rem'} location={{ top: '4rem' }} fontWeight={300}>
-          <Text.Accent underline pointer fontWeight={500} onClick={onClickBlog}>
-            {' '}
-            A Blog
-          </Text.Accent>{' '}
-          {'probably.\nI will share about tech, thinking, self-development related to my interest.'}
+          {'I will share about tech, thinking, self-development related to my interest.'}
         </Text.Content>
       </Cover>
 
       <Portfolio onClick={onClickProfile}>
         <Profile width={155} height={155} />
 
-        <Text.Content underline fontWeight={600} fontFamily="inter" location={{ top: '1.6rem' }}>
+        <Text.Content underline color="primary" fontWeight={600} fontFamily="inter" location={{ top: '1.6rem' }}>
           Click!
         </Text.Content>
       </Portfolio>
